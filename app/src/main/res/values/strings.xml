@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">squareup</string>
+    <string name="app_name">square_up</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="enter_description">Enter description</string>
     <string name="enter_amount">Enter amount</string>
@@ -10,7 +10,7 @@
     <string name="who_paid">Who Paid</string>
     <string name="square_up">Square Up</string>
     <string name="you_paid">You Paid: </string>
-    <string name="date">Date: </string>s
+    <string name="date">Date: </string>
     <string name="add_notes">Add Notes: </string>
     <string name="record_payment">Record Payment </string>
     <string name="change_password">Change Password </string>

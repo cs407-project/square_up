@@ -1,4 +1,4 @@
-package com.cs407.squareup
+package com.cs407.square_up
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

@@ -33,18 +33,18 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-        val recordPayment= findViewById<Button>(R.id.recordPayment)
-        recordPayment.setOnClickListener {
-
-        }
-        val notifications= findViewById<CheckBox>(R.id.notifications)
-        notifications.setOnClickListener {
-
-        }
-        val logout= findViewById<Button>(R.id.logout)
-        logout.setOnClickListener {
-
-        }
+//        val recordPayment= findViewById<Button>(R.id.recordPayment)
+//        recordPayment.setOnClickListener {
+//
+//        }
+//        val notifications= findViewById<CheckBox>(R.id.notifications)
+//        notifications.setOnClickListener {
+//
+//        }
+//        val logout= findViewById<Button>(R.id.logout)
+//        logout.setOnClickListener {
+//
+//        }
     }
 
 }
