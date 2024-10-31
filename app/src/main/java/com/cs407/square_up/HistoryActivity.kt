@@ -1,4 +1,4 @@
-package com.cs407.squareup
+package com.cs407.square_up
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,7 +13,7 @@ class HistoryActivity : AppCompatActivity() {
 
         val backButton = findViewById<ImageView>(R.id.backButton)
         backButton.setOnClickListener {
-            //placeholder
+            finish()
         }
 
         // Load the default fragment (Individual Transactions) on activity start

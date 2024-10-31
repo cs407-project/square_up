@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SquareUp"
+rootProject.name = "square_up"
 include(":app")
+ 

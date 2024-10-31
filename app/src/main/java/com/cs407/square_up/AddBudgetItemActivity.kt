@@ -1,4 +1,5 @@
-package com.cs407.squareup
+package com.cs407.square_up
+
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageView
@@ -23,7 +24,7 @@ class AddBudgetItemActivity : AppCompatActivity() {
         clearAmountButton.setOnClickListener {
             amountInput.text.clear()
         }
-        clearCategoryButton.setOnClickListener{
+        clearCategoryButton.setOnClickListener {
             categoryInput.text.clear()
         }
     }

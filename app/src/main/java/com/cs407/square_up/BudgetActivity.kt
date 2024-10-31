@@ -1,4 +1,4 @@
-package com.cs407.squareup
+package com.cs407.square_up
 import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
@@ -12,7 +12,7 @@ class BudgetActivity : AppCompatActivity() {
 
         val backButton = findViewById<ImageView>(R.id.backButton)
         backButton.setOnClickListener {
-            //placeholder
+            finish()
         }
 
         val addButton = findViewById<ImageView>(R.id.addButton)

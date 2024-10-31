@@ -1,4 +1,4 @@
-package com.cs407.squareup
+package com.cs407.square_up
 
 import android.graphics.Color
 import android.os.Bundle
