@@ -1,4 +1,4 @@
-package com.cs407.squareup
+package com.cs407.square_up
 
 import android.os.Bundle
 import android.widget.Button

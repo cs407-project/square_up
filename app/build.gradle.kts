@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.cs407.squareup"
+    namespace = "com.cs407.square_up"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.cs407.squareup"
+        applicationId = "com.cs407.square_up"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
