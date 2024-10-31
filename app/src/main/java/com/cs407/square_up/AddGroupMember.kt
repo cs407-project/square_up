@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 //import androidx.navigation.fragment.findNavController
 import com.cs407.square_up.R
 
-class AddNewGroupMember : Fragment() {
+class AddGroupMember : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
