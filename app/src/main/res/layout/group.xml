@@ -5,147 +5,147 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageButton
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_back_arrow"
+        tools:layout_editor_absoluteX="14dp"
+        tools:layout_editor_absoluteY="14dp" />
+
+    <ImageButton
+        android:id="@+id/profile_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/baseline_person_24"
+        tools:layout_editor_absoluteX="359dp" />
+
+
     <TextView
         android:id="@+id/group1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="74dp"
-        android:layout_marginEnd="176dp"
-        android:layout_marginBottom="93dp"
+        android:layout_width="wrap_content"
+        android:layout_height="49dp"
         android:fontFamily="sans-serif-black"
         android:text="Group 1"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/person1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteY="909dp" />
 
-
-    <TextView
-        android:id="@+id/add_group_member_button"
-        android:layout_width="232dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="78dp"
-        android:layout_marginBottom="126dp"
-        android:fontFamily="sans-serif-black"
-        android:text="Add Group Member"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton4" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="54dp"
-        app:layout_constraintEnd_toStartOf="@+id/group1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/baseline_person_24" />
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="118dp"
+        tools:layout_editor_absoluteY="0dp">
 
-    <ImageButton
-        android:id="@+id/imageButton4"
-        android:layout_width="61dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="78dp"
-        android:layout_marginEnd="76dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_group_member_button"
-        app:layout_constraintEnd_toEndOf="@+id/amount3"
-        app:layout_constraintStart_toStartOf="@+id/add_group_member_button"
-        app:layout_constraintTop_toBottomOf="@+id/amount3"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        <ImageButton
+            android:id="@+id/imageButton4"
+            android:layout_width="61dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="79dp"
+            android:layout_marginEnd="77dp"
+            android:layout_marginBottom="16dp"
+            app:srcCompat="@android:drawable/ic_input_add" />
 
-    <TextView
-        android:id="@+id/amount3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="118dp"
-        android:layout_marginBottom="67dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="+ $ amount"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/person3"
-        app:layout_constraintTop_toBottomOf="@+id/amount2" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/person3"
-        android:layout_width="0dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="89dp"
-        android:layout_marginTop="66dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="67dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Person 3"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton4"
-        app:layout_constraintEnd_toStartOf="@+id/amount3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/person2" />
+            <TextView
+                android:id="@+id/person1"
+                android:layout_width="101dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="87dp"
+                android:layout_marginTop="144dp"
+                android:layout_marginBottom="145dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Person 1"
+                android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/person2"
-        android:layout_width="0dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="90dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="20dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Person 2"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/amount3"
-        app:layout_constraintEnd_toStartOf="@+id/amount2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/person1" />
+            <TextView
+                android:id="@+id/amount1"
+                android:layout_width="101dp"
+                android:layout_height="46dp"
+                android:layout_marginStart="1dp"
+                android:layout_marginTop="150dp"
+                android:layout_marginBottom="149dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="- $ amount"
+                android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/amount2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="120dp"
-        android:layout_marginBottom="21dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="- $ amount"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/amount3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/person2"
-        app:layout_constraintTop_toBottomOf="@+id/person1" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/amount1"
-        android:layout_width="0dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="93dp"
-        android:layout_marginEnd="122dp"
-        android:layout_marginBottom="93dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="- $ amount"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/amount3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/person1"
-        app:layout_constraintTop_toBottomOf="@+id/group1" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/person1"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="87dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="25dp"
-        android:fontFamily="sans-serif-condensed"
-        android:text="Person 1"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/amount2"
-        app:layout_constraintEnd_toStartOf="@+id/amount1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/group1" />
+            <TextView
+                android:id="@+id/person2"
+                android:layout_width="0dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="74dp"
+                android:layout_marginEnd="1dp"
+                android:layout_marginBottom="69dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Person 2"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/amount2"
+                android:layout_width="0dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="295dp"
+                android:layout_marginEnd="2dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="- $ amount"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/person3"
+                android:layout_width="0dp"
+                android:layout_height="47dp"
+                android:layout_marginStart="28dp"
+                android:layout_marginTop="70dp"
+                android:layout_marginEnd="28dp"
+                android:layout_marginBottom="71dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="Person 3"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/amount3"
+                android:layout_width="101dp"
+                android:layout_height="51dp"
+                android:layout_marginStart="116dp"
+                android:layout_marginTop="73dp"
+                android:layout_marginEnd="116dp"
+                android:layout_marginBottom="67dp"
+                android:fontFamily="sans-serif-condensed"
+                android:text="+ $ amount"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/add_group_member_button"
+            android:layout_width="232dp"
+            android:layout_height="51dp"
+            android:layout_marginStart="78dp"
+            android:layout_marginBottom="126dp"
+            android:fontFamily="sans-serif-black"
+            android:text="Add Group Member"
+            android:textSize="24sp" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

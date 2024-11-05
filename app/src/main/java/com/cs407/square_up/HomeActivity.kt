@@ -3,6 +3,7 @@ import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton;
 import androidx.appcompat.app.AppCompatActivity
 
 class HomeActivity : AppCompatActivity() {
@@ -13,6 +14,8 @@ class HomeActivity : AppCompatActivity() {
         val group1Button = findViewById<Button>(com.cs407.square_up.R.id.group_1_button)
         val group2Button = findViewById<Button>(com.cs407.square_up.R.id.group_2_button)
         val group3Button = findViewById<Button>(com.cs407.square_up.R.id.group_3_button)
+        val temp_finance_button = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_finance_button)
+        val menu_button = findViewById<ImageButton>(com.cs407.square_up.R.id.menu_button)
 
         group1Button.setOnClickListener {
             val intent = Intent(this, GroupActivity::class.java)
@@ -28,6 +31,17 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, GroupActivity::class.java)
             startActivity(intent)
         }
+
+        temp_finance_button.setOnClickListener {
+            val intent = Intent(this, BudgetActivity::class.java)
+            startActivity(intent)
+        }
+
+        menu_button.setOnClickListener {
+            val intent = Intent(this, HistoryActivity::class.java)
+            startActivity(intent)
+        }
+
 
     }
 }
