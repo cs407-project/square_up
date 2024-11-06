@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/squareUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="27dp"
+        android:layout_marginTop="62dp"
+        android:text="@string/square_up"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/youPaid"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/youPaid"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="149dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="17dp"
+        android:text="@string/you_paid"
+        app:layout_constraintBottom_toTopOf="@+id/Date"
+        app:layout_constraintEnd_toEndOf="@+id/addNotes"
+        app:layout_constraintStart_toStartOf="@+id/Date"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/Date"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="21dp"
+        android:text="@string/date"
+        app:layout_constraintBottom_toTopOf="@+id/addNotes"
+        app:layout_constraintEnd_toEndOf="@+id/addNotes"
+        app:layout_constraintStart_toStartOf="@+id/addNotes"
+        app:layout_constraintTop_toBottomOf="@+id/youPaid" />
+
+    <TextView
+        android:id="@+id/addNotes"
+        android:layout_width="85dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="242dp"
+        android:layout_marginBottom="61dp"
+        android:text="@string/add_notes"
+        app:layout_constraintBottom_toTopOf="@+id/recordPayment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/recordPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="342dp"
+        android:text="@string/record_payment"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addNotes" />
+</androidx.constraintlayout.widget.ConstraintLayout>

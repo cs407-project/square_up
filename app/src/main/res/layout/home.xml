@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/amount1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="34dp"
+        android:text="Amount Owed"
+        app:layout_constraintBaseline_toBaselineOf="@+id/group_2_button"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/amount2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="34dp"
+        android:text="Amount Owed"
+        app:layout_constraintBaseline_toBaselineOf="@+id/group_3_button"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/group_1_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="239dp"
+        android:text="Group 1"
+        app:layout_constraintStart_toEndOf="@+id/amount4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/group_2_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:text="Group 2"
+        app:layout_constraintStart_toStartOf="@+id/group_1_button"
+        app:layout_constraintTop_toBottomOf="@+id/group_1_button" />
+
+    <Button
+        android:id="@+id/group_3_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:text="Group 3"
+        app:layout_constraintStart_toStartOf="@+id/group_2_button"
+        app:layout_constraintTop_toBottomOf="@+id/group_2_button" />
+
+    <Button
+        android:id="@+id/add_group_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:text="Add Group"
+        app:layout_constraintStart_toStartOf="@+id/group_3_button"
+        app:layout_constraintTop_toBottomOf="@+id/group_3_button" />
+
+    <TextView
+        android:id="@+id/total_amount"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="29dp"
+        android:fontFamily="sans-serif-black"
+        android:text="Total Amount Owed: "
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/menu_button"
+        app:layout_constraintStart_toEndOf="@+id/profile_button"
+        app:layout_constraintTop_toTopOf="@+id/menu_button" />
+
+    <ImageButton
+        android:id="@+id/profile_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="54dp"
+        app:layout_constraintEnd_toStartOf="@+id/total_amount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_person_24" />
+
+    <ImageButton
+        android:id="@+id/menu_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="23dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/total_amount"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_menu_24" />
+
+    <ImageButton
+        android:id="@+id/temp_finance_button"
+        android:layout_width="0dp"
+        android:layout_height="79dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginEnd="67dp"
+        android:layout_marginBottom="66dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/add_expense_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/btn_star_big_on" />
+
+    <ImageButton
+        android:id="@+id/temp_square_up_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="23dp"
+        app:layout_constraintBottom_toBottomOf="@+id/temp_finance_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/add_expense_button"
+        app:layout_constraintTop_toTopOf="@+id/add_expense_button"
+        app:srcCompat="@android:drawable/ic_menu_search" />
+
+    <ImageButton
+        android:id="@+id/add_expense_button"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_marginEnd="71dp"
+        android:layout_marginBottom="73dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/temp_square_up_button"
+        app:layout_constraintStart_toEndOf="@+id/temp_finance_button"
+        app:srcCompat="@android:drawable/ic_input_add" />
+
+    <TextView
+        android:id="@+id/amount4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="51dp"
+        android:text="Amount Owed"
+        app:layout_constraintBaseline_toBaselineOf="@+id/group_1_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

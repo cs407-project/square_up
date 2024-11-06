@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Square_up"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".SignInActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +21,54 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AddTransactionActivity"
+            android:exported="true" />
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RecordPaymentActivity"
+            android:exported="true" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true" />
+        <activity
+            android:name=".GroupActivity"
+            android:exported="true" />
+        <activity
+            android:name=".AddBudgetItemActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BudgetActivity"
+            android:exported="true">
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
+        <activity
+            android:name=".HistoryActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".AddGroupMember"
+            android:exported="false" />
+        <activity
+            android:name=".CreateGroup"
+            android:exported="false" />
     </application>
 
 </manifest>
