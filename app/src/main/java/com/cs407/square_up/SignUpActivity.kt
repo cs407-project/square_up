@@ -15,4 +15,5 @@ class SignUpActivity : AppCompatActivity() {
         sign_up_button.setOnClickListener {
             finish()
         }
-}}
+}
+}
