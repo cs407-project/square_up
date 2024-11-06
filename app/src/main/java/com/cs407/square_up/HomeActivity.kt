@@ -18,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
         val menu_button = findViewById<ImageButton>(com.cs407.square_up.R.id.menu_button)
         val addExpense = findViewById<ImageButton>(com.cs407.square_up.R.id.add_expense_button)
         val squareUpButton = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_square_up_button)
+        val profileButton = findViewById<ImageButton>(com.cs407.square_up.R.id.profile_button)
 
         group1Button.setOnClickListener {
             val intent = Intent(this, GroupActivity::class.java)
@@ -53,6 +54,12 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, RecordPaymentActivity::class.java)
             startActivity(intent)
         }
+
+        profileButton.setOnClickListener {
+            val intent = Intent(this, ChangePasswordActivity::class.java)
+            startActivity(intent)
+        }
+
 
 
 
