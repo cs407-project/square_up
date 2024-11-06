@@ -11,7 +11,21 @@
     <string name="amount_input">Amount</string>
     <string name="budget_category_input">Budget Category</string>
     <string name="add">Add</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="email">Email</string>
+    <string name="confirm_password">confirm Password</string>
+    <string name="password">Password</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 
+
+    <string name="enter_members_usernames">Enter Members Usernames</string>
+    <string name="add_member">Add Member</string>
     <string name="add_transaction">Add Transaction</string>
     <string name="enter_description">Enter description</string>
     <string name="enter_amount">Enter amount</string>
@@ -28,7 +42,7 @@
     <string name="change_password">Change Password </string>
     <string name="current_password">Current Password </string>
     <string name="new_password">New Password </string>
-    <string name="confirm_password">Confirm Password </string>
     <string name="logout">Logout </string>
     <string name="notifications">Turn off notifications </string>
+    <string name="create_group">create group</string>
 </resources>

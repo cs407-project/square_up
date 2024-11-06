@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.cs407.square_up"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
