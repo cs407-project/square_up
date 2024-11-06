@@ -11,4 +11,24 @@
     <string name="amount_input">Amount</string>
     <string name="budget_category_input">Budget Category</string>
     <string name="add">Add</string>
+
+    <string name="add_transaction">Add Transaction</string>
+    <string name="enter_description">Enter description</string>
+    <string name="enter_amount">Enter amount</string>
+    <string name="custom_split">Custom Split</string>
+    <string name="equal_split">Equal Split</string>
+    <string name="use_camera">Use Camera</string>
+    <string name="group">Group</string>
+    <string name="who_paid">Who Paid</string>
+    <string name="square_up">Square Up</string>
+    <string name="you_paid">You Paid: </string>
+    <string name="date">Date: </string>
+    <string name="add_notes">Add Notes: </string>
+    <string name="record_payment">Record Payment </string>
+    <string name="change_password">Change Password </string>
+    <string name="current_password">Current Password </string>
+    <string name="new_password">New Password </string>
+    <string name="confirm_password">Confirm Password </string>
+    <string name="logout">Logout </string>
+    <string name="notifications">Turn off notifications </string>
 </resources>

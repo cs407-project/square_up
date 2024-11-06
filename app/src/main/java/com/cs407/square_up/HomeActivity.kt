@@ -1,5 +1,5 @@
 package com.cs407.square_up
-import android.R
+//import android.R
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -16,6 +16,8 @@ class HomeActivity : AppCompatActivity() {
         val group3Button = findViewById<Button>(com.cs407.square_up.R.id.group_3_button)
         val temp_finance_button = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_finance_button)
         val menu_button = findViewById<ImageButton>(com.cs407.square_up.R.id.menu_button)
+        val addExpense = findViewById<ImageButton>(com.cs407.square_up.R.id.add_expense_button)
+        val squareUpButton = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_square_up_button)
 
         group1Button.setOnClickListener {
             val intent = Intent(this, GroupActivity::class.java)
@@ -41,6 +43,17 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(this, HistoryActivity::class.java)
             startActivity(intent)
         }
+
+        addExpense.setOnClickListener {
+            val intent = Intent(this, AddTransactionActivity::class.java)
+            startActivity(intent)
+        }
+
+        squareUpButton.setOnClickListener {
+            val intent = Intent(this, RecordPaymentActivity::class.java)
+            startActivity(intent)
+        }
+
 
 
     }
