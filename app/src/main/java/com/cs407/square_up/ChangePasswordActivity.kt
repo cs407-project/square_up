@@ -24,7 +24,7 @@ class ChangePasswordActivity : AppCompatActivity() {
         }
         val logout= findViewById<Button>(R.id.logout)
         logout.setOnClickListener {
-
+            finish()
         }
     }
 }

@@ -1,26 +1,18 @@
-
-
-
-
-package com.cs407.square_up.ui.login
+package com.cs407.square_up
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
-import androidx.fragment.app.Fragment
-import com.cs407.square_up.R
 
 
-class CreateGroup : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.create_group , container, false)
-
-        return view
+class CreateGroup : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.create_group)
+        val CreateGroupButton = findViewById<Button>(R.id.CreateGroupButton)
+        CreateGroupButton.setOnClickListener {
+            finish()
+        }
     }
 }
