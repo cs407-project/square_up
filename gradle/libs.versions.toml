@@ -11,8 +11,13 @@ activity = "1.9.2"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.8.3"
 navigationUiKtx = "2.8.3"
+room = "2.5.0"  # Use the latest Room version if it's updated
 
 [libraries]
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
