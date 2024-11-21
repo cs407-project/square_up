@@ -1,7 +1,7 @@
 [versions]
 agp = "8.5.2"
 coreTesting = "1.1.1"
-kotlin = "1.9.24"
+kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -24,6 +24,7 @@ pagingRuntimeKtx = "3.3.2"
 junitKtx = "1.2.1"
 fragmentTesting = "1.8.4"
 pagingCommon = "3.3.2"
+ksp = "1.9.0-1.0.13"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,6 @@ androidx-paging-common-android = { group = "androidx.paging", name = "paging-com
 
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
+android-application = { id = "com.android.application", version = "8.1.1" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
