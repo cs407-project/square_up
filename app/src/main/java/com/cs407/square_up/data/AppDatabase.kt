@@ -43,9 +43,25 @@ interface UserDao {
     suspend fun getAllUsers(): List<User>
 }
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+
+@Entity(tableName = "Budget")
+data class Budget(
+    @PrimaryKey(autoGenerate = true) val budgetID : Int,
+    val userID : Int,
+    val selectedBudget : String,
+    val currentAmount : Long
+)
+
+@Dao
+interface BudgetDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBudget(budget: Budget)
+}
+
+@Database(entities = [User::class, Budget::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
+    abstract fun budgetDao(): BudgetDao
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
