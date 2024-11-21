@@ -1,6 +1,7 @@
 package com.cs407.square_up
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
@@ -20,6 +21,7 @@ class AddBudgetItemActivity : AppCompatActivity() {
         val amountInput = findViewById<EditText>(R.id.amountInput)
         val clearCategoryButton = findViewById<ImageView>(R.id.clearCategory)
         val categoryInput = findViewById<EditText>(R.id.categoryInput)
+        val addButton = findViewById<Button>(R.id.addButton)
 
         clearAmountButton.setOnClickListener {
             amountInput.text.clear()
@@ -27,5 +29,19 @@ class AddBudgetItemActivity : AppCompatActivity() {
         clearCategoryButton.setOnClickListener {
             categoryInput.text.clear()
         }
+
+        addButton.setOnClickListener {
+            val newBudget = Budget(
+                budgetID = 0, // Leave as 0; Room will auto-generate the ID
+                userID = 123, // Example user ID
+                selectedBudget = categoryInput.text.toString(),
+                currentAmount = amountInput.text.toString().toLong() // Example amount
+            )
+//            GlobalScope.launch {
+//                MyApp.database.budgetDao().insertUser(newBudget)
+//            }
+        }
+
+
     }
 }
