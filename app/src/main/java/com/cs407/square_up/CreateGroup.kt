@@ -38,6 +38,7 @@ class CreateGroup : AppCompatActivity() {
                 // Insert the group into the database
                 lifecycleScope.launch(Dispatchers.IO) {
                     val placeholderUserId = -1 // Temporary placeholder for userID
+//                    val myUserID =getCurrentUserId()
 
                     val group = Group(userID = placeholderUserId, groupName = groupName, dateCreated = Date())
                     db.groupDao().insertGroup(group)
