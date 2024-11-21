@@ -8,9 +8,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cs407.square_up.data.AppDatabase
+import com.cs407.square_up.data.Transaction
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
+import java.util.Date
 
 class SignInActivity : AppCompatActivity() {
 
@@ -64,8 +66,20 @@ class SignInActivity : AppCompatActivity() {
         val hashedPassword = hash(password)
         val db = AppDatabase.getDatabase(this)
         val userDao = db.userDao()
+        val transactionDao = db.transactionDao()
+
+        val testTransaction = Transaction(
+            userWhoPaidID = 1, // Replace with a valid user ID
+            transactionAmount = 100.0,
+            transactionDetails = "Test Transaction",
+            transactionDate = Date(),
+            splitPercentage = 50.0f,
+            paid = true,
+            budgetTags = listOf("Groceries", "Utilities")
+        )
 
         // Check if a user exists with the provided username and hashed password
+        transactionDao.insertTransaction(testTransaction)
         return userDao.getUserByCredentials(username, hashedPassword) != null
     }
 }
