@@ -38,9 +38,28 @@ class DateConverter {
 //    @ColumnInfo(name = "date_created") val dateCreated: Date
 //)
 
+//@Entity(
+//    tableName = "groups",
+//    indices = [Index(value = ["userID"])] // Keep the index for userID
+//)
+//data class Group(
+//    @PrimaryKey(autoGenerate = true) val groupID: Int = 0,
+//    @ColumnInfo(name = "userID") val userID: Int,
+//    @ColumnInfo(name = "group_name") val groupName: String,
+//    @ColumnInfo(name = "date_created") val dateCreated: Date
+//)
+
 @Entity(
     tableName = "groups",
-    indices = [Index(value = ["userID"])] // Keep the index for userID
+    foreignKeys = [
+        ForeignKey(
+            entity = User::class,
+            parentColumns = ["userID"],
+            childColumns = ["userID"],
+            onDelete = ForeignKey.CASCADE // Deletes groups when the user is deleted
+        )
+    ],
+    indices = [Index(value = ["userID"])] // Optimize lookups by userID
 )
 data class Group(
     @PrimaryKey(autoGenerate = true) val groupID: Int = 0,
@@ -50,16 +69,31 @@ data class Group(
 )
 
 
-// User Entity (required as a foreign key reference for Group)
-@Entity(tableName = "users")
+
+//// User Entity (required as a foreign key reference for Group)
+//@Entity(tableName = "users")
+//data class User(
+//    @PrimaryKey(autoGenerate = true) val userID: Int = 0,
+//    @ColumnInfo(name = "name") val name: String,
+//    @ColumnInfo(name = "email") val email: String,
+//    @ColumnInfo(name = "username") val username: String,
+//    @ColumnInfo(name = "password") val password: String,
+//    @ColumnInfo(name = "notifications") val notifications: Boolean
+//)
+
+@Entity(
+    tableName = "users",
+    indices = [Index(value = ["username"], unique = true)] // Ensure unique usernames
+)
 data class User(
     @PrimaryKey(autoGenerate = true) val userID: Int = 0,
-    @ColumnInfo(name = "name") val name: String,
-    @ColumnInfo(name = "email") val email: String,
-    @ColumnInfo(name = "username") val username: String,
-    @ColumnInfo(name = "password") val password: String,
-    @ColumnInfo(name = "notifications") val notifications: Boolean
+    @ColumnInfo(name = "name") val name: String = "",
+    @ColumnInfo(name = "email") val email: String = "",
+    @ColumnInfo(name = "username") val username: String = "",
+    @ColumnInfo(name = "password") val password: String = "",
+    @ColumnInfo(name = "notifications") val notifications: Boolean = false
 )
+
 
 // Data Access Object (DAO) for Group
 @Dao
@@ -75,7 +109,7 @@ interface GroupDao {
 }
 
 // Room Database including Group and User entities and DAOs
-@Database(entities = [Group::class, User::class], version = 2)
+@Database(entities = [Group::class, User::class], version = 1)
 @TypeConverters(DateConverter::class)
 abstract class NoteDatabase : RoomDatabase() {
     abstract fun groupDao(): GroupDao
