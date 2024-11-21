@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
+    id("androidx.navigation.safeargs.kotlin")
 }
 
 android {
@@ -37,46 +38,34 @@ android {
 }
 
 dependencies {
-    implementation("androidx.room:room-runtime:2.6.0")
-    ksp("androidx.room:room-compiler:2.6.0")
-    annotationProcessor("androidx.room:room-compiler:2.6.0")
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment)
+    implementation(libs.androidx.navigation.ui.ktx)
+
+    // Room dependencies
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.androidx.paging.common.android)
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+
+    // To use Kotlin Symbol Processing (KSP)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
+    // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Espresso dependencies
+    // Espresso testing
     testImplementation("androidx.test.espresso:espresso-core:3.6.1")
     testImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
     testImplementation("androidx.test.espresso:espresso-intents:3.6.1")
     testImplementation("androidx.test:rules:1.6.1")
     testImplementation("androidx.test:runner:1.6.2")
-
-    testImplementation("io.github.takahirom.roborazzi:roborazzi:1.8.0-alpha-5")
-    testImplementation("io.github.takahirom.roborazzi:roborazzi-junit-rule:1.8.0-alpha-5")
-
-    testImplementation("org.mockito:mockito-core:5.12.0")
-    testImplementation("org.mockito:mockito-inline:3.11.2")
-
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
-    testImplementation(libs.core.testing)
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
 }
