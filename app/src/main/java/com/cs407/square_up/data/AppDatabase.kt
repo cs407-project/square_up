@@ -19,6 +19,7 @@ data class User(
     val notifications: Boolean = false
 )
 
+
 // Transaction entity
 @Entity(
     tableName = "transactions",
@@ -60,6 +61,26 @@ data class Transaction(
     val budgetTags: List<String>
 )
 
+@Entity(
+    tableName = "groups",
+    foreignKeys = [
+        ForeignKey(
+            entity = User::class,
+            parentColumns = ["userId"],
+            childColumns = ["userID"],
+            onDelete = ForeignKey.CASCADE // Deletes groups when the user is deleted
+        )
+    ],
+    indices = [Index(value = ["userID"])] // Optimize lookups by userID
+)
+data class Group(
+    @PrimaryKey(autoGenerate = true) val groupID: Int = 0,
+    @ColumnInfo(name = "userID") val userID: Int,
+    @ColumnInfo(name = "group_name") val groupName: String,
+    @ColumnInfo(name = "date_created") val dateCreated: Date
+)
+
+
 // Define the UserDao inline
 @Dao
 interface UserDao {
@@ -74,6 +95,9 @@ interface UserDao {
 
     @Query("SELECT * FROM User WHERE userName = :username AND password = :password")
     suspend fun getUserByCredentials(username: String, password: String): User?
+
+    @Query("SELECT * FROM User WHERE userName = :username ")
+    suspend fun getUserByName(username: String): User?
 
 
     @Query("SELECT * FROM User WHERE userId = :id")
@@ -105,6 +129,19 @@ interface TransactionDao {
     suspend fun getTransactionsByUser(userId: Int): List<Transaction>
 }
 
+// Data Access Object (DAO) for Group
+@Dao
+interface GroupDao {
+    @Insert
+    suspend fun insertGroup(group: Group): Long
+
+    @Query("SELECT * FROM groups WHERE userID = :userID")
+    suspend fun getGroupsByUser(userID: Int): List<Group>
+
+    @Delete
+    suspend fun deleteGroup(group: Group)
+}
+
 // Type converters for complex types
 class Converters {
     @TypeConverter
@@ -133,11 +170,13 @@ class Converters {
 }
 
 
-@Database(entities = [User::class, Transaction::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Transaction::class, Group::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun transactionDao(): TransactionDao
+    abstract fun groupDao(): GroupDao
+
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
