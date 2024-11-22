@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
@@ -37,43 +38,53 @@ class CreateGroup : AppCompatActivity() {
         val createGroupButton = findViewById<Button>(R.id.CreateGroupButton)
         val enterUsername = findViewById<EditText>(R.id.enterMemberUsername)
 
+
+
         createGroupButton.setOnClickListener {
             val groupName = name.text.toString().trim()
-            val membersUsername = name.text.toString().trim()
-
-            if (groupName.isNotEmpty()) {
-                // Assume userID is available (e.g., from the logged-in user)
-//                val userId = getCurrentUserId() // Replace this with your method for retrieving the current user ID
-
-                // Insert the group into the database
-                lifecycleScope.launch(Dispatchers.IO) {
-                    val placeholderUserId = -1 // Temporary placeholder for userID
-                    val myUserID =userDao.getUserByName(membersUsername)?.userId
-
-
-                    val group = myUserID?.let { it1 ->
-                        Group(
-                            userID = it1, groupName = groupName, dateCreated = Date())
-
-                    }
-                    if (group != null) {
-                        groupDao.insertGroup(group)
-                        Log.d("CreateGroup", "Group created with userID: ${group.groupID} and name: $groupName")
-                    }
-
-
-
-                }
-
+            if (groupName.isEmpty()) {
+                Toast.makeText(this@CreateGroup, "Group name required", Toast.LENGTH_SHORT).show()
                 finish() // Close the activity
-            } else {
-                // Handle empty group name (e.g., show a Toast or error message)
             }
-        }
-    }
+            val membersUsername = enterUsername.text.toString().trim()
+            val usernamesArray = membersUsername.split(",")
+            val succsesfull = false
+            if (usernamesArray.isEmpty()) {
+                Toast.makeText(this@CreateGroup, "Usernames required", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                for (username in usernamesArray) {
+                    // Insert the group into the database
+                    lifecycleScope.launch(Dispatchers.IO) {
+                        val myUserID = userDao.getUserByName(username)?.userId
+                        val group = myUserID?.let { it1 ->
+                            Group(
+                                userID = it1, groupName = groupName, dateCreated = Date()
+                            )
 
-    // Mock method to get the current user ID; replace with actual logic
-    private fun getCurrentUserId(): Int {
-        return 1 // Replace with logic to retrieve the actual current user ID
+                        }
+                        if (group != null) {
+                            groupDao.insertGroup(group)
+                            runOnUiThread {
+                                Toast.makeText(this@CreateGroup, "Group created successfully", Toast.LENGTH_SHORT).show()
+                            }
+                            Log.d(
+                                "CreateGroup",
+                                "Group created with groupID: ${group.groupID} , userID: ${group.userID} and name: $groupName"
+                            )
+                        }else{
+                            Log.d("CreateGroup", "Group creation failed")
+                            runOnUiThread {
+                                Toast.makeText(this@CreateGroup, "Group creation failed for username: $username", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
+                    }
+                }
+            }
+//            Toast.makeText(this@CreateGroup, "Group created successfully", Toast.LENGTH_SHORT).show()
+            finish()
+        }
+
     }
 }
