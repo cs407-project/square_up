@@ -76,6 +76,15 @@ data class Group(
     @ColumnInfo(name = "date_created") val dateCreated: Date
 )
 
+@Entity(tableName = "Budget")
+data class Budget(
+    @PrimaryKey(autoGenerate = true) val budgetID : Int,
+    val userID : Int,
+    val selectedBudget : String,
+    val currentAmount : Long
+)
+
+
 
 // Define the UserDao inline
 @Dao
@@ -137,6 +146,12 @@ interface GroupDao {
     suspend fun deleteGroup(group: Group)
 }
 
+@Dao
+interface BudgetDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertBudget(budget: Budget)
+}
+
 // Type converters for complex types
 class Converters {
     @TypeConverter
@@ -165,12 +180,13 @@ class Converters {
 }
 
 
-@Database(entities = [User::class, Transaction::class, Group::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Transaction::class, Group::class, Budget::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun transactionDao(): TransactionDao
     abstract fun groupDao(): GroupDao
+    abstract fun budgetDao(): BudgetDao
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
