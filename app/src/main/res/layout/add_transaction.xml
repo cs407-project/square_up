@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".AddTransactionActivity">
 
+
     <TextView
         android:id="@+id/addTransaction2"
         android:layout_width="wrap_content"
@@ -19,35 +20,72 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <TextView
+        android:id="@+id/enterDescription_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/enter_description"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/enterDescription"
+        app:layout_constraintEnd_toStartOf="@+id/enterDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/enterDescription" />
+
     <EditText
         android:id="@+id/enterDescription"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="213dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="24dp"
         android:hint="@string/enter_description"
-        app:layout_constraintTop_toBottomOf="@id/addTransaction2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.863"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/addTransaction2" />
+    <TextView
+        android:id="@+id/enterAmount_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/enter_amount"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/enterAmount"
+        app:layout_constraintEnd_toStartOf="@+id/enterAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/enterAmount" />
 
     <EditText
         android:id="@+id/enterAmount"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_width="227dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="8dp"
         android:hint="@string/enter_amount"
-        app:layout_constraintTop_toBottomOf="@id/enterDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.853"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/enterDescription" />
+    <TextView
+        android:id="@+id/splitPercentage_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="@string/splitPercentage"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextNumberDecimal"
+        app:layout_constraintEnd_toStartOf="@+id/editTextNumberDecimal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextNumberDecimal" />
 
     <EditText
         android:id="@+id/editTextNumberDecimal"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="255dp"
+        android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:hint="@string/splitPercentage"
-        app:layout_constraintTop_toBottomOf="@id/enterAmount"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/enterAmount" />
 
     <Spinner
         android:id="@+id/selectGroup"
