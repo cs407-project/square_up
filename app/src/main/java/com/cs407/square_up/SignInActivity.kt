@@ -23,5 +23,20 @@ class SignInActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+<<<<<<< Updated upstream
+=======
+
+    private fun hash(input: String): String {
+        return MessageDigest.getInstance("SHA-256").digest(input.toByteArray())
+            .fold("") { str, it -> str + "%02x".format(it) }
+    }
+
+    private suspend fun validateUser(username: String, password: String): Boolean {
+        val hashedPassword = hash(password)
+        val db = AppDatabase.getDatabase(this)
+        val userDao = db.userDao()
+        return userDao.getUserByCredentials(username, hashedPassword) != null
+    }
+>>>>>>> Stashed changes
 }
 

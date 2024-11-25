@@ -45,4 +45,10 @@
     <string name="logout">Logout </string>
     <string name="notifications">Turn off notifications </string>
     <string name="create_group">create group</string>
+<<<<<<< Updated upstream
+=======
+    <string name="create_transaction">Create Transaction</string>
+    <string name="userPasswdKV">com.cs407.lab5_milestone.userPasswdKV</string>
+    <string name="splitPercentage">Split percentage</string>
+>>>>>>> Stashed changes
 </resources>
