@@ -39,7 +39,7 @@ class AddBudgetItemActivity : AppCompatActivity() {
 
         addButton.setOnClickListener {
             val budgetID = 0
-            val userID = 123
+            val userID = 1
             val selectedBudget = categoryInput.text.toString()
             val currentAmount = amountInput.text.toString().toLong()
             lifecycleScope.launch(Dispatchers.IO) {
