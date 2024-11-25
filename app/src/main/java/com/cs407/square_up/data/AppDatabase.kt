@@ -18,8 +18,6 @@ data class User(
     val email: String = "",
     val notifications: Boolean = false
 )
-
-
 // Transaction entity
 @Entity(
     tableName = "transactions",
@@ -52,7 +50,7 @@ data class Transaction(
     val transactionDate: Date,
 
     @ColumnInfo(name = "SplitPercentage")
-    val splitPercentage: Float,
+    val splitPercentage: Double,
 
     @ColumnInfo(name = "Paid")
     val paid: Boolean,
@@ -102,6 +100,9 @@ interface UserDao {
 
     @Query("SELECT * FROM User WHERE userId = :id")
     suspend fun getUserById(id: Int): User?
+
+    @Query("SELECT userName FROM User WHERE userId != :userId")
+    suspend fun getAllOtherUsers(userId: Int): List<String>
 
     @Query("SELECT * FROM User")
     suspend fun getAllUsers(): List<User>
