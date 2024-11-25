@@ -48,4 +48,5 @@
     <string name="create_transaction">Create Transaction</string>
     <string name="userPasswdKV">com.cs407.lab5_milestone.userPasswdKV</string>
     <string name="splitPercentage">Split percentage</string>
+    <string name="enter_group_name">Enter Group Name</string>
 </resources>
