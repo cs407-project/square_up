@@ -50,7 +50,7 @@ class AddBudgetItemActivity : AppCompatActivity() {
 
 
     }
-//    val newBudget = Budget(
+    //    val newBudget = Budget(
 //        budgetID = 0, // Leave as 0; Room will auto-generate the ID
 //        userID = 123, // Example user ID
 //        selectedBudget = categoryInput.text.toString(),
