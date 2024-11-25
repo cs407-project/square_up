@@ -42,13 +42,13 @@ class CreateGroup : AppCompatActivity() {
 
         createGroupButton.setOnClickListener {
             val groupName = name.text.toString().trim()
+            // Check if the group name is empty, then closes the app
             if (groupName.isEmpty()) {
                 Toast.makeText(this@CreateGroup, "Group name required", Toast.LENGTH_SHORT).show()
                 finish() // Close the activity
             }
             val membersUsername = enterUsername.text.toString().trim()
             val usernamesArray = membersUsername.split(",")
-            val succsesfull = false
             if (usernamesArray.isEmpty()) {
                 Toast.makeText(this@CreateGroup, "Usernames required", Toast.LENGTH_SHORT).show()
                 finish()
