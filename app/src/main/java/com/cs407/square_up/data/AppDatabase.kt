@@ -23,21 +23,20 @@ data class User(
     tableName = "transactions",
     foreignKeys = [
         ForeignKey(
-            entity = User::class, // Reference to User entity
-            parentColumns = ["userId"], // Column in User entity
-            childColumns = ["UserWhoPaidID"], // Corresponding column in Transaction
-            onDelete = ForeignKey.CASCADE // Cascade delete when User is deleted
+            entity = User::class,
+            parentColumns = ["userId"],
+            childColumns = ["userWhoPaidID"], // Corrected to match the field name
+            onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["UserWhoPaidID"])] // Index for faster queries
+    indices = [Index(value = ["userWhoPaidID"])] // Corrected to match the field name
 )
-
 data class Transaction(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "TransactionID")
     val transactionID: Int = 0,
 
-    @ColumnInfo(name = "UserWhoPaidID")
+    @ColumnInfo(name = "userWhoPaidID")
     val userWhoPaidID: Int,
 
     @ColumnInfo(name = "TransactionAmount")
@@ -56,9 +55,8 @@ data class Transaction(
     val paid: Boolean,
 
     @ColumnInfo(name = "BudgetTags")
-    val budgetTags: List<String>
+    val budgetTags: List<String> // Ensure type converters are configured correctly
 )
-
 @Entity(
     tableName = "groups",
     foreignKeys = [
@@ -91,12 +89,11 @@ interface UserDao {
     @Delete
     suspend fun delete(user: User)
 
-    @Query("SELECT * FROM User WHERE userName = :username AND password = :password")
-    suspend fun getUserByCredentials(username: String, password: String): User?
-
     @Query("SELECT * FROM User WHERE userName = :username ")
     suspend fun getUserByName(username: String): User?
 
+    @Query("SELECT * FROM User WHERE userName = :username AND password = :password")
+    suspend fun getUserByCredentials(username: String, password: String): User?
 
     @Query("SELECT * FROM User WHERE userId = :id")
     suspend fun getUserById(id: Int): User?
@@ -130,15 +127,12 @@ interface TransactionDao {
     suspend fun getTransactionsByUser(userId: Int): List<Transaction>
 }
 
-// Data Access Object (DAO) for Group
 @Dao
 interface GroupDao {
     @Insert
     suspend fun insertGroup(group: Group): Long
-
     @Query("SELECT * FROM groups WHERE userID = :userID")
     suspend fun getGroupsByUser(userID: Int): List<Group>
-
     @Delete
     suspend fun deleteGroup(group: Group)
 }
