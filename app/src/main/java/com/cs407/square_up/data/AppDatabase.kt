@@ -18,28 +18,25 @@ data class User(
     val email: String = "",
     val notifications: Boolean = false
 )
-
-
 // Transaction entity
 @Entity(
     tableName = "transactions",
     foreignKeys = [
         ForeignKey(
-            entity = User::class, // Reference to User entity
-            parentColumns = ["userId"], // Column in User entity
-            childColumns = ["UserWhoPaidID"], // Corresponding column in Transaction
-            onDelete = ForeignKey.CASCADE // Cascade delete when User is deleted
+            entity = User::class,
+            parentColumns = ["userId"],
+            childColumns = ["userWhoPaidID"], // Corrected to match the field name
+            onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["UserWhoPaidID"])] // Index for faster queries
+    indices = [Index(value = ["userWhoPaidID"])] // Corrected to match the field name
 )
-
 data class Transaction(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "TransactionID")
     val transactionID: Int = 0,
 
-    @ColumnInfo(name = "UserWhoPaidID")
+    @ColumnInfo(name = "userWhoPaidID")
     val userWhoPaidID: Int,
 
     @ColumnInfo(name = "TransactionAmount")
@@ -52,34 +49,14 @@ data class Transaction(
     val transactionDate: Date,
 
     @ColumnInfo(name = "SplitPercentage")
-    val splitPercentage: Float,
+    val splitPercentage: Double,
 
     @ColumnInfo(name = "Paid")
     val paid: Boolean,
 
     @ColumnInfo(name = "BudgetTags")
-    val budgetTags: List<String>
+    val budgetTags: List<String> // Ensure type converters are configured correctly
 )
-
-@Entity(
-    tableName = "groups",
-    foreignKeys = [
-        ForeignKey(
-            entity = User::class,
-            parentColumns = ["userId"],
-            childColumns = ["userID"],
-            onDelete = ForeignKey.CASCADE // Deletes groups when the user is deleted
-        )
-    ],
-    indices = [Index(value = ["userID"])] // Optimize lookups by userID
-)
-data class Group(
-    @PrimaryKey(autoGenerate = true) val groupID: Int = 0,
-    @ColumnInfo(name = "userID") val userID: Int,
-    @ColumnInfo(name = "group_name") val groupName: String,
-    @ColumnInfo(name = "date_created") val dateCreated: Date
-)
-
 
 // Define the UserDao inline
 @Dao
@@ -96,12 +73,11 @@ interface UserDao {
     @Query("SELECT * FROM User WHERE userName = :username AND password = :password")
     suspend fun getUserByCredentials(username: String, password: String): User?
 
-    @Query("SELECT * FROM User WHERE userName = :username ")
-    suspend fun getUserByName(username: String): User?
-
-
     @Query("SELECT * FROM User WHERE userId = :id")
     suspend fun getUserById(id: Int): User?
+
+    @Query("SELECT userName FROM User WHERE userId != :userId")
+    suspend fun getAllOtherUsers(userId: Int): List<String>
 
     @Query("SELECT * FROM User")
     suspend fun getAllUsers(): List<User>
@@ -127,19 +103,6 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId")
     suspend fun getTransactionsByUser(userId: Int): List<Transaction>
-}
-
-// Data Access Object (DAO) for Group
-@Dao
-interface GroupDao {
-    @Insert
-    suspend fun insertGroup(group: Group): Long
-
-    @Query("SELECT * FROM groups WHERE userID = :userID")
-    suspend fun getGroupsByUser(userID: Int): List<Group>
-
-    @Delete
-    suspend fun deleteGroup(group: Group)
 }
 
 // Type converters for complex types
@@ -170,13 +133,11 @@ class Converters {
 }
 
 
-@Database(entities = [User::class, Transaction::class, Group::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Transaction::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun transactionDao(): TransactionDao
-    abstract fun groupDao(): GroupDao
-
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null

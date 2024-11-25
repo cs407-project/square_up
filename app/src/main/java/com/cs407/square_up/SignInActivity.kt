@@ -10,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.cs407.square_up.data.AppDatabase
 import com.cs407.square_up.data.Transaction
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 import java.util.Date
@@ -22,7 +23,11 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sign_in)
-
+        GlobalScope.launch(Dispatchers.IO) {
+            val db = AppDatabase.getDatabase(this@SignInActivity)
+            val userDao = db.userDao()
+            userDao.getAllUsers() // Query to ensure database is accessed
+        }
         username = findViewById(R.id.username) // Make sure these IDs match your layout
         password = findViewById(R.id.password)
 
@@ -66,20 +71,6 @@ class SignInActivity : AppCompatActivity() {
         val hashedPassword = hash(password)
         val db = AppDatabase.getDatabase(this)
         val userDao = db.userDao()
-        val transactionDao = db.transactionDao()
-
-        val testTransaction = Transaction(
-            userWhoPaidID = 1, // Replace with a valid user ID
-            transactionAmount = 100.0,
-            transactionDetails = "Test Transaction",
-            transactionDate = Date(),
-            splitPercentage = 50.0f,
-            paid = true,
-            budgetTags = listOf("Groceries", "Utilities")
-        )
-
-        // Check if a user exists with the provided username and hashed password
-        transactionDao.insertTransaction(testTransaction)
         return userDao.getUserByCredentials(username, hashedPassword) != null
     }
 }
