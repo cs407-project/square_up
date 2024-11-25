@@ -18,27 +18,25 @@ data class User(
     val email: String = "",
     val notifications: Boolean = false
 )
-
 // Transaction entity
 @Entity(
     tableName = "transactions",
     foreignKeys = [
         ForeignKey(
-            entity = User::class, // Reference to User entity
-            parentColumns = ["userId"], // Column in User entity
-            childColumns = ["UserWhoPaidID"], // Corresponding column in Transaction
-            onDelete = ForeignKey.CASCADE // Cascade delete when User is deleted
+            entity = User::class,
+            parentColumns = ["userId"],
+            childColumns = ["userWhoPaidID"], // Corrected to match the field name
+            onDelete = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["UserWhoPaidID"])] // Index for faster queries
+    indices = [Index(value = ["userWhoPaidID"])] // Corrected to match the field name
 )
-
 data class Transaction(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "TransactionID")
     val transactionID: Int = 0,
 
-    @ColumnInfo(name = "UserWhoPaidID")
+    @ColumnInfo(name = "userWhoPaidID")
     val userWhoPaidID: Int,
 
     @ColumnInfo(name = "TransactionAmount")
@@ -57,7 +55,7 @@ data class Transaction(
     val paid: Boolean,
 
     @ColumnInfo(name = "BudgetTags")
-    val budgetTags: List<String>
+    val budgetTags: List<String> // Ensure type converters are configured correctly
 )
 
 // Define the UserDao inline
