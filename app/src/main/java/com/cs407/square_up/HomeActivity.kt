@@ -21,48 +21,68 @@ class HomeActivity : AppCompatActivity() {
         val profileButton = findViewById<ImageButton>(com.cs407.square_up.R.id.profile_button)
         val addGroupButton = findViewById<Button>(com.cs407.square_up.R.id.add_group_button)
 
+        val userId = intent.getIntExtra("USER_ID", -1) // Default to -1 if not found
+
         group1Button.setOnClickListener {
             val intent = Intent(this, GroupActivity::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+
             startActivity(intent)
         }
 
         group2Button.setOnClickListener {
             val intent = Intent(this, GroupActivity::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+
             startActivity(intent)
         }
 
         group3Button.setOnClickListener {
             val intent = Intent(this, GroupActivity::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+
             startActivity(intent)
         }
 
         temp_finance_button.setOnClickListener {
             val intent = Intent(this, BudgetActivity::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+
             startActivity(intent)
         }
 
         menu_button.setOnClickListener {
             val intent = Intent(this, HistoryActivity::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+
             startActivity(intent)
         }
 
         addExpense.setOnClickListener {
             val intent = Intent(this, AddTransactionActivity::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+
             startActivity(intent)
         }
 
         squareUpButton.setOnClickListener {
             val intent = Intent(this, RecordPaymentActivity::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+
             startActivity(intent)
         }
 
         profileButton.setOnClickListener {
             val intent = Intent(this, ChangePasswordActivity::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+
             startActivity(intent)
         }
 
         addGroupButton.setOnClickListener {
             val intent = Intent(this, CreateGroup::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+
             startActivity(intent)
         }
 

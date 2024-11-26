@@ -119,6 +119,7 @@ class CreateGroup : AppCompatActivity() {
         val groupNameEditText = findViewById<EditText>(R.id.enterGroupName)
         val selectMembersButton = findViewById<Button>(R.id.selectMembers)
         val createGroupButton = findViewById<Button>(R.id.CreateGroupButton)
+        val currentUserID =intent.getIntExtra("USER_ID", 1) // Replace 1 with actual user ID, use intents
 
         // Fetch users and display them in a multi-select dialog
         selectMembersButton.setOnClickListener {
@@ -126,7 +127,7 @@ class CreateGroup : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     val db = AppDatabase.getDatabase(applicationContext)
                     val userDao = db.userDao()
-                    val users = userDao.getAllOtherUsers(1) // Replace 1 with actual user ID
+                    val users = userDao.getAllOtherUsers(currentUserID)
 
                     withContext(Dispatchers.Main) {
                         showMultiSelectDialog(users)
@@ -154,7 +155,7 @@ class CreateGroup : AppCompatActivity() {
                     val user = userDao.getUserByName(username)
                     user?.let { memberIDs.add(it.userId) }
                 }
-
+                memberIDs.add(currentUserID)
                 for (userID in memberIDs) {
                     val group = Group(
                         userID = userID,

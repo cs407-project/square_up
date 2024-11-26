@@ -43,7 +43,8 @@ class AddTransactionActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.getDatabase(applicationContext)
                 val userDao = db.userDao()
-                val users = userDao.getAllOtherUsers(1) // Replace 1 with actual user ID
+                val currentUserID =intent.getIntExtra("USER_ID", 1)
+                val users = userDao.getAllOtherUsers(currentUserID) // Replace 1 with actual user ID
 
                 withContext(Dispatchers.Main) {
                     showMultiSelectDialog(users)

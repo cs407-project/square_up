@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cs407.square_up.data.AppDatabase
 import com.cs407.square_up.data.Transaction
+import com.cs407.square_up.data.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -48,10 +49,12 @@ class SignInActivity : AppCompatActivity() {
             } else {
                 lifecycleScope.launch(Dispatchers.IO) {
                     val isValidUser = validateUser(usernameInput, passwordInput)
+                    val user= getUser(usernameInput, passwordInput)
                     runOnUiThread {
                         if (isValidUser) {
                             Toast.makeText(this@SignInActivity, "Sign-in successful", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this@SignInActivity, HomeActivity::class.java)
+                            intent.putExtra("USER_ID", user?.userId) // Pass userId in intent
                             startActivity(intent)
                         } else {
                             Toast.makeText(this@SignInActivity, "Invalid username or password", Toast.LENGTH_SHORT).show()
@@ -72,5 +75,11 @@ class SignInActivity : AppCompatActivity() {
         val db = AppDatabase.getDatabase(this)
         val userDao = db.userDao()
         return userDao.getUserByCredentials(username, hashedPassword) != null
+    }
+    private suspend fun getUser(username: String, password: String): User? {
+        val hashedPassword = hash(password)
+        val db = AppDatabase.getDatabase(this)
+        val userDao = db.userDao()
+        return userDao.getUserByCredentials(username, hashedPassword)
     }
 }
