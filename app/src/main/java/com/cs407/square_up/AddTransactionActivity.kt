@@ -36,6 +36,7 @@ class AddTransactionActivity : AppCompatActivity() {
 
         //Need to add a query "SELECT groupName from GROUPS WHERE userID = :userID"
         val selectGroupSpinner = findViewById<Spinner>(R.id.selectGroup)
+        val currentUserID =intent.getIntExtra("USER_ID", 1)
 
 
         val selectPersonButton = findViewById<Button>(R.id.selectPerson)
@@ -43,7 +44,6 @@ class AddTransactionActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.getDatabase(applicationContext)
                 val userDao = db.userDao()
-                val currentUserID =intent.getIntExtra("USER_ID", 1)
                 val users = userDao.getAllOtherUsers(currentUserID) // Replace 1 with actual user ID
 
                 withContext(Dispatchers.Main) {
@@ -76,7 +76,7 @@ class AddTransactionActivity : AppCompatActivity() {
             }
 
             val transaction = Transaction(
-                userWhoPaidID = 1, // Replace with actual user ID
+                userWhoPaidID = currentUserID,
                 transactionAmount = amount.toDouble(),
                 transactionDetails = description,
                 transactionDate = Date(),

@@ -142,6 +142,8 @@ interface GroupDao {
     suspend fun insertGroup(group: Group): Long
     @Query("SELECT * FROM groups WHERE userID = :userID")
     suspend fun getGroupsByUser(userID: Int): List<Group>
+    @Query("SELECT * FROM groups WHERE groupID = :groupID")
+    suspend fun getGroupsByGroupID(groupID: Int): List<Group>
     @Delete
     suspend fun deleteGroup(group: Group)
 }
