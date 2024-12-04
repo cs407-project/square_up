@@ -67,6 +67,7 @@ class HomeActivity : AppCompatActivity() {
                         intent.putExtra("GROUP_ID", group.groupID) // Pass groupId in intent
                         intent.putExtra("USER_ID", userId) // Pass userId in intent
                         intent.putExtra("GROUP_Name", group.groupName) // Pass Name in intent
+                        intent.putExtra("SHARED_ID", group.sharedGroupID) // Pass Name in intent
                         startActivity(intent)
                     }
                     groupContainer.addView(button) // Add button to the container

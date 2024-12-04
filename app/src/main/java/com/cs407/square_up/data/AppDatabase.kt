@@ -70,7 +70,8 @@ data class Transaction(
     indices = [Index(value = ["userID"])] // Optimize lookups by userID
 )
 data class Group(
-    @PrimaryKey(autoGenerate = true) val groupID: Int = 0,
+    @PrimaryKey(autoGenerate = true) val groupID: Int = 0,//
+    @ColumnInfo(name = "shared_groupID") val sharedGroupID: Int ,//id to be the same for all members of the group
     @ColumnInfo(name = "userID") val userID: Int,
     @ColumnInfo(name = "group_name") val groupName: String,
     @ColumnInfo(name = "date_created") val dateCreated: Date
@@ -142,8 +143,9 @@ interface GroupDao {
     suspend fun insertGroup(group: Group): Long
     @Query("SELECT * FROM groups WHERE userID = :userID")
     suspend fun getGroupsByUser(userID: Int): List<Group>
-    @Query("SELECT * FROM groups WHERE groupID = :groupID")
-    suspend fun getGroupsByGroupID(groupID: Int): List<Group>
+    @Query("SELECT * FROM groups WHERE shared_groupID = :sharedGroupID")
+    suspend fun getGroupsBySharedID(sharedGroupID: Int): List<Group>
+
     @Delete
     suspend fun deleteGroup(group: Group)
 }

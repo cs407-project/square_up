@@ -39,6 +39,7 @@
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
+
     <TextView
         android:id="@+id/GroupName_label"
         android:layout_width="wrap_content"
@@ -49,9 +50,9 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/selectMembers"
         app:layout_constraintEnd_toStartOf="@+id/enterGroupName"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <EditText
         android:id="@+id/enterGroupName"

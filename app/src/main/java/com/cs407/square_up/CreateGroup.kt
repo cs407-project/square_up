@@ -119,7 +119,7 @@ class CreateGroup : AppCompatActivity() {
         val groupNameEditText = findViewById<EditText>(R.id.enterGroupName)
         val selectMembersButton = findViewById<Button>(R.id.selectMembers)
         val createGroupButton = findViewById<Button>(R.id.CreateGroupButton)
-        val currentUserID =intent.getIntExtra("USER_ID", 1) // Replace 1 with actual user ID, use intents
+        val currentUserID =intent.getIntExtra("USER_ID", 1)
 
         // Fetch users and display them in a multi-select dialog
         selectMembersButton.setOnClickListener {
@@ -156,11 +156,16 @@ class CreateGroup : AppCompatActivity() {
                     user?.let { memberIDs.add(it.userId) }
                 }
                 memberIDs.add(currentUserID)
+
+                // Generate a shared groupID (use current time or database's auto-increment)
+                val sharedGroupID = (System.currentTimeMillis() / 1000).toInt() // Example: seconds since epoch
+                
                 for (userID in memberIDs) {
                     val group = Group(
                         userID = userID,
                         groupName = groupName,
-                        dateCreated = Date()
+                        dateCreated = Date(),
+                        sharedGroupID=sharedGroupID
                     )
                     groupDao.insertGroup(group)
                 }
