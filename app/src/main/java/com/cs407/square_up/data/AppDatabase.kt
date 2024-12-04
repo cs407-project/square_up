@@ -67,7 +67,10 @@ data class Transaction(
             onDelete = ForeignKey.CASCADE // Deletes groups when the user is deleted
         )
     ],
-    indices = [Index(value = ["userID"])] // Optimize lookups by userID
+    indices = [
+        Index(value = ["userID", "group_name", "shared_groupID"], unique = true), // Enforce uniqueness
+        Index(value = ["userID"]) // Optimize lookups by userID
+    ]
 )
 data class Group(
     @PrimaryKey(autoGenerate = true) val groupID: Int = 0,//
@@ -75,6 +78,7 @@ data class Group(
     @ColumnInfo(name = "userID") val userID: Int,
     @ColumnInfo(name = "group_name") val groupName: String,
     @ColumnInfo(name = "date_created") val dateCreated: Date
+
 )
 
 @Entity(tableName = "Budget")
@@ -145,6 +149,9 @@ interface GroupDao {
     suspend fun getGroupsByUser(userID: Int): List<Group>
     @Query("SELECT * FROM groups WHERE shared_groupID = :sharedGroupID")
     suspend fun getGroupsBySharedID(sharedGroupID: Int): List<Group>
+    @Query("SELECT * FROM groups WHERE userID = :userID AND group_name = :groupName AND shared_groupID = :sharedGroupID")
+    fun getGroupByUserNameAndSharedID(userID: Int, groupName: String, sharedGroupID: Int): Group?
+
 
     @Delete
     suspend fun deleteGroup(group: Group)

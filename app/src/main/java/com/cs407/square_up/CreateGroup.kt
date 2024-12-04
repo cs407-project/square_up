@@ -159,13 +159,21 @@ class CreateGroup : AppCompatActivity() {
                 val sharedGroupID = (System.currentTimeMillis() / 1000).toInt() // Example: seconds since epoch
 
                 for (userID in memberIDs) {
-                    val group = Group(
-                        userID = userID,
-                        groupName = groupName,
-                        dateCreated = Date(),
-                        sharedGroupID=sharedGroupID
-                    )
-                    groupDao.insertGroup(group)
+                    val existingGroup = groupDao.getGroupByUserNameAndSharedID(userID, groupName, sharedGroupID)
+                    if (existingGroup == null) {
+                        val group = Group(
+                            userID = userID,
+                            groupName = groupName,
+                            dateCreated = Date(),
+                            sharedGroupID = sharedGroupID
+                        )
+                        groupDao.insertGroup(group)
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@CreateGroup, "User already part of this group!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
                 }
 
                 withContext(Dispatchers.Main) {

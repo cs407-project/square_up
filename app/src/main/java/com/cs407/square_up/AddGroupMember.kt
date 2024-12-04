@@ -75,17 +75,24 @@ class AddGroupMember : AppCompatActivity() {
                 }
                 memberIDs.add(currentUserID)
                 for (userID in memberIDs) {
-                    val group = Group(
-                        userID = userID,
-                        groupName = groupName,
-                        dateCreated = Date(),
-                        sharedGroupID=sharedID
-                    )
-                    groupDao.insertGroup(group)
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@AddGroupMember, "Added successfully!", Toast.LENGTH_SHORT).show()
-                        finish()
+                    val existingGroup = groupDao.getGroupByUserNameAndSharedID(userID, groupName, sharedID)
+                    if (existingGroup == null) {
+                        val group = Group(
+                            userID = userID,
+                            groupName = groupName,
+                            dateCreated = Date(),
+                            sharedGroupID = sharedID
+                        )
+                        groupDao.insertGroup(group)
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@AddGroupMember, "Added successfully!", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        withContext(Dispatchers.Main) {
+                            Toast.makeText(this@AddGroupMember, "User already part of this group!", Toast.LENGTH_SHORT).show()
+                        }
                     }
+
                 }
             }
             finish()
