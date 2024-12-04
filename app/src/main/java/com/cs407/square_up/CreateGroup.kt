@@ -125,8 +125,6 @@ class CreateGroup : AppCompatActivity() {
         selectMembersButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 withContext(Dispatchers.Main) {
-                    val db = AppDatabase.getDatabase(applicationContext)
-                    val userDao = db.userDao()
                     val users = userDao.getAllOtherUsers(currentUserID)
 
                     withContext(Dispatchers.Main) {
@@ -159,7 +157,7 @@ class CreateGroup : AppCompatActivity() {
 
                 // Generate a shared groupID (use current time or database's auto-increment)
                 val sharedGroupID = (System.currentTimeMillis() / 1000).toInt() // Example: seconds since epoch
-                
+
                 for (userID in memberIDs) {
                     val group = Group(
                         userID = userID,
