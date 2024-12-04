@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
+import com.cs407.square_up.data.User
 
 
 class AddGroupMember : AppCompatActivity() {
@@ -44,9 +45,17 @@ class AddGroupMember : AppCompatActivity() {
                     val db = AppDatabase.getDatabase(applicationContext)
                     val userDao = db.userDao()
                     val users = userDao.getAllOtherUsers(currentUserID)
+                    val groupMembers = db.groupDao().getGroupsBySharedID(sharedID)
+                    val groupMemberUsernames = groupMembers.map { member ->
+                        val user = db.userDao().getUserById(member.userID) // Fetch each user
+                        user?.userName
+                    }.filterNotNull() // Remove nulls in case a user doesn't exist
+
+                    val filteredUsernames = users.filter { username -> username !in groupMemberUsernames }
+
 
                     withContext(Dispatchers.Main) {
-                        showMultiSelectDialog(users)
+                        showMultiSelectDialog(filteredUsernames)
                     }
                 }
             }
@@ -81,7 +90,6 @@ class AddGroupMember : AppCompatActivity() {
             }
             finish()
         }
-
 
     }
     private fun showMultiSelectDialog(users: List<String>) {

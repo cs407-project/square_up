@@ -49,14 +49,14 @@ class HistoryActivity : AppCompatActivity() {
         transaction.commit()
     }
 
-//    // Method to load a fragment into the fragment container and pass userId
-//    private fun loadFragment(fragment: Fragment, userId: Int) {
-//        val bundle = Bundle()
-//        bundle.putInt("USER_ID", userId) // Attach userId to the fragment
-//        fragment.arguments = bundle
-//
-//        val transaction = supportFragmentManager.beginTransaction()
-//        transaction.replace(R.id.fragmentContainer, fragment)
-//        transaction.commit()
-//    }
+    // Method to load a fragment into the fragment container and pass userId
+    private fun loadFragment(fragment: Fragment, userId: Int) {
+        val bundle = Bundle()
+        bundle.putInt("USER_ID", userId) // Attach userId to the fragment
+        fragment.arguments = bundle
+
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainer, fragment)
+        transaction.commit()
+    }
 }

@@ -60,38 +60,38 @@ class IndividualTransactionFragment : Fragment() {
 //            Pair("Transaction 10/11", "$50.00"),
 //            Pair("Transaction 10/11", "$50.00")
 //        )
-            CoroutineScope(Dispatchers.IO).launch {
-                // Fetch transactions for the current user from the database
-                val transactionData = transactionDao.getTransactionsByUser(currentUserId)
-                // Convert transactions to List<Pair<String, String>> for display
-                val transactions = transactionData.map { transaction ->
-                    val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
-                    val date = dateFormatter.format(transaction.transactionDate)
-                    val amount = if (transaction.transactionAmount < 0) {
-                        "-$${"%.2f".format(-transaction.transactionAmount)}"
-                    } else {
-                        "$${"%.2f".format(transaction.transactionAmount)}"
-                    }
-                    Pair("Transaction $date", amount)
+        CoroutineScope(Dispatchers.IO).launch {
+            // Fetch transactions for the current user from the database
+            val transactionData = transactionDao.getTransactionsByUser(currentUserId)
+            // Convert transactions to List<Pair<String, String>> for display
+            val transactions = transactionData.map { transaction ->
+                val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
+                val date = dateFormatter.format(transaction.transactionDate)
+                val amount = if (transaction.transactionAmount < 0) {
+                    "-$${"%.2f".format(-transaction.transactionAmount)}"
+                } else {
+                    "$${"%.2f".format(transaction.transactionAmount)}"
                 }
+                Pair("Transaction $date", amount)
+            }
 
-            // Add each transaction to the container
-            withContext(Dispatchers.Main) {
-                for (transaction in transactions) {
-                    val transactionView = TextView(requireContext())
-                    transactionView.text = "${transaction.first}: ${transaction.second}"
-                    transactionView.textSize = 16f
-                    transactionView.setPadding(0, 16, 0, 16) // Space between transactions
-                    if (transaction.second.startsWith("-")) {
-                        transactionView.setTextColor(Color.RED)
-                    } else {
-                        transactionView.setTextColor(Color.parseColor("#4CAF50"))
-                    }
-                    transactionContainer.addView(transactionView)
+        // Add each transaction to the container
+        withContext(Dispatchers.Main) {
+            for (transaction in transactions) {
+                val transactionView = TextView(requireContext())
+                transactionView.text = "${transaction.first}: ${transaction.second}"
+                transactionView.textSize = 16f
+                transactionView.setPadding(0, 16, 0, 16) // Space between transactions
+                if (transaction.second.startsWith("-")) {
+                    transactionView.setTextColor(Color.RED)
+                } else {
+                    transactionView.setTextColor(Color.parseColor("#4CAF50"))
                 }
+                transactionContainer.addView(transactionView)
             }
         }
-        return rootView
+    }
+    return rootView
 
     }
 }
