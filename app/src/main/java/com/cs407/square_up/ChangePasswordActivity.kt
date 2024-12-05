@@ -26,9 +26,6 @@ class ChangePasswordActivity : AppCompatActivity() {
         val db = AppDatabase.getDatabase(this)
         val userDao = db.userDao()
 
-
-
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.changePassword)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -42,8 +39,9 @@ class ChangePasswordActivity : AppCompatActivity() {
         val currentPassword= findViewById<EditText>(R.id.currentPassword)
         val newPassword= findViewById<EditText>(R.id.newPassword)
         val confirmPassword= findViewById<EditText>(R.id.confirmPassword)
+        val changePasswordButton = findViewById<Button>(R.id.changePasswordButton)
 
-        logout.setOnClickListener {
+        changePasswordButton.setOnClickListener {
 //            val hashedPassword=hash(password.text.toString().trim())
             lifecycleScope.launch(Dispatchers.IO) {
                 val currentPasswordInput = currentPassword.text.toString().trim()
@@ -78,11 +76,14 @@ class ChangePasswordActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+        logout.setOnClickListener {
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
             finish()
         }
     }
+
     private fun hash(input: String): String {
         return MessageDigest.getInstance("SHA-256").digest(input.toByteArray())
             .fold("") { str, it -> str + "%02x".format(it) }
