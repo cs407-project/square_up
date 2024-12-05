@@ -59,7 +59,7 @@ class SignUpActivity : AppCompatActivity() {
                             Toast.makeText(this@SignUpActivity, "User registered successfully", Toast.LENGTH_SHORT).show()
                             Handler(Looper.getMainLooper()).postDelayed({
                                 finish()
-                            }, 2000)
+                            }, 2000) // I thought 10 seconds was too long so I changed the delay to 2 seconds
                         } else {
                             Toast.makeText(this@SignUpActivity, "Registration failed", Toast.LENGTH_SHORT).show()
                         }

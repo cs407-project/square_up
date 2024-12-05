@@ -35,27 +35,27 @@ class GroupTransactionFragment : Fragment() {
         val db = AppDatabase.getDatabase(requireContext())
         val transactionDao = db.transactionDao()
 
-//        // Example data for group transactions
-//        val transactions = listOf(
-//            Pair("Group Transaction 10/12", "$100.00"),
-//            Pair("Group Transaction 10/3", "-$40.00")
-//        )
-        CoroutineScope(Dispatchers.IO).launch {
+        // Example data for group transactions
+        val transactions = listOf(
+            Pair("Group Transaction 10/12", "$100.00"),
+            Pair("Group Transaction 10/3", "-$40.00")
+        )
+//        CoroutineScope(Dispatchers.IO).launch {
             // Fetch transactions for the current user from the database
-            val transactionData = transactionDao.getTransactionsByUser(currentUserId)
+//            val transactionData = transactionDao.getTransactionsByUser(currentUserId)
             // Convert transactions to List<Pair<String, String>> for display
-            val transactions = transactionData.map { transaction ->
-                val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
-                val date = dateFormatter.format(transaction.transactionDate)
-                val amount = if (transaction.transactionAmount < 0) {
-                    "-$${"%.2f".format(-transaction.transactionAmount)}"
-                } else {
-                    "$${"%.2f".format(transaction.transactionAmount)}"
-                }
-                Pair("Transaction $date", amount)
-            }
-
-            withContext(Dispatchers.Main) {
+//            val transactions = transactionData.map { transaction ->
+//                val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
+//                val date = dateFormatter.format(transaction.transactionDate)
+//                val amount = if (transaction.transactionAmount < 0) {
+//                    "-$${"%.2f".format(-transaction.transactionAmount)}"
+//                } else {
+//                    "$${"%.2f".format(transaction.transactionAmount)}"
+//                }
+//                Pair("Transaction $date", amount)
+//            }
+//
+//            withContext(Dispatchers.Main) {
                 // Add each transaction to the container
                 for (transaction in transactions) {
                     val transactionView = TextView(requireContext())
@@ -68,8 +68,8 @@ class GroupTransactionFragment : Fragment() {
                         transactionView.setTextColor(Color.parseColor("#4CAF50"))
                     }
                     transactionContainer.addView(transactionView)
-                }
-            }
+//                }
+//            }
         }
         return rootView
     }
