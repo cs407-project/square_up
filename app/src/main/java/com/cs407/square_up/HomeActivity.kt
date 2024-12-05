@@ -33,36 +33,11 @@ class HomeActivity : AppCompatActivity() {
         val squareUpButton = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_square_up_button)
         val profileButton = findViewById<ImageButton>(com.cs407.square_up.R.id.profile_button)
         val addGroupButton = findViewById<Button>(com.cs407.square_up.R.id.add_group_button)
-//
-        val userId = intent.getIntExtra("USER_ID", 1) // Default to 1 if not found
-//
 
-//        // Load groups from database
-//        val db = AppDatabase.getDatabase(this)
-//
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            val groups = db.groupDao().getGroupsByUser(userId) // Fetch groups for the user
-//
-//            withContext(Dispatchers.Main) {
-//                // Create a button for each group
-//                for (group in groups) {
-//                    val button = Button(this@HomeActivity)
-//                    button.text = group.groupName // Set group name as button text
-////                    button.background=getDrawable(com.cs407.square_up.R.drawable.purple_oval_button)// make the button a purple oval
-//                    button.setOnClickListener {
-//                        val intent = Intent(this@HomeActivity, GroupActivity::class.java)
-//                        intent.putExtra("GROUP_ID", group.groupID) // Pass groupId in intent
-//                        intent.putExtra("USER_ID", userId) // Pass userId in intent
-//                        intent.putExtra("GROUP_Name", group.groupName) // Pass Name in intent
-//                        intent.putExtra("SHARED_ID", group.sharedGroupID) // Pass Name in intent
-//                        startActivity(intent)
-//                    }
-//                    groupContainer.addView(button) // Add button to the container
-//                }
-//            }
-//        }
+        val userId = intent.getIntExtra("USER_ID", -1) // Default to -1 if not found
         groupContainer = findViewById(com.cs407.square_up.R.id.group_container) // Initialize the class-level groupContainer here
         loadGroups(userId)
+
         temp_finance_button.setOnClickListener {
             val intent = Intent(this, BudgetActivity::class.java)
             intent.putExtra("USER_ID", userId) // Pass userId in intent
@@ -101,14 +76,12 @@ class HomeActivity : AppCompatActivity() {
     }
     override fun onResume() {
         super.onResume()
-        val userId = intent.getIntExtra("USER_ID", -1) // Default to 1 if not found
+        val userId = intent.getIntExtra("USER_ID", -1) // Default to -1 if not found
         loadGroups(userId)
     }
 
     private fun loadGroups(userId: Int) {
         val db = AppDatabase.getDatabase(this)
-        val userId = intent.getIntExtra("USER_ID", 1) // Default to 1 if not found
-
         lifecycleScope.launch(Dispatchers.IO) {
             val groups = db.groupDao().getGroupsByUser(userId) // Fetch groups for the user
             withContext(Dispatchers.Main) {

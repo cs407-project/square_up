@@ -173,9 +173,7 @@ class CreateGroup : AppCompatActivity() {
                             Toast.makeText(this@CreateGroup, "User already part of this group!", Toast.LENGTH_SHORT).show()
                         }
                     }
-
                 }
-
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@CreateGroup, "Group created successfully!", Toast.LENGTH_SHORT).show()
                     finish()
