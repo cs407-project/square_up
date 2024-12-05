@@ -42,12 +42,13 @@ class ChangePasswordActivity : AppCompatActivity() {
         val currentPassword= findViewById<EditText>(R.id.currentPassword)
         val newPassword= findViewById<EditText>(R.id.newPassword)
         val confirmPassword= findViewById<EditText>(R.id.confirmPassword)
-        val currentPasswordInput = currentPassword.text.toString().trim()
-        val newPasswordInput = newPassword.text.toString().trim()
-        val confirmPasswordInput = confirmPassword.text.toString().trim()
+
         logout.setOnClickListener {
 //            val hashedPassword=hash(password.text.toString().trim())
             lifecycleScope.launch(Dispatchers.IO) {
+                val currentPasswordInput = currentPassword.text.toString().trim()
+                val newPasswordInput = newPassword.text.toString().trim()
+                val confirmPasswordInput = confirmPassword.text.toString().trim()
                 val user = userDao.getUserById(myUserID)
                 val oldHashedPassword=hash(currentPasswordInput)
 
@@ -68,9 +69,10 @@ class ChangePasswordActivity : AppCompatActivity() {
                 }
                 else if( (user != null) ){
                     val newHashedPassword = hash(newPasswordInput)
-                    val updateUser = user.let { it1 -> User(userName = user.userName, password = newHashedPassword, email = user.email) }
-                    userDao.insert(updateUser )
-                    userDao.delete(user)
+                    val updateUser = user.let { it1 -> User(userId = it1.userId, userName = user.userName, password = newHashedPassword, email = user.email) }
+//                    userDao.insert(updateUser )
+//                    userDao.delete(user)
+                    userDao.update(updateUser)
                     runOnUiThread {
                         Toast.makeText(this@ChangePasswordActivity, "Password changed successfully", Toast.LENGTH_SHORT).show()
                     }
