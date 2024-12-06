@@ -68,8 +68,6 @@ class ChangePasswordActivity : AppCompatActivity() {
                 else if( (user != null) ){
                     val newHashedPassword = hash(newPasswordInput)
                     val updateUser = user.let { it1 -> User(userId = it1.userId, userName = user.userName, password = newHashedPassword, email = user.email) }
-//                    userDao.insert(updateUser )
-//                    userDao.delete(user)
                     userDao.update(updateUser)
                     runOnUiThread {
                         Toast.makeText(this@ChangePasswordActivity, "Password changed successfully", Toast.LENGTH_SHORT).show()

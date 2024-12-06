@@ -2,12 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#0D1B2A"
     android:padding="16dp">
 
     <!-- Back Button -->
     <ImageView
         android:id="@+id/backButton"
+        android:textColor="#FFFFFF"
+        android:background="#0D1B2A"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentStart="true"
@@ -23,7 +25,7 @@
         android:layout_marginTop="24dp"
         android:text="@string/personal_budgeting_title"
         android:textSize="24sp"
-        android:textColor="#000000"
+        android:textColor="#FFFFFF"
         android:fontFamily="sans-serif-medium" />
 
     <!-- Placeholder for Graphs -->
@@ -35,6 +37,7 @@
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
         android:columnCount="2"
+        android:textColor="#FFFFFF"
         android:rowCount="2">
 
         <!-- Food Graph Placeholder -->
@@ -56,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/food_graph_name"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -80,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/travel_graph_name"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -102,7 +105,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/shopping_graph_name"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
         </LinearLayout>
         <LinearLayout
@@ -123,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="@string/other_graph_name"
-                android:textColor="#000000"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -133,6 +136,7 @@
     <!-- Add Button at Bottom Center -->
     <ImageView
         android:id="@+id/addButton"
+        android:backgroundTint="#354C61"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_centerHorizontal="true"

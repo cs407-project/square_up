@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#0D1B2A"
     android:layout_height="match_parent">
 
     <TextView
@@ -12,6 +13,7 @@
         android:layout_marginStart="27dp"
         android:layout_marginTop="62dp"
         android:text="@string/square_up"
+        android:textColor="#FFFFFF"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/youPaid"
@@ -25,6 +27,7 @@
         android:layout_marginEnd="3dp"
         android:layout_marginBottom="17dp"
         android:text="@string/you_paid"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/Date"
         app:layout_constraintEnd_toEndOf="@+id/addNotes"
         app:layout_constraintStart_toStartOf="@+id/Date"
@@ -36,6 +39,7 @@
         android:layout_height="0dp"
         android:layout_marginBottom="21dp"
         android:text="@string/date"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/addNotes"
         app:layout_constraintEnd_toEndOf="@+id/addNotes"
         app:layout_constraintStart_toStartOf="@+id/addNotes"
@@ -49,6 +53,7 @@
         android:layout_marginTop="242dp"
         android:layout_marginBottom="61dp"
         android:text="@string/add_notes"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/recordPayment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -59,6 +64,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="342dp"
         android:text="@string/record_payment"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#354C61"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

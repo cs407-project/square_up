@@ -9,6 +9,7 @@
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
+    android:background="#0D1B2A"
     tools:context=".CreateGroup">
 
     <!--    <TextView-->
@@ -48,6 +49,7 @@
         android:layout_marginBottom="69dp"
         android:text="@string/enter_group_name"
         android:textSize="20sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/selectMembers"
         app:layout_constraintEnd_toStartOf="@+id/enterGroupName"
         app:layout_constraintHorizontal_bias="0.0"
@@ -56,6 +58,7 @@
 
     <EditText
         android:id="@+id/enterGroupName"
+        android:textColor="#FFFFFF"
         android:layout_width="198dp"
         android:layout_height="58dp"
         android:layout_marginStart="24dp"
@@ -72,6 +75,8 @@
 
     <Button
         android:id="@+id/CreateGroupButton"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#354C61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="124dp"
@@ -82,6 +87,8 @@
 
     <Button
         android:id="@+id/selectMembers"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#354C61"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="496dp"

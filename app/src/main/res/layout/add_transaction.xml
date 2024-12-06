@@ -1,27 +1,39 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/addTransaction"
     android:layout_width="match_parent"
+    android:background="#0D1B2A"
     android:layout_height="match_parent"
+
     tools:context=".AddTransactionActivity">
 
+<!--    &lt;!&ndash; Back Button &ndash;&gt;-->
+<!--    <ImageView-->
+<!--        android:id="@+id/backButton"-->
+<!--        android:backgroundTint="#354C61"-->
+<!--        android:layout_width="24dp"-->
+<!--        android:layout_height="24dp"-->
+<!--        android:layout_alignParentStart="true"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:src="@drawable/ic_back_arrow"/>-->
 
     <TextView
         android:id="@+id/addTransaction2"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="59dp"
         android:text="@string/add_transaction"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/enterDescription_label"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -34,6 +46,7 @@
 
     <EditText
         android:id="@+id/enterDescription"
+        android:textColor="#FFFFFF"
         android:layout_width="213dp"
         android:layout_height="53dp"
         android:layout_marginTop="24dp"
@@ -42,8 +55,10 @@
         app:layout_constraintHorizontal_bias="0.863"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/addTransaction2" />
+
     <TextView
         android:id="@+id/enterAmount_label"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -56,6 +71,7 @@
 
     <EditText
         android:id="@+id/enterAmount"
+        android:textColor="#FFFFFF"
         android:layout_width="227dp"
         android:layout_height="52dp"
         android:layout_marginTop="8dp"
@@ -64,8 +80,10 @@
         app:layout_constraintHorizontal_bias="0.853"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/enterDescription" />
+
     <TextView
         android:id="@+id/splitPercentage_label"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -78,6 +96,7 @@
 
     <EditText
         android:id="@+id/editTextNumberDecimal"
+        android:textColor="#FFFFFF"
         android:layout_width="255dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
@@ -89,59 +108,71 @@
 
     <Spinner
         android:id="@+id/selectGroup"
+        android:textColor="#FFFFFF"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/editTextNumberDecimal"
+        android:backgroundTint="#354C61"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/editTextNumberDecimal" />
 
     <Button
         android:id="@+id/selectPerson"
+        android:textColor="#FFFFFF"
         android:layout_width="0dp"
+        android:backgroundTint="#354C61"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="Select Person(s)"
-        app:layout_constraintTop_toBottomOf="@id/selectGroup"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/selectGroup" />
 
     <Button
         android:id="@+id/customSplit"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#354C61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/custom_split"
-        app:layout_constraintTop_toBottomOf="@id/selectPerson"
+        app:layout_constraintEnd_toStartOf="@id/equalSplit"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/equalSplit" />
+        app:layout_constraintTop_toBottomOf="@id/selectPerson" />
 
     <Button
         android:id="@+id/equalSplit"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#354C61"
         android:text="@string/equal_split"
-        app:layout_constraintTop_toBottomOf="@id/selectPerson"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/customSplit"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/selectPerson" />
 
     <Button
         android:id="@+id/addTransaction3"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#354C61"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/add_transaction"
-        app:layout_constraintTop_toBottomOf="@id/equalSplit"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/equalSplit" />
 
     <Button
         android:id="@+id/useCamera"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#354C61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:text="@string/use_camera"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

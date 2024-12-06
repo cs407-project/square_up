@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
+    android:background="#0D1B2A"
     android:layout_height="match_parent"
 
     tools:context=".MainActivity">
@@ -66,6 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="204dp"
         android:text="Add Group"
+        android:backgroundTint="#354C61"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -78,6 +80,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="29dp"
         android:fontFamily="sans-serif-black"
+        android:textColor="#FFFFFF"
         android:text="Total Amount Owed: "
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/menu_button"
@@ -86,6 +89,7 @@
 
     <ImageButton
         android:id="@+id/profile_button"
+        android:backgroundTint="#354C61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -100,6 +104,7 @@
 
     <ImageButton
         android:id="@+id/menu_button"
+        android:backgroundTint="#354C61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -111,6 +116,7 @@
 
     <ImageButton
         android:id="@+id/temp_finance_button"
+        android:backgroundTint="#354C61"
         android:layout_width="0dp"
         android:layout_height="79dp"
         android:layout_marginStart="26dp"
@@ -123,6 +129,7 @@
 
     <ImageButton
         android:id="@+id/temp_square_up_button"
+        android:backgroundTint="#354C61"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="23dp"
@@ -134,6 +141,7 @@
 
     <ImageButton
         android:id="@+id/add_expense_button"
+        android:backgroundTint="#354C61"
         android:layout_width="0dp"
         android:layout_height="72dp"
         android:layout_marginEnd="71dp"
@@ -145,6 +153,7 @@
 
     <LinearLayout
         android:id="@+id/group_container"
+        android:backgroundTint="#354C61"
         android:layout_width="351dp"
         android:layout_height="214dp"
         android:layout_marginStart="11dp"
@@ -156,7 +165,7 @@
         android:visibility="visible"
         app:layout_constraintBottom_toTopOf="@+id/add_group_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.394"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 

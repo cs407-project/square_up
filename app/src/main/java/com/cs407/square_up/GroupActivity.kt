@@ -82,7 +82,7 @@ class GroupActivity : AppCompatActivity() {
                 val currentUserText = TextView(this@GroupActivity).apply {
                     text = "Your name: ${currentUser?.userName}"
                     textSize = 34f
-                    setTextColor(Color.rgb(17, 17, 232) )// Set the text color
+                    setTextColor(Color.rgb(255, 255, 255) )// Set the text color
                     textAlignment = View.TEXT_ALIGNMENT_CENTER // Center the text
                     layoutParams = LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT,
@@ -95,6 +95,7 @@ class GroupActivity : AppCompatActivity() {
                 val label = TextView(this@GroupActivity)
                 label.textSize=34f
                 label.text="Other Group Members:"
+                label.setTextColor(Color.rgb(134, 36, 196))
                 groupContainer.addView(label)
                 for (username  in usernames) {
                     val TextView = TextView(this@GroupActivity)

@@ -5,8 +5,9 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="#0D1B2A"
 
+    tools:context=".MainActivity">
     <TextView
         android:id="@+id/squareUp"
         android:layout_width="166dp"
@@ -16,6 +17,7 @@
         android:fontFamily="sans-serif-black"
         android:text="SquareUp"
         android:textSize="34sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,6 +29,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
         android:text="Sign In"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#354C61"
         app:layout_constraintBottom_toTopOf="@+id/sign_up"
         app:layout_constraintStart_toStartOf="@+id/sign_up"
         app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -37,6 +41,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="135dp"
         android:text="Sign Up"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#354C61"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +55,7 @@
         android:layout_marginBottom="8dp"
         android:text="Username:"
         android:textSize="24sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="@+id/username"
         app:layout_constraintEnd_toStartOf="@+id/username"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,6 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
         android:ems="10"
+        android:textColor="#FFFFFF"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
@@ -73,6 +81,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="Password:"
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/password"
         app:layout_constraintEnd_toStartOf="@+id/password"
@@ -85,6 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="72dp"
         android:ems="10"
+        android:textColor="#FFFFFF"
         android:inputType="textPassword"
 
         app:layout_constraintBottom_toTopOf="@+id/sign_in"

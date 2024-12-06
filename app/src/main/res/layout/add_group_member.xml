@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0D1B2A"
     android:paddingLeft="@dimen/fragment_horizontal_margin"
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
@@ -27,13 +28,17 @@
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
+
+
     <Button
         android:id="@+id/addMemberButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="123dp"
         android:layout_marginBottom="245dp"
+        android:backgroundTint="#354C61"
         android:text="@string/add_member"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -44,9 +49,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="179dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="488dp"
+        android:backgroundTint="#354C61"
         android:text="select Group Members"
+        android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/back_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

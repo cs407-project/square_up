@@ -1,8 +1,11 @@
 package com.cs407.square_up
 //import android.R
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton;
@@ -89,6 +92,14 @@ class HomeActivity : AppCompatActivity() {
                 for (group in groups) {
                     val button = Button(this@HomeActivity)
                     button.text = group.groupName
+                    button.setTextColor(Color.rgb(255, 255, 255) )
+                    button.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#354C61")) // Set background tint
+                    button.layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        gravity = Gravity.CENTER_HORIZONTAL // Center button horizontally
+                    } // Set layout parameters to wrap content
                     button.setOnClickListener {
                         val intent = Intent(this@HomeActivity, GroupActivity::class.java)
                         intent.putExtra("GROUP_ID", group.groupID)

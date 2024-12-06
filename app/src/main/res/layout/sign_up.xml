@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0D1B2A"
     tools:context=".MainActivity">
 
     <TextView
@@ -15,6 +16,7 @@
         android:layout_marginBottom="42dp"
         android:fontFamily="sans-serif-black"
         android:text="Sign Up"
+        android:textColor="#FFFFFF"
         android:textSize="34sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,22 +46,26 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView2">
+
         <TextView
             android:id="@+id/name_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Name:"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/name"
             app:layout_constraintEnd_toStartOf="@+id/name"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView2"
             app:layout_constraintTop_toTopOf="@+id/name" />
+
         <EditText
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:textColor="#FFFFFF"
             android:layout_marginBottom="25dp"
             android:ems="10"
             android:inputType="text"
@@ -70,6 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Email:"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/email"
             app:layout_constraintEnd_toStartOf="@+id/email"
@@ -81,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
+            android:textColor="#FFFFFF"
             android:layout_marginBottom="24dp"
             android:ems="10"
             android:inputType="text"
@@ -90,6 +98,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:textColor="#FFFFFF"
             android:text="Username:"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/username"
@@ -101,6 +110,7 @@
             android:id="@+id/username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
             android:layout_marginBottom="33dp"
             android:ems="5"
             android:inputType="text"
@@ -110,6 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:textColor="#FFFFFF"
             android:text="Password:"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/password"
@@ -122,6 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
+            android:textColor="#FFFFFF"
             android:ems="10"
             android:inputType="textPassword"
              />
@@ -131,6 +143,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="confirm_password:"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/password"
             app:layout_constraintEnd_toStartOf="@+id/password"
@@ -143,6 +156,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:textColor="#FFFFFF"
             android:layout_marginBottom="30dp"
             android:ems="10"
             android:inputType="textPassword"
@@ -152,6 +166,8 @@
             android:id="@+id/sign_up_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:backgroundTint="#354C61"
             android:layout_marginStart="43dp"
             android:layout_marginBottom="78dp"
             android:text="Sign Up" />
