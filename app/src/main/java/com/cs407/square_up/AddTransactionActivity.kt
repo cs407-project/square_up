@@ -36,50 +36,41 @@ class AddTransactionActivity : AppCompatActivity() {
         const val CAMERA_REQUEST_CODE = 1001
     }
 
-//    // Declare cameraLauncher here
-//    private val cameraLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == RESULT_OK) {
-//                // Handle the image capture result here
-//                val imageUri = result.data?.data
-//                // Do something with the captured image, e.g., display or save
-//            }
-//        }
 
-//    private val cameraLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == RESULT_OK) {
-//                val imageUri = result.data?.data
-//                if (imageUri != null) {
-//                    // Create an InputImage object from the image URI
-//                    val inputImage = InputImage.fromFilePath(this, imageUri)
-//
-//                    // Initialize ML Kit's Text Recognizer
-//                    val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-//
-//                    // Process the image to recognize text
-//                    recognizer.process(inputImage)
-//                        .addOnSuccessListener { visionText ->
-//                            // Handle the successful result here
-//                            val recognizedText = visionText.text
-//                            // Process the text to find the total amount
-//                            val totalAmount = extractTotalFromText(recognizedText)
-//                            Toast.makeText(this, "Total Amount: $totalAmount", Toast.LENGTH_SHORT).show()
-//                        }
-//                        .addOnFailureListener { e ->
-//                            // Handle any errors here
-//                            Toast.makeText(this, "Text recognition failed: ${e.message}", Toast.LENGTH_SHORT).show()
-//                        }
-//                }
-//            }
-//        }
-//
-//    private fun extractTotalFromText(text: String): String {
-//        // You can define a pattern to extract the total amount
-//        val regex = Regex("\\b\\d+(?:\\.\\d{1,2})?\\b") // Basic pattern for extracting numbers
-//        val match = regex.find(text)
-//        return match?.value ?: "Not found"
-//    }
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val imageUri = result.data?.data
+                if (imageUri != null) {
+                    // Create an InputImage object from the image URI
+                    val inputImage = InputImage.fromFilePath(this, imageUri)
+
+                    // Initialize ML Kit's Text Recognizer
+                    val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
+                    // Process the image to recognize text
+                    recognizer.process(inputImage)
+                        .addOnSuccessListener { visionText ->
+                            // Handle the successful result here
+                            val recognizedText = visionText.text
+                            // Process the text to find the total amount
+                            val totalAmount = extractTotalFromText(recognizedText)
+                            Toast.makeText(this, "Total Amount: $totalAmount", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener { e ->
+                            // Handle any errors here
+                            Toast.makeText(this, "Text recognition failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                }
+            }
+        }
+
+    private fun extractTotalFromText(text: String): String {
+        // You can define a pattern to extract the total amount
+        val regex = Regex("\\b\\d+(?:\\.\\d{1,2})?\\b") // Basic pattern for extracting numbers
+        val match = regex.find(text)
+        return match?.value ?: "Not found"
+    }
 
 
 
@@ -170,17 +161,17 @@ class AddTransactionActivity : AppCompatActivity() {
             // Equal split logic
         }
 
-//        val useCameraButton = findViewById<Button>(R.id.useCamera)
-//        useCameraButton.setOnClickListener {
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                // Request permission
-//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
-//            } else {
-//                // Permission granted, launch the camera using cameraLauncher
-//                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//                cameraLauncher.launch(cameraIntent)
-//            }
-//        }
+        val useCameraButton = findViewById<Button>(R.id.useCamera)
+        useCameraButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // Request permission
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
+            } else {
+                // Permission granted, launch the camera using cameraLauncher
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                cameraLauncher.launch(cameraIntent)
+            }
+        }
     }
 
     private fun showMultiSelectDialog(users: List<String>) {
@@ -229,16 +220,16 @@ class AddTransactionActivity : AppCompatActivity() {
         transactionDao.insertTransaction(transaction)
     }
 
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == CAMERA_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            // Permission granted, launch camera
-//            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//            cameraLauncher.launch(cameraIntent)
-//        } else {
-//            // Permission denied, show a message or handle appropriately
-//            Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
-//        }
-//    }
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // Permission granted, launch camera
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraLauncher.launch(cameraIntent)
+        } else {
+            // Permission denied, show a message or handle appropriately
+            Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }

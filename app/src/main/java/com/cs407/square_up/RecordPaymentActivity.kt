@@ -11,6 +11,7 @@ class RecordPaymentActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.record_payment)
         val recordPayment= findViewById<Button>(R.id.recordPayment)
+
         recordPayment.setOnClickListener {
 
         }
