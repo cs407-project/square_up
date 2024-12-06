@@ -28,7 +28,18 @@
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        app:layout_constraintTop_toTopOf="parent" />-->
 
-
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:background="#0D1B2A"
+        android:src="@drawable/ic_back_arrow"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/addMemberButton"

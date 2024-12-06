@@ -3,28 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/addTransaction"
     android:layout_width="match_parent"
-    android:background="#0D1B2A"
     android:layout_height="match_parent"
+    android:background="#0D1B2A"
 
     tools:context=".AddTransactionActivity">
 
-<!--    &lt;!&ndash; Back Button &ndash;&gt;-->
-<!--    <ImageView-->
-<!--        android:id="@+id/backButton"-->
-<!--        android:backgroundTint="#354C61"-->
-<!--        android:layout_width="24dp"-->
-<!--        android:layout_height="24dp"-->
-<!--        android:layout_alignParentStart="true"-->
-<!--        android:layout_marginTop="16dp"-->
-<!--        android:src="@drawable/ic_back_arrow"/>-->
+    <!-- Back Button -->
+
+    <ImageView
+        android:id="@+id/backButton"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:background="#0D1B2A"
+        android:src="@drawable/ic_back_arrow"
+        android:textColor="#FFFFFF"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/addTransaction2"
-        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="59dp"
         android:text="@string/add_transaction"
+        android:textColor="#FFFFFF"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,11 +38,11 @@
 
     <TextView
         android:id="@+id/enterDescription_label"
-        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/enter_description"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/enterDescription"
         app:layout_constraintEnd_toStartOf="@+id/enterDescription"
@@ -46,11 +51,11 @@
 
     <EditText
         android:id="@+id/enterDescription"
-        android:textColor="#FFFFFF"
         android:layout_width="213dp"
         android:layout_height="53dp"
         android:layout_marginTop="24dp"
         android:hint="@string/enter_description"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.863"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,11 +63,11 @@
 
     <TextView
         android:id="@+id/enterAmount_label"
-        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/enter_amount"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/enterAmount"
         app:layout_constraintEnd_toStartOf="@+id/enterAmount"
@@ -71,11 +76,11 @@
 
     <EditText
         android:id="@+id/enterAmount"
-        android:textColor="#FFFFFF"
         android:layout_width="227dp"
         android:layout_height="52dp"
         android:layout_marginTop="8dp"
         android:hint="@string/enter_amount"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.853"
         app:layout_constraintStart_toStartOf="parent"
@@ -83,11 +88,11 @@
 
     <TextView
         android:id="@+id/splitPercentage_label"
-        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:text="@string/splitPercentage"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/editTextNumberDecimal"
         app:layout_constraintEnd_toStartOf="@+id/editTextNumberDecimal"
@@ -96,11 +101,11 @@
 
     <EditText
         android:id="@+id/editTextNumberDecimal"
-        android:textColor="#FFFFFF"
         android:layout_width="255dp"
         android:layout_height="40dp"
         android:layout_marginTop="16dp"
         android:hint="@string/splitPercentage"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,69 +113,69 @@
 
     <Spinner
         android:id="@+id/selectGroup"
-        android:textColor="#FFFFFF"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="#354C61"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTextNumberDecimal" />
 
     <Button
         android:id="@+id/selectPerson"
-        android:textColor="#FFFFFF"
         android:layout_width="0dp"
-        android:backgroundTint="#354C61"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:backgroundTint="#354C61"
         android:text="Select Person(s)"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/selectGroup" />
 
     <Button
         android:id="@+id/customSplit"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#354C61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#354C61"
         android:text="@string/custom_split"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toStartOf="@id/equalSplit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/selectPerson" />
 
     <Button
         android:id="@+id/equalSplit"
-        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="#354C61"
         android:text="@string/equal_split"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/customSplit"
         app:layout_constraintTop_toBottomOf="@id/selectPerson" />
 
     <Button
         android:id="@+id/addTransaction3"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#354C61"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:backgroundTint="#354C61"
         android:text="@string/add_transaction"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/equalSplit" />
 
     <Button
         android:id="@+id/useCamera"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#354C61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
+        android:backgroundTint="#354C61"
         android:text="@string/use_camera"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

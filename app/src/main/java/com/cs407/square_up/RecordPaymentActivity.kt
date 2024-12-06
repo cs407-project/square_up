@@ -10,6 +10,10 @@ class RecordPaymentActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.record_payment)
+        val backButton = findViewById<ImageView>(R.id.backButton)
+        backButton.setOnClickListener {
+            finish()
+        }
         val recordPayment= findViewById<Button>(R.id.recordPayment)
         recordPayment.setOnClickListener {
 

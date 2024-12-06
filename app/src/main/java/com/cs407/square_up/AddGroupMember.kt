@@ -24,6 +24,11 @@ class AddGroupMember : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_group_member)
+
+        val backButton = findViewById<ImageView>(R.id.backButton)
+        backButton.setOnClickListener {
+            finish()
+        }
         val db = AppDatabase.getDatabase(this)
         val groupDao = db.groupDao()
         val userDao = db.userDao()

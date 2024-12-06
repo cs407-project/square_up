@@ -7,6 +7,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,7 @@ class GroupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.group)
+
         val userId = intent.getIntExtra("USER_ID", 1) // Default to 1 if not found
         val groupId = intent.getIntExtra("GROUP_ID", 1) // Default to 1 if not found
         val shared_groupID = intent.getIntExtra("SHARED_ID", 1) // Default to 1 if not found
@@ -43,6 +45,12 @@ class GroupActivity : AppCompatActivity() {
         val backButton = findViewById<ImageButton>(R.id.back_button)
         backButton.setOnClickListener {
             finish()
+        }
+        val profileButton = findViewById<ImageButton>(R.id.profile_button)
+        profileButton.setOnClickListener {
+            val intent = Intent(this, ChangePasswordActivity::class.java)
+            intent.putExtra("USER_ID", userId) // Pass userId in intent
+            startActivity(intent)
         }
     }
 

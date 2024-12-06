@@ -93,6 +93,7 @@ package com.cs407.square_up
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -111,6 +112,10 @@ class CreateGroup : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_group)
+        val backButton = findViewById<ImageView>(R.id.backButton)
+        backButton.setOnClickListener {
+            finish()
+        }
 
         val db = AppDatabase.getDatabase(this)
         val groupDao = db.groupDao()

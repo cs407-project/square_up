@@ -22,6 +22,11 @@ class ChangePasswordActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.change_password)
+
+        val backButton = findViewById<ImageView>(R.id.backButton)
+        backButton.setOnClickListener {
+            finish()
+        }
         val myUserID =intent.getIntExtra("USER_ID", 1)
         val db = AppDatabase.getDatabase(this)
         val userDao = db.userDao()
