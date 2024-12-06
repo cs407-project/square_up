@@ -5,17 +5,20 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0D1B2A"
     tools:context=".MainActivity">
 
     <TextView
         android:id="@+id/squareUp"
-        android:layout_width="166dp"
+        android:layout_width="228dp"
         android:layout_height="0dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginBottom="33dp"
-        android:fontFamily="sans-serif-black"
+
+        android:layout_marginTop="49dp"
+        android:layout_marginBottom="27dp"
+        android:fontFamily="@font/roboto_bold"
         android:text="SquareUp"
-        android:textSize="34sp"
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +29,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="18dp"
+        android:backgroundTint="#354C61"
         android:text="Sign In"
+        android:textColorHint="#404040"
+        android:textColorLink="#354C61"
         app:layout_constraintBottom_toTopOf="@+id/sign_up"
         app:layout_constraintStart_toStartOf="@+id/sign_up"
         app:layout_constraintTop_toBottomOf="@+id/password" />
@@ -35,7 +41,8 @@
         android:id="@+id/sign_up"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="135dp"
+        android:layout_marginBottom="134dp"
+        android:backgroundTint="#354C61"
         android:text="Sign Up"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,14 +53,16 @@
         android:id="@+id/username_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="6dp"
         android:text="Username:"
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/username"
         app:layout_constraintEnd_toStartOf="@+id/username"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2"
         app:layout_constraintTop_toTopOf="@+id/username" />
+
     <EditText
         android:id="@+id/username"
         android:layout_width="wrap_content"
@@ -61,24 +70,26 @@
         android:layout_marginBottom="28dp"
         android:ems="10"
         android:inputType="text"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/password"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.855"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/username_label"
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <TextView
         android:id="@+id/password_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="7dp"
         android:text="Password:"
+        android:textColor="#FFFFFF"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/password"
         app:layout_constraintEnd_toStartOf="@+id/password"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username"
         app:layout_constraintTop_toTopOf="@+id/password" />
+
     <EditText
         android:id="@+id/password"
         android:layout_width="wrap_content"
@@ -86,20 +97,21 @@
         android:layout_marginBottom="72dp"
         android:ems="10"
         android:inputType="textPassword"
-
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toTopOf="@+id/sign_in"
-        app:layout_constraintStart_toStartOf="@+id/username"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/password_label"
         app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <ImageView
         android:id="@+id/imageView2"
-        android:layout_width="124dp"
+        android:layout_width="143dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="74dp"
+        android:layout_marginBottom="45dp"
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/squareUp"
-        app:srcCompat="@drawable/baseline_person_24" />
+        app:srcCompat="@drawable/square_up_logo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

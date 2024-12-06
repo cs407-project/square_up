@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton;
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 
 class HomeActivity : AppCompatActivity() {
@@ -16,8 +17,8 @@ class HomeActivity : AppCompatActivity() {
         val group3Button = findViewById<Button>(com.cs407.square_up.R.id.group_3_button)
         val temp_finance_button = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_finance_button)
         val menu_button = findViewById<ImageButton>(com.cs407.square_up.R.id.menu_button)
-        val addExpense = findViewById<ImageButton>(com.cs407.square_up.R.id.add_expense_button)
-        val squareUpButton = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_square_up_button)
+        val addExpense = findViewById<ImageView>(com.cs407.square_up.R.id.add_expense_button)
+        val squareUpButton = findViewById<ImageView>(com.cs407.square_up.R.id.temp_square_up_button)
         val profileButton = findViewById<ImageButton>(com.cs407.square_up.R.id.profile_button)
         val addGroupButton = findViewById<Button>(com.cs407.square_up.R.id.add_group_button)
 

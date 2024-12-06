@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0D1B2A"
     tools:context=".MainActivity">
 
     <TextView
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="34dp"
         android:text="Amount Owed"
+        android:textColor="#FFFFFF"
         app:layout_constraintBaseline_toBaselineOf="@+id/group_2_button"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -22,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="34dp"
         android:text="Amount Owed"
+        android:textColor="#FFFFFF"
         app:layout_constraintBaseline_toBaselineOf="@+id/group_3_button"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -32,6 +35,7 @@
         android:layout_marginStart="21dp"
         android:layout_marginTop="239dp"
         android:text="Group 1"
+        android:backgroundTint="#354C61"
         app:layout_constraintStart_toEndOf="@+id/amount4"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -40,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
-        android:text="Group 2"
+        android:backgroundTint="#354C61"
         app:layout_constraintStart_toStartOf="@+id/group_1_button"
         app:layout_constraintTop_toBottomOf="@+id/group_1_button" />
 
@@ -49,7 +53,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
-        android:text="Group 3"
+        android:backgroundTint="#354C61"
         app:layout_constraintStart_toStartOf="@+id/group_2_button"
         app:layout_constraintTop_toBottomOf="@+id/group_2_button" />
 
@@ -59,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="23dp"
         android:text="Add Group"
+        android:backgroundTint="#354C61"
         app:layout_constraintStart_toStartOf="@+id/group_3_button"
         app:layout_constraintTop_toBottomOf="@+id/group_3_button" />
 
@@ -71,6 +76,7 @@
         android:fontFamily="sans-serif-black"
         android:text="Total Amount Owed: "
         android:textSize="20sp"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toStartOf="@+id/menu_button"
         app:layout_constraintStart_toEndOf="@+id/profile_button"
         app:layout_constraintTop_toTopOf="@+id/menu_button" />
@@ -110,7 +116,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/btn_star_big_on" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/temp_square_up_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -119,9 +125,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/add_expense_button"
         app:layout_constraintTop_toTopOf="@+id/add_expense_button"
-        app:srcCompat="@android:drawable/ic_menu_search" />
+        app:srcCompat="@drawable/square_up_logo" />
 
-    <ImageButton
+    <ImageView
         android:id="@+id/add_expense_button"
         android:layout_width="0dp"
         android:layout_height="72dp"
@@ -138,6 +144,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
         android:text="Amount Owed"
+        android:textColor="#FFFFFF"
         app:layout_constraintBaseline_toBaselineOf="@+id/group_1_button"
         app:layout_constraintStart_toStartOf="parent" />
 

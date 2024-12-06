@@ -5,4 +5,3 @@ plugins {
     alias(libs.plugins.ksp) apply false
     id("androidx.navigation.safeargs.kotlin") version "2.8.2" apply false
 }
-
