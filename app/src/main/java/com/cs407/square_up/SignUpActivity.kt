@@ -9,6 +9,7 @@ import android.os.Looper
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -39,9 +40,11 @@ class SignUpActivity : AppCompatActivity() {
         confirm_password = findViewById(R.id.confirm_password)
         val sign_up_button = findViewById<Button>(R.id.sign_up_button)
         val backButton = findViewById<ImageView>(R.id.backButton)
+
         backButton.setOnClickListener {
             finish()
         }
+
         // Initialize SharedPreferences
         userPasswdKV = getSharedPreferences(getString(R.string.userPasswdKV), Context.MODE_PRIVATE)
 
@@ -63,7 +66,7 @@ class SignUpActivity : AppCompatActivity() {
                             Toast.makeText(this@SignUpActivity, "User registered successfully", Toast.LENGTH_SHORT).show()
                             Handler(Looper.getMainLooper()).postDelayed({
                                 finish()
-                            }, 2000) // I thought 10 seconds was too long so I changed the delay to 2 seconds
+                            }, 1000)
                         } else {
                             Toast.makeText(this@SignUpActivity, "Registration failed", Toast.LENGTH_SHORT).show()
                         }

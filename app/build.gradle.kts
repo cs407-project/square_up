@@ -80,4 +80,7 @@ dependencies {
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     testImplementation(libs.core.testing)
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+
+    implementation("com.google.mlkit:text-recognition:16.0.0")
+
 }
