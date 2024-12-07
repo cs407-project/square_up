@@ -7,8 +7,6 @@ import android.provider.MediaStore
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -27,10 +25,25 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
 import android.Manifest
-import com.google.mlkit.vision.common.InputImage
+import android.app.Activity
+import android.content.ContentValues
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Environment
+import android.util.Log
+import android.widget.TextView
 import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.TextRecognizer
+import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class AddTransactionActivity : AppCompatActivity() {
@@ -38,43 +51,61 @@ class AddTransactionActivity : AppCompatActivity() {
         const val CAMERA_REQUEST_CODE = 1001
     }
 
-//    // Declare cameraLauncher here
-//    private val cameraLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == RESULT_OK) {
-//                // Handle the image capture result here
-//                val imageUri = result.data?.data
-//                // Do something with the captured image, e.g., display or save
-//            }
-//        }
 
-//    private val cameraLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == RESULT_OK) {
-//                val imageUri = result.data?.data
-//                if (imageUri != null) {
-//                    // Create an InputImage object from the image URI
-//                    val inputImage = InputImage.fromFilePath(this, imageUri)
-//
-//                    // Initialize ML Kit's Text Recognizer
-//                    val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-//
-//                    // Process the image to recognize text
-//                    recognizer.process(inputImage)
-//                        .addOnSuccessListener { visionText ->
-//                            // Handle the successful result here
-//                            val recognizedText = visionText.text
-//                            // Process the text to find the total amount
-//                            val totalAmount = extractTotalFromText(recognizedText)
-//                            Toast.makeText(this, "Total Amount: $totalAmount", Toast.LENGTH_SHORT).show()
-//                        }
-//                        .addOnFailureListener { e ->
-//                            // Handle any errors here
-//                            Toast.makeText(this, "Text recognition failed: ${e.message}", Toast.LENGTH_SHORT).show()
-//                        }
-//                }
+//    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+//        if (result.resultCode == Activity.RESULT_OK) {
+//            val imageBitmap: Bitmap = result.data?.extras?.get("data") as Bitmap
+//            Log.d("CameraActivity", "Image bitmap: $imageBitmap")
+//            if (imageBitmap == null) {
+//                Log.e("CameraActivity", "Bitmap is null")
 //            }
 //        }
+//    }
+
+    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val imageBitmap = result.data?.extras?.get("data") as? Bitmap
+            if (imageBitmap != null) {
+                Log.d("CameraActivity", "Image bitmap captured successfully.")
+                processBitmapWithMLKit(imageBitmap) // Call ML Kit processing
+            } else {
+                Log.e("CameraActivity", "Bitmap is null")
+            }
+        } else {
+            Log.e("CameraActivity", "Failed to capture image.")
+        }
+    }
+
+    private fun processBitmapWithMLKit(bitmap: Bitmap) {
+        // Convert the Bitmap to InputImage
+        val inputImage = InputImage.fromBitmap(bitmap, 0) // Replace 0 with correct rotation if needed
+
+        // Initialize ML Kit's TextRecognizer
+        val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
+        // Process the image
+        recognizer.process(inputImage)
+            .addOnSuccessListener { visionText ->
+                handleRecognizedText(visionText)
+            }
+            .addOnFailureListener { e ->
+                Log.e("CameraActivity", "Text recognition failed: ${e.message}")
+            }
+    }
+
+//    private fun handleRecognizedText(visionText: Text) {
+//        val stringBuilder = StringBuilder()
+//        for (block in visionText.textBlocks) {
+//            stringBuilder.append(block.text).append("\n")
+//        }
+//
+//        // Log or display the recognized text
+//        Log.d("CameraActivity", "Recognized Text: $stringBuilder")
+//
+//        // For example, display it in a TextView
+//        val textView: TextView = findViewById(R.id.enterDescription_label) // Ensure a TextView exists in your layout
+//        textView.text = stringBuilder.toString()
+//    }
 //
 //    private fun extractTotalFromText(text: String): String {
 //        // You can define a pattern to extract the total amount
@@ -83,7 +114,56 @@ class AddTransactionActivity : AppCompatActivity() {
 //        return match?.value ?: "Not found"
 //    }
 
+    private fun handleRecognizedText(visionText: Text) {
+        val stringBuilder = StringBuilder()
+        var totalAmount = 0.0 // Variable to accumulate the total amount
 
+//        val textView: TextView = findViewById(R.id.enterDescription_label)
+//        textView.text = stringBuilder.toString()
+
+        // Process each text block and separate description and amounts
+        for (block in visionText.textBlocks) {
+            val blockText = block.text.trim()
+
+            // Check if the block is a number (we will treat as amount)
+            val regex = Regex("\\b\\d+(?:\\.\\d{1,2})?\\b") // Match numbers (including decimals)
+            val matches = regex.findAll(blockText)
+
+            // If there are numbers, we add them up
+            for (match in matches) {
+                val amount = match.value.toDoubleOrNull()
+                if (amount != null) {
+                    totalAmount += amount
+                }
+            }
+
+            // If no numbers are found, we consider the text as part of the description
+            if (matches.count() == 0) {
+                stringBuilder.append(blockText).append("\n")
+            }
+        }
+
+        // Populate the EditText for description
+        val descriptionEditText: EditText = findViewById(R.id.enterDescription)
+        descriptionEditText.setText(stringBuilder.toString().trim())
+
+        // Populate the EditText for amount (sum of numbers)
+        val amountEditText: EditText = findViewById(R.id.enterAmount)
+        amountEditText.setText(totalAmount.toString())
+
+        // Provide a message to the user
+        val message = "The fields have been populated. Please review and edit if necessary."
+        //Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+        val autofillMessage = findViewById<TextView>(R.id.autofill_message)
+        autofillMessage.setText(message)
+    }
+
+
+    // Function to extract numbers from the text
+    private fun extractNumbersFromText(text: String): List<Double> {
+        val regex = Regex("\\b\\d+(?:\\.\\d{1,2})?\\b") // Basic pattern for extracting numbers
+        return regex.findAll(text).map { it.value.toDouble() }.toList()
+    }
 
 
     private val selectedUsers = mutableListOf<String>() // List to store selected users
@@ -98,14 +178,9 @@ class AddTransactionActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val backButton = findViewById<ImageView>(R.id.backButton)
-        backButton.setOnClickListener {
-            finish()
-        }
 
         //Need to add a query "SELECT groupName from GROUPS WHERE userID = :userID"
         val selectGroupSpinner = findViewById<Spinner>(R.id.selectGroup)
-        val currentUserID =intent.getIntExtra("USER_ID", 1)
 
 
         val selectPersonButton = findViewById<Button>(R.id.selectPerson)
@@ -113,6 +188,7 @@ class AddTransactionActivity : AppCompatActivity() {
             lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.getDatabase(applicationContext)
                 val userDao = db.userDao()
+                val currentUserID =intent.getIntExtra("USER_ID", 1)
                 val users = userDao.getAllOtherUsers(currentUserID) // Replace 1 with actual user ID
 
                 withContext(Dispatchers.Main) {
@@ -145,7 +221,7 @@ class AddTransactionActivity : AppCompatActivity() {
             }
 
             val transaction = Transaction(
-                userWhoPaidID = currentUserID,
+                userWhoPaidID = 1, // Replace with actual user ID
                 transactionAmount = amount.toDouble(),
                 transactionDetails = description,
                 transactionDate = Date(),
@@ -176,17 +252,17 @@ class AddTransactionActivity : AppCompatActivity() {
             // Equal split logic
         }
 
-//        val useCameraButton = findViewById<Button>(R.id.useCamera)
-//        useCameraButton.setOnClickListener {
-//            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-//                // Request permission
-//                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
-//            } else {
-//                // Permission granted, launch the camera using cameraLauncher
-//                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//                cameraLauncher.launch(cameraIntent)
-//            }
-//        }
+        val useCameraButton = findViewById<Button>(R.id.useCamera)
+        useCameraButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // Request permission
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
+            } else {
+                // Permission granted, launch the camera using cameraLauncher
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                cameraLauncher.launch(cameraIntent)
+            }
+        }
     }
 
     private fun showMultiSelectDialog(users: List<String>) {
@@ -235,16 +311,15 @@ class AddTransactionActivity : AppCompatActivity() {
         transactionDao.insertTransaction(transaction)
     }
 
-//    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-//        if (requestCode == CAMERA_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//            // Permission granted, launch camera
-//            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//            cameraLauncher.launch(cameraIntent)
-//        } else {
-//            // Permission denied, show a message or handle appropriately
-//            Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
-//        }
-//    }
-
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == CAMERA_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            // Permission granted, launch camera
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            cameraLauncher.launch(cameraIntent)
+        } else {
+            // Permission denied, show a message or handle appropriately
+            Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
