@@ -106,7 +106,6 @@ class HomeActivity : AppCompatActivity() {
                         intent.putExtra("GROUP_ID", group.groupID)
                         intent.putExtra("USER_ID", userId)
                         intent.putExtra("GROUP_Name", group.groupName)
-                        intent.putExtra("SHARED_ID", group.sharedGroupID)
                         startActivity(intent)
                     }
                     groupContainer.addView(button)

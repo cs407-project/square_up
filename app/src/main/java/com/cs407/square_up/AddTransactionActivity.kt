@@ -33,6 +33,9 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import android.view.View
+import android.widget.Adapter
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.mlkit.vision.text.TextRecognition
@@ -171,6 +174,7 @@ class AddTransactionActivity : AppCompatActivity() {
     private val selectedUsers = mutableListOf<String>() // List to store selected users
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val db = AppDatabase.getDatabase(applicationContext)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.add_transaction)
@@ -187,9 +191,61 @@ class AddTransactionActivity : AppCompatActivity() {
 
         //Need to add a query "SELECT groupName from GROUPS WHERE userID = :userID"
         val selectGroupSpinner = findViewById<Spinner>(R.id.selectGroup)
+        val currentUserID = intent.getIntExtra("USER_ID", 1)
+
+        lifecycleScope.launch ( Dispatchers.IO ) {
+            val groupsDao = db.groupDao()
+            val groupNames = groupsDao.getGroupNamesByUser(currentUserID)
+
+            withContext(Dispatchers.Main) {
+                if (groupNames.isNotEmpty()) {
+                    val groupNamesWithPlaceholder = mutableListOf("Select a group") + groupNames
+                    Log.d("SpinnerSetup", "Group names with placeholder: $groupNamesWithPlaceholder")
+                    val adapter = ArrayAdapter(
+                        this@AddTransactionActivity,
+                        R.layout.spinner_item,
+                        groupNamesWithPlaceholder
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+                    selectGroupSpinner.adapter = adapter
+                    selectGroupSpinner.setSelection(0)
+
+                    selectGroupSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected( parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                            val selectedGroup = parent?.getItemAtPosition(position).toString()
+                            Log.d("SpinnerSelection", "Group selected: $selectedGroup, Position: $position")
+
+                            if (selectedGroup == "Select a group") {
+                                Toast.makeText(this@AddTransactionActivity, "Please select a valid group", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(this@AddTransactionActivity, "Selected: $selectedGroup", Toast.LENGTH_SHORT).show()
+                                //(view as? TextView)?.text = selectedGroup
+                            }
+                        }
+
+                        override fun onNothingSelected(parent: AdapterView<*>?) {
+                            Toast.makeText(this@AddTransactionActivity, "No selection made", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                    Log.d("SpinnerSetup", "OnItemSelectedListener assigned to Spinner.")
+                }
+                else {
+                    Log.e("SpinnerSetup", "No groups found for user ID: $currentUserID")
+                    Toast.makeText(
+                        this@AddTransactionActivity,
+                        "No groups found for this user.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
 
 
         val selectPersonButton = findViewById<Button>(R.id.selectPerson)
+
+
         selectPersonButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.getDatabase(applicationContext)
@@ -215,7 +271,7 @@ class AddTransactionActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             val splitPercentage = splitPercentageText.toDoubleOrNull()
-            if (splitPercentage == null || splitPercentage <= 0 || splitPercentage > 100) {
+            if (splitPercentage == null || splitPercentage <= 0 || splitPercentage > 1) {
                 Toast.makeText(this, "Invalid split percentage", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
@@ -226,26 +282,61 @@ class AddTransactionActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val transaction = Transaction(
-                userWhoPaidID = 1, // Replace with actual user ID
-                transactionAmount = amount.toDouble(),
-                transactionDetails = description,
-                transactionDate = Date(),
-                splitPercentage = splitPercentage,
-                paid = false,
-                budgetTags = selectedUsers // Using selected users as tags for simplicity
-            )
-
-            lifecycleScope.launch(Dispatchers.IO) {
+            val currentUserID = intent.getIntExtra("USER_ID", 1)
+            Log.d("UserID", "$currentUserID")
+            lifecycleScope.launch (Dispatchers.IO) {
                 val db = AppDatabase.getDatabase(applicationContext)
                 val transactionDao = db.transactionDao()
-                transactionDao.insertTransaction(transaction)
+                val userDao = db.userDao()
 
+                val amountDouble = amount.toDouble()
+                val transactionDate = Date()
+
+                val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
+
+                // Insert for the initiator
+                Log.d("TransactionInsert", "Attempting to insert transaction for initiator with ID: $nextId")
+                Log.d("TransactionInsert", "UserID = $currentUserID")
+                transactionDao.insertTransaction(
+                    Transaction(
+                        transactionID = nextId,
+                        userWhoPaidID = currentUserID,
+                        transactionAmount = amountDouble,
+                        transactionDetails = description,
+                        transactionDate = transactionDate,
+                        splitPercentage = splitPercentage,
+                        paid = true,
+                        budgetTag = "null"
+                    )
+                )
+
+                val remainingPercentage = 1.0 - splitPercentage
+                val otherUserPercentage = remainingPercentage / (selectedUsers.size)
+
+                selectedUsers.forEach { userName ->
+                    val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
+                    if (userId != currentUserID) {
+                        transactionDao.insertTransaction(
+                            Transaction(
+                                transactionID = nextId,
+                                userWhoPaidID = userId,
+                                transactionAmount = amountDouble,
+                                transactionDetails = description,
+                                transactionDate = transactionDate,
+                                splitPercentage = otherUserPercentage,
+                                paid = false,
+                                budgetTag = "null"
+                            )
+                        )
+                    }
+                }
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@AddTransactionActivity, "Transaction added successfully!", Toast.LENGTH_SHORT).show()
                     finish()
                 }
             }
+
+
         }
 
         val customSplitButton = findViewById<Button>(R.id.customSplit)
@@ -310,12 +401,6 @@ class AddTransactionActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    //TODO Add functionality to validate transaction for multiple users from one input
-    private suspend fun validateTransaction(transaction: Transaction) {
-        val db = AppDatabase.getDatabase(this)
-        val transactionDao = db.transactionDao()
-        transactionDao.insertTransaction(transaction)
-    }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

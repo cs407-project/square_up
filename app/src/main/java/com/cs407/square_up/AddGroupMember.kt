@@ -1,6 +1,7 @@
 package com.cs407.square_up
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Button
@@ -34,7 +35,6 @@ class AddGroupMember : AppCompatActivity() {
         val userDao = db.userDao()
         val currentUserID = intent.getIntExtra("USER_ID", 1) // Default to 1 if not found
         val groupId = intent.getIntExtra("GROUP_ID", 1) // Default to 1 if not found
-        val sharedID = intent.getIntExtra("SHARED_ID", 1) // Default to 1 if not found
         val groupNameNullable = intent.getStringExtra("GROUP_Name")
         if (groupNameNullable == null) {
             Toast.makeText(this, "Error: groupName is null", Toast.LENGTH_SHORT).show()
@@ -46,22 +46,22 @@ class AddGroupMember : AppCompatActivity() {
         val  selectMembersButton= findViewById<Button>(R.id.selectMembers)
         selectMembersButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
+                // Fetch all users excluding current user
+                val allUsers = userDao.getAllUsers()
+                val allUserMap = allUsers.associateBy { it.userId }
+                Log.d("AddGroupMember", "All users map: $allUserMap")
+
+                // Fetch all group members for the specific group
+                val groupMembers = groupDao.getGroupsByGroupId(groupId)
+                val groupUserIds = groupMembers.map { it.userID }
+                Log.d("AddGroupMember", "Group user IDs: $groupUserIds")
+
+                // Filter out users who are already in the group
+                val filteredUsernames = allUsers.filter { user -> user.userId !in groupUserIds }.map { it.userName }
+                Log.d("AddGroupMember", "Filtered usernames: $filteredUsernames")
+
                 withContext(Dispatchers.Main) {
-                    val db = AppDatabase.getDatabase(applicationContext)
-                    val userDao = db.userDao()
-                    val users = userDao.getAllOtherUsers(currentUserID)
-                    val groupMembers = db.groupDao().getGroupsBySharedID(sharedID)
-                    val groupMemberUsernames = groupMembers.map { member ->
-                        val user = db.userDao().getUserById(member.userID) // Fetch each user
-                        user?.userName
-                    }.filterNotNull() // Remove nulls in case a user doesn't exist
-
-                    val filteredUsernames = users.filter { username -> username !in groupMemberUsernames }
-
-
-                    withContext(Dispatchers.Main) {
-                        showMultiSelectDialog(filteredUsernames)
-                    }
+                    showMultiSelectDialog(filteredUsernames)
                 }
             }
         }
@@ -75,20 +75,19 @@ class AddGroupMember : AppCompatActivity() {
 
                 val memberIDs = mutableListOf<Int>()
                 for (username in selectedMembers) {
-                    val user = userDao.getUserByName(username)
-                    user?.let { memberIDs.add(it.userId) }
+                    userDao.getUserByName(username)?.let { memberIDs.add(it.userId) }
                 }
-                memberIDs.add(currentUserID)
+
                 for (userID in memberIDs) {
-                    val existingGroup = groupDao.getGroupByUserNameAndSharedID(userID, groupName, sharedID)
+                    val existingGroup = groupDao.getGroupByUserNameAndGroupName(userID, groupName)
                     if (existingGroup == null) {
-                        val group = Group(
+                        val newGroup = Group(
+                            groupID = groupId,
                             userID = userID,
                             groupName = groupName,
-                            dateCreated = Date(),
-                            sharedGroupID = sharedID
+                            dateCreated = Date()
                         )
-                        groupDao.insertGroup(group)
+                        groupDao.insertGroup(newGroup)
                         withContext(Dispatchers.Main) {
                             Toast.makeText(this@AddGroupMember, "Added successfully!", Toast.LENGTH_SHORT).show()
                         }
@@ -105,11 +104,7 @@ class AddGroupMember : AppCompatActivity() {
 
     }
     private fun showMultiSelectDialog(users: List<String>) {
-
-        // Prepare a list of available users
         val availableUsers = users.toTypedArray()
-
-        // Create a temporary list to track selections during the dialog session
         val tempSelectedUsers = selectedMembers.toMutableList()
         val selectedItems = BooleanArray(availableUsers.size) { index ->
             selectedMembers.contains(availableUsers[index])
