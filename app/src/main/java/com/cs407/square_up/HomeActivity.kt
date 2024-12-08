@@ -44,7 +44,7 @@ class HomeActivity : AppCompatActivity() {
         loadGroups(userId)
 
         lifecycleScope.launch(Dispatchers.Main) {
-            val totalAmount = getTotalAmountOwedByUser()
+            val totalAmount = getTotalAmountOwedByUser(userId)
             updateTotalAmount(totalAmount)
         }
 
@@ -119,14 +119,13 @@ class HomeActivity : AppCompatActivity() {
         val userId = intent.getIntExtra("USER_ID", -1) // Default to -1 if not found
         loadGroups(userId)
         lifecycleScope.launch(Dispatchers.Main) {
-            val totalAmount = getTotalAmountOwedByUser()
+            val totalAmount = getTotalAmountOwedByUser(userId)
             updateTotalAmount(totalAmount)
         }
     }
 
     // Function to calculate total amount owed by the user
-    private suspend fun getTotalAmountOwedByUser(): Double {
-        val userId = 1 // Assuming you have the userId (this could be passed or fetched from shared preferences)
+    private suspend fun getTotalAmountOwedByUser(userId: Int): Double {
         val transactions = AppDatabase.getDatabase(applicationContext).transactionDao().getTransactionsByUser(userId)
         var totalAmount = 0.0
         for (transaction in transactions) {
