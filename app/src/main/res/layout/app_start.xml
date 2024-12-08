@@ -15,7 +15,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:contentDescription="App Logo"
-        app:srcCompat="@drawable/square_up_logo"
+        app:srcCompat="@drawable/square_up_logo_xml"
         tools:layout_editor_absoluteX="130dp"
         tools:layout_editor_absoluteY="476dp" />
 

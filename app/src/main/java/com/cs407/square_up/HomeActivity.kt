@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.ImageButton;
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +34,7 @@ class HomeActivity : AppCompatActivity() {
         val temp_finance_button = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_finance_button)
         val menu_button = findViewById<ImageButton>(com.cs407.square_up.R.id.menu_button)
         val addExpense = findViewById<ImageButton>(com.cs407.square_up.R.id.add_expense_button)
-        val squareUpButton = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_square_up_button)
+        val squareUpButton = findViewById<ImageView>(com.cs407.square_up.R.id.temp_square_up_button)
         val profileButton = findViewById<ImageButton>(com.cs407.square_up.R.id.profile_button)
         val addGroupButton = findViewById<Button>(com.cs407.square_up.R.id.add_group_button)
 

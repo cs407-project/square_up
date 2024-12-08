@@ -5,11 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#0D1B2A"
-
     tools:context=".AddTransactionActivity">
 
     <!-- Back Button -->
-
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="0dp"
@@ -111,16 +109,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/enterAmount" />
 
+    <!-- New EditText for autofill message, above the Spinner -->
+    <EditText
+        android:id="@+id/autofill_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text=""
+        android:textColor="#FFFFFF"
+        android:textStyle="italic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextNumberDecimal" />
+
+    <TextView
+        android:id="@+id/selectGroupLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Select Group"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/autofill_message" />
+
     <Spinner
         android:id="@+id/selectGroup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="#354C61"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextNumberDecimal" />
+        app:layout_constraintTop_toBottomOf="@id/selectGroupLabel" />
+
 
     <Button
         android:id="@+id/selectPerson"
