@@ -75,31 +75,49 @@
 
     <TextView
         android:id="@+id/total_amount"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
+        android:layout_width="192dp"
+        android:layout_height="26dp"
         android:layout_marginTop="35dp"
         android:layout_marginEnd="29dp"
         android:fontFamily="sans-serif-black"
-        android:textColor="#FFFFFF"
         android:text="Total Amount Owed: "
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/menu_button"
         app:layout_constraintStart_toEndOf="@+id/profile_button"
         app:layout_constraintTop_toTopOf="@+id/menu_button" />
 
+
+    <TextView
+        android:id="@+id/total_amount_value"
+        android:layout_width="181dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="29dp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:text="0.00"
+        android:textColor="#FF0000"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="@+id/total_amount"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/total_amount"
+        app:layout_constraintTop_toBottomOf="@+id/total_amount" />
+
     <ImageButton
         android:id="@+id/profile_button"
-        android:backgroundTint="#354C61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="54dp"
         android:layout_marginBottom="37dp"
+        android:backgroundTint="#354C61"
         app:layout_constraintBottom_toTopOf="@+id/group_container"
         app:layout_constraintEnd_toStartOf="@+id/total_amount"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.273"
         app:srcCompat="@drawable/baseline_person_24" />
 
     <ImageButton

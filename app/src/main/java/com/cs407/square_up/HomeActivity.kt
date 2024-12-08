@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.ImageButton;
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -41,6 +42,11 @@ class HomeActivity : AppCompatActivity() {
         val userId = intent.getIntExtra("USER_ID", -1) // Default to -1 if not found
         groupContainer = findViewById(com.cs407.square_up.R.id.group_container) // Initialize the class-level groupContainer here
         loadGroups(userId)
+
+        lifecycleScope.launch(Dispatchers.Main) {
+            val totalAmount = getTotalAmountOwedByUser()
+            updateTotalAmount(totalAmount)
+        }
 
         temp_finance_button.setOnClickListener {
             val intent = Intent(this, BudgetActivity::class.java)
@@ -112,8 +118,41 @@ class HomeActivity : AppCompatActivity() {
         super.onResume()
         val userId = intent.getIntExtra("USER_ID", -1) // Default to -1 if not found
         loadGroups(userId)
+        lifecycleScope.launch(Dispatchers.Main) {
+            val totalAmount = getTotalAmountOwedByUser()
+            updateTotalAmount(totalAmount)
+        }
     }
 
+    // Function to calculate total amount owed by the user
+    private suspend fun getTotalAmountOwedByUser(): Double {
+        val userId = 1 // Assuming you have the userId (this could be passed or fetched from shared preferences)
+        val transactions = AppDatabase.getDatabase(applicationContext).transactionDao().getTransactionsByUser(userId)
+        var totalAmount = 0.0
+        for (transaction in transactions) {
+            // Add or subtract based on whether the user has paid
+            totalAmount += if (transaction.paid) {
+                -transaction.transactionAmount // Paid, reduce amount
+            } else {
+                transaction.transactionAmount // Owed, add amount
+            }
+        }
+        return totalAmount
+    }
+
+    // Function to update the total amount owed TextView
+    private fun updateTotalAmount(amount: Double) {
+        val totalAmountValueTextView = findViewById<TextView>(R.id.total_amount_value)
+        val totalAmountTextView = findViewById<TextView>(R.id.total_amount)
+        totalAmountValueTextView.text = "$" +amount.toString()
+        // Change color based on positive or negative amount
+        if (amount > 0) {
+            totalAmountValueTextView.setTextColor(Color.RED)
+        } else {
+            totalAmountValueTextView.setTextColor(Color.GREEN)
+            totalAmountTextView.setText("Total Amount:")
+        }
+    }
     private fun loadGroups(userId: Int) {
         val db = AppDatabase.getDatabase(this)
         lifecycleScope.launch(Dispatchers.IO) {
