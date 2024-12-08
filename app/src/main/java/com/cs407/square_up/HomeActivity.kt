@@ -48,11 +48,41 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        menu_button.setOnClickListener {
-            val intent = Intent(this, HistoryActivity::class.java)
-            intent.putExtra("USER_ID", userId) // Pass userId in intent
-            startActivity(intent)
+//        menu_button.setOnClickListener {
+//            val intent = Intent(this, HistoryActivity::class.java)
+//            intent.putExtra("USER_ID", userId) // Pass userId in intent
+//            startActivity(intent)
+//        }
+        menu_button.setOnClickListener { view ->
+            val popupMenu = androidx.appcompat.widget.PopupMenu(this, view)
+            popupMenu.menuInflater.inflate(com.cs407.square_up.R.menu.menu_popup, popupMenu.menu)
+
+            popupMenu.setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    com.cs407.square_up.R.id.menu_history -> {
+                        val intent = Intent(this, HistoryActivity::class.java)
+                        intent.putExtra("USER_ID", userId)
+                        startActivity(intent)
+                        true
+                    }
+                    com.cs407.square_up.R.id.menu_change_password -> {
+                        val intent = Intent(this, ChangePasswordActivity::class.java)
+                        intent.putExtra("USER_ID", userId)
+                        startActivity(intent)
+                        true
+                    }
+                    com.cs407.square_up.R.id.menu_sign_out -> {
+                        Toast.makeText(this, "Signed out successfully!", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, SignInActivity::class.java)
+                        startActivity(intent)
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
         }
+
 
         addExpense.setOnClickListener {
             val intent = Intent(this, AddTransactionActivity::class.java)
@@ -67,8 +97,8 @@ class HomeActivity : AppCompatActivity() {
         }
 
         profileButton.setOnClickListener {
-            val intent = Intent(this, ChangePasswordActivity::class.java)
-            intent.putExtra("USER_ID", userId) // Pass userId in intent
+            Toast.makeText(this, "Signed out successfully!", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)
         }
 
