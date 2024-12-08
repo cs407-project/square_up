@@ -27,10 +27,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
 import android.Manifest
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.Text
-import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+//import com.google.mlkit.vision.common.InputImage
+//import com.google.mlkit.vision.text.TextRecognition
+//import com.google.mlkit.vision.text.Text
+//import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 
 class AddTransactionActivity : AppCompatActivity() {
