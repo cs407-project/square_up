@@ -8,20 +8,26 @@
     tools:context=".AddTransactionActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/linearLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <!-- Total Amount -->
         <TextView
             android:id="@+id/totalAmountLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="Total Amount: $100.00"
-            android:textSize="18sp"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="16dp" />
+            android:textSize="18sp" />
 
         <!-- Participant 1 Slider -->
         <TextView
@@ -32,22 +38,22 @@
             android:textColor="#FFFFFF" />
 
         <!-- Adjust this as necessary -->
-        android:progress="25"
-        android:layout_marginBottom="16dp"/>
+        <!--        android:progress="25"-->
+        <!--        android:layout_marginBottom="16dp"/>-->
 
         <SeekBar
             android:id="@+id/participant1SeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="100"
+            android:max="100"></SeekBar>
 
         <TextView
             android:id="@+id/participant1Amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="$25.00"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="16dp"/>
+            android:textColor="#FFFFFF" />
 
         <!-- Participant 2 Slider -->
         <TextView
@@ -61,17 +67,17 @@
             android:id="@+id/participant2SeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:max="100"
-            android:progress="25"
-            android:layout_marginBottom="16dp"/>
+            android:progress="25" />
 
         <TextView
             android:id="@+id/participant2Amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="$25.00"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="16dp"/>
+            android:textColor="#FFFFFF" />
 
         <!-- Participant 3 Slider -->
         <TextView
@@ -93,9 +99,9 @@
             android:id="@+id/participant3Amount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="$25.00"
-            android:textColor="#FFFFFF"
-            android:layout_marginBottom="16dp"/>
+            android:textColor="#FFFFFF" />
 
         <!-- Apply Button -->
         <Button
@@ -107,7 +113,6 @@
             android:text="Apply Split"
             android:textColor="#FFFFFF" />
     </LinearLayout>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
