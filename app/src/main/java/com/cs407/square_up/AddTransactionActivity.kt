@@ -46,6 +46,8 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -265,6 +267,7 @@ class AddTransactionActivity : AppCompatActivity() {
             val amount = findViewById<EditText>(R.id.enterAmount).text.toString()
             val splitPercentageText = findViewById<EditText>(R.id.editTextNumberDecimal).text.toString()
             val selectGroup = findViewById<Spinner>(R.id.selectGroup)
+            val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
 
             if (description.isEmpty() || amount.isEmpty() || splitPercentageText.isEmpty()) {
                 Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show()
@@ -306,12 +309,12 @@ class AddTransactionActivity : AppCompatActivity() {
                         transactionDate = transactionDate,
                         splitPercentage = splitPercentage,
                         paid = true,
-                        budgetTag = "null"
+                        budgetTag = userBudgetTag
                     )
                 )
 
-                val remainingPercentage = 1.0 - splitPercentage
-                val otherUserPercentage = remainingPercentage / (selectedUsers.size)
+                val remainingPercentage = BigDecimal.valueOf(1.0).subtract(BigDecimal.valueOf(splitPercentage))
+                val otherUserPercentage = remainingPercentage.divide(BigDecimal(selectedUsers.size), 5, RoundingMode.HALF_UP)
 
                 selectedUsers.forEach { userName ->
                     val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
@@ -323,9 +326,9 @@ class AddTransactionActivity : AppCompatActivity() {
                                 transactionAmount = amountDouble,
                                 transactionDetails = description,
                                 transactionDate = transactionDate,
-                                splitPercentage = otherUserPercentage,
+                                splitPercentage = otherUserPercentage.toDouble(),
                                 paid = false,
-                                budgetTag = "null"
+                                budgetTag = userBudgetTag
                             )
                         )
                     }
