@@ -55,7 +55,10 @@ data class Transaction(
     val paid: Boolean,
 
     @ColumnInfo(name = "BudgetTag")
-    val budgetTag: String
+    val budgetTag: String,
+
+    @ColumnInfo(name = "AmountOwed", defaultValue = "0.0") // Default value for new rows
+    val amountOwed: Double = 0.0
 )
 @Entity(
     tableName = "groups",

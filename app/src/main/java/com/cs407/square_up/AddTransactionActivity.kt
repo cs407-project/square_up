@@ -279,11 +279,6 @@ class AddTransactionActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Validate that users have been selected
-            if (selectedUsers.isEmpty()) {
-                Toast.makeText(this, "Please select at least one person.", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
 
             val currentUserID = intent.getIntExtra("USER_ID", 1)
             Log.d("UserID", "$currentUserID")
@@ -300,6 +295,8 @@ class AddTransactionActivity : AppCompatActivity() {
                 // Insert for the initiator
                 Log.d("TransactionInsert", "Attempting to insert transaction for initiator with ID: $nextId")
                 Log.d("TransactionInsert", "UserID = $currentUserID")
+
+                val amountOwed = BigDecimal(amountDouble).multiply(BigDecimal(splitPercentage)).setScale(2, RoundingMode.HALF_UP).toDouble()
                 transactionDao.insertTransaction(
                     Transaction(
                         transactionID = nextId,
@@ -309,28 +306,36 @@ class AddTransactionActivity : AppCompatActivity() {
                         transactionDate = transactionDate,
                         splitPercentage = splitPercentage,
                         paid = true,
-                        budgetTag = userBudgetTag
+                        budgetTag = userBudgetTag,
+                        amountOwed = amountOwed
                     )
                 )
 
-                val remainingPercentage = BigDecimal.valueOf(1.0).subtract(BigDecimal.valueOf(splitPercentage))
-                val otherUserPercentage = remainingPercentage.divide(BigDecimal(selectedUsers.size), 5, RoundingMode.HALF_UP)
 
-                selectedUsers.forEach { userName ->
-                    val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
-                    if (userId != currentUserID) {
-                        transactionDao.insertTransaction(
-                            Transaction(
-                                transactionID = nextId,
-                                userWhoPaidID = userId,
-                                transactionAmount = amountDouble,
-                                transactionDetails = description,
-                                transactionDate = transactionDate,
-                                splitPercentage = otherUserPercentage.toDouble(),
-                                paid = false,
-                                budgetTag = userBudgetTag
+
+                if(selectedUsers.isNotEmpty()) {
+                    val remainingPercentage = BigDecimal.valueOf(1.0).subtract(BigDecimal.valueOf(splitPercentage))
+                    val otherUserPercentage = remainingPercentage.divide(BigDecimal(selectedUsers.size), 5, RoundingMode.HALF_UP)
+                    selectedUsers.forEach { userName ->
+                        val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
+                        if (userId != currentUserID) {
+                            val amountOwed =
+                                BigDecimal(amountDouble).multiply(BigDecimal(otherUserPercentage.toDouble()))
+                                    .setScale(2, RoundingMode.HALF_UP).toDouble()
+                            transactionDao.insertTransaction(
+                                Transaction(
+                                    transactionID = nextId,
+                                    userWhoPaidID = userId,
+                                    transactionAmount = amountDouble,
+                                    transactionDetails = description,
+                                    transactionDate = transactionDate,
+                                    splitPercentage = otherUserPercentage.toDouble(),
+                                    paid = false,
+                                    budgetTag = userBudgetTag,
+                                    amountOwed = amountOwed
+                                )
                             )
-                        )
+                        }
                     }
                 }
                 withContext(Dispatchers.Main) {
