@@ -1,0 +1,113 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/addTransaction"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#0D1B2A"
+    tools:context=".AddTransactionActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Total Amount -->
+        <TextView
+            android:id="@+id/totalAmountLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Amount: $100.00"
+            android:textSize="18sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Participant 1 Slider -->
+        <TextView
+            android:id="@+id/participant1Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Participant 1"
+            android:textColor="#FFFFFF" />
+
+        <!-- Adjust this as necessary -->
+        android:progress="25"
+        android:layout_marginBottom="16dp"/>
+
+        <SeekBar
+            android:id="@+id/participant1SeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+
+        <TextView
+            android:id="@+id/participant1Amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$25.00"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Participant 2 Slider -->
+        <TextView
+            android:id="@+id/participant2Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Participant 2"
+            android:textColor="#FFFFFF" />
+
+        <SeekBar
+            android:id="@+id/participant2SeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="100"
+            android:progress="25"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/participant2Amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$25.00"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Participant 3 Slider -->
+        <TextView
+            android:id="@+id/participant3Label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Participant 3"
+            android:textColor="#FFFFFF" />
+
+        <SeekBar
+            android:id="@+id/participant3SeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:max="100"
+            android:progress="25" />
+
+        <TextView
+            android:id="@+id/participant3Amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$25.00"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Apply Button -->
+        <Button
+            android:id="@+id/applyCustomSplit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="#354C61"
+            android:text="Apply Split"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
