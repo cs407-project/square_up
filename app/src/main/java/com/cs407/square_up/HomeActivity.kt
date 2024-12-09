@@ -128,15 +128,19 @@ class HomeActivity : AppCompatActivity() {
     private suspend fun getTotalAmountOwedByUser(userId: Int): Double {
         val transactions = AppDatabase.getDatabase(applicationContext).transactionDao().getTransactionsByUser(userId)
         var totalAmount = 0.0
+        var AmountOwedToUser = 0.0
+        var AmountOwedByUser = 0.0
         for (transaction in transactions) {
             // Add or subtract based on whether the user has paid
-            totalAmount += if (!transaction.paid) {
-                transaction.amountOwed
-            } else {
-                0.0
+            if (transaction.paid == false) {
+                if (transaction.initialUser==true){
+                    AmountOwedToUser += transaction.amountOwed
+                }else{
+                    AmountOwedByUser += transaction.amountOwed
+                }
             }
-
         }
+        totalAmount=AmountOwedByUser-AmountOwedToUser
         return totalAmount
     }
 
@@ -146,9 +150,13 @@ class HomeActivity : AppCompatActivity() {
         val totalAmountTextView = findViewById<TextView>(R.id.total_amount)
         totalAmountValueTextView.text = "$" +amount.toString()
         // Change color based on positive or negative amount
-        if (amount >= 0) {
+        if (amount > 0) {
             totalAmountValueTextView.setTextColor(Color.RED)
-        } else {
+        }
+        else if (amount == 0.0) {
+            totalAmountValueTextView.setTextColor(Color.GRAY)
+        }
+        else {
             totalAmountValueTextView.setTextColor(Color.GREEN)
             totalAmountTextView.setText("Total Amount:")
         }
