@@ -172,6 +172,9 @@ interface GroupDao {
     @Query("SELECT u.userName FROM groups g JOIN User u ON g.userID = u.userId WHERE g.groupID = :groupId")
     suspend fun getGroupMembersByGroupId(groupId: Int): List<String>
 
+    @Query("SELECT groupID FROM groups WHERE userID = :userID AND group_name = :groupName")
+    suspend fun getGroupIdByName(userID: Int, groupName: String): Int?
+
     @Query("SELECT DISTINCT group_name FROM groups WHERE userID = :userID")
     suspend fun getGroupNamesByUser(userID: Int): List<String>
 
