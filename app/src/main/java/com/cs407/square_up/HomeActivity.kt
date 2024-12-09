@@ -135,7 +135,7 @@ class HomeActivity : AppCompatActivity() {
             } else {
                 0.0
             }
-            
+
         }
         return totalAmount
     }
