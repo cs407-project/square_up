@@ -159,6 +159,7 @@ class HomeActivity : AppCompatActivity() {
         // Change color based on positive or negative amount
         if (amount > 0) {
             totalAmountValueTextView.setTextColor(Color.RED)
+            //I thought this line would be more clear, but it takes up to much space
             totalAmountTextView.setText("Total Amount you owe:")
 
         }
@@ -167,6 +168,7 @@ class HomeActivity : AppCompatActivity() {
         }
         else {
             totalAmountValueTextView.setTextColor(Color.GREEN)
+            //I thought this line would be more clear, but it takes up to much space
             totalAmountTextView.setText("Total Amount owed to you:")
             totalAmountValueTextView.text =String.format("%.2f", -amount)
         }
