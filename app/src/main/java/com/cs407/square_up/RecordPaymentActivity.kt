@@ -48,7 +48,6 @@ class RecordPaymentActivity : AppCompatActivity() {
                         userWhoPaidID = userID,
                         transactionAmount = amount,
                         transactionDetails = paymentNotes,
-//                        transactionDate = paymentDate,
                         splitPercentage = 1.0,
                         paid = true,
                         amountOwed = amount,

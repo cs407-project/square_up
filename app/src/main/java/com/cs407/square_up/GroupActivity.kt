@@ -61,17 +61,23 @@ class GroupActivity : AppCompatActivity() {
     }
 
     private fun loadGroupMembers(userId: Int, groupId: Int) {
-        val groupNameText = TextView(this@GroupActivity).apply {
-            setTextColor(Color.RED)
-            text = intent.getStringExtra("GROUP_Name")
-            textSize = 44f
-            textAlignment = View.TEXT_ALIGNMENT_CENTER
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
-        }
-        groupContainer.addView(groupNameText) // Add text to the container
+//        val groupNameText = TextView(this@GroupActivity).apply {
+//            setTextColor(Color.RED)
+//            text = intent.getStringExtra("GROUP_Name")
+//            textSize = 44f
+//            textAlignment = View.TEXT_ALIGNMENT_CENTER
+//            layoutParams = LinearLayout.LayoutParams(
+//                LinearLayout.LayoutParams.MATCH_PARENT,
+//                LinearLayout.LayoutParams.WRAP_CONTENT
+//            )
+//        }
+        val titleTextView=findViewById<TextView>(R.id.titleTextView)
+        titleTextView.text=intent.getStringExtra("GROUP_Name")
+        titleTextView.textSize=44f
+        titleTextView.textAlignment=View.TEXT_ALIGNMENT_CENTER
+        titleTextView.setTextColor(Color.WHITE)
+
+//        groupContainer.addView(groupNameText) // Add text to the container
 
         val db = AppDatabase.getDatabase(this)
 
@@ -83,11 +89,11 @@ class GroupActivity : AppCompatActivity() {
 
             withContext(Dispatchers.Main) {
                 groupContainer.removeAllViews() // Clear existing views
-                groupContainer.addView(groupNameText) // Re-add the group name
+//                groupContainer.addView(groupNameText) // Re-add the group name
 
                 val currentUserText = TextView(this@GroupActivity).apply {
                     text = "Your name: ${currentUser?.userName}"
-                    textSize = 34f
+                    textSize = 30f
                     setTextColor(Color.rgb(255, 255, 255)) // Set the text color
                     textAlignment = View.TEXT_ALIGNMENT_CENTER // Center the text
                     layoutParams = LinearLayout.LayoutParams(
@@ -98,13 +104,27 @@ class GroupActivity : AppCompatActivity() {
                     }
                 }
                 groupContainer.addView(currentUserText) // Add text to the container
-
+                var gapView = View(this@GroupActivity).apply {
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        60 // Adjust size as needed
+                    )
+                }
+                groupContainer.addView(gapView)
                 val label = TextView(this@GroupActivity).apply {
                     textSize = 34f
                     text = "Other Group Members:"
                     setTextColor(Color.rgb(134, 36, 196))
+                    gravity = Gravity.CENTER
                 }
                 groupContainer.addView(label)
+//                gapView = View(this@GroupActivity).apply {
+//                    layoutParams = LinearLayout.LayoutParams(
+//                        LinearLayout.LayoutParams.MATCH_PARENT,
+//                        10 //
+//                    )
+//                }
+//                groupContainer.addView(gapView)
 
                 var otherMembers = memberUsernames.filter { it != currentUser?.userName }
 //                otherMembers=otherMembers.toSet().toList()//remove duplicates , atempt to fix pug i had where group members apear twice
@@ -113,6 +133,8 @@ class GroupActivity : AppCompatActivity() {
                 } else {
 
                     for (username in otherMembers) {
+
+
                         // Calculate the amount owed between the current user and this member
                         val otherMember = db.userDao().getUserByName(username)
                         //I have a bug where the grouo member apears twice, this is to try to fix it
@@ -122,7 +144,6 @@ class GroupActivity : AppCompatActivity() {
                                     ?: 0.0
                             val roundedAmount =
                                 String.format("%.2f", amountOwed) // Round to 2 decimal places
-
 
                             val amountText = when {
                                 amountOwed > 0 -> "Owes you: $${roundedAmount}"
@@ -134,7 +155,7 @@ class GroupActivity : AppCompatActivity() {
 
                             val memberTextView = TextView(this@GroupActivity).apply {
                                 text = "$username   $amountText"
-                                textSize = 34f
+                                textSize = 25f
                                 textAlignment = View.TEXT_ALIGNMENT_CENTER
                                 setTextColor(
                                     when {
@@ -145,6 +166,7 @@ class GroupActivity : AppCompatActivity() {
                                 )
                             }
                             groupContainer.addView(memberTextView)
+
                         }
                     }
                 }
