@@ -131,7 +131,7 @@ class HomeActivity : AppCompatActivity() {
         for (transaction in transactions) {
             // Add or subtract based on whether the user has paid
             totalAmount += if (!transaction.paid) {
-                transaction.transactionAmount
+                transaction.amountOwed
             } else {
                 0.0
             }
@@ -146,7 +146,7 @@ class HomeActivity : AppCompatActivity() {
         val totalAmountTextView = findViewById<TextView>(R.id.total_amount)
         totalAmountValueTextView.text = "$" +amount.toString()
         // Change color based on positive or negative amount
-        if (amount > 0) {
+        if (amount >= 0) {
             totalAmountValueTextView.setTextColor(Color.RED)
         } else {
             totalAmountValueTextView.setTextColor(Color.GREEN)
