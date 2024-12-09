@@ -21,6 +21,7 @@ data class User(
 // Transaction entity
 @Entity(
     tableName = "transactions",
+    primaryKeys = ["transactionID", "userWhoPaidID"],
     foreignKeys = [
         ForeignKey(
             entity = User::class,
@@ -32,9 +33,8 @@ data class User(
     indices = [Index(value = ["userWhoPaidID"])] // Corrected to match the field name
 )
 data class Transaction(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "TransactionID")
-    val transactionID: Int = 0,
+    @ColumnInfo(name = "transactionID")
+    val transactionID: Int,
 
     @ColumnInfo(name = "userWhoPaidID")
     val userWhoPaidID: Int,
@@ -54,11 +54,15 @@ data class Transaction(
     @ColumnInfo(name = "Paid")
     val paid: Boolean,
 
-    @ColumnInfo(name = "BudgetTags")
-    val budgetTags: List<String> // Ensure type converters are configured correctly
+    @ColumnInfo(name = "BudgetTag")
+    val budgetTag: String,
+
+    @ColumnInfo(name = "AmountOwed", defaultValue = "0.0") // Default value for new rows
+    val amountOwed: Double = 0.0
 )
 @Entity(
     tableName = "groups",
+    primaryKeys = ["groupID", "userID"],
     foreignKeys = [
         ForeignKey(
             entity = User::class,
@@ -68,17 +72,21 @@ data class Transaction(
         )
     ],
     indices = [
-        Index(value = ["userID", "group_name", "shared_groupID"], unique = true), // Enforce uniqueness
-        Index(value = ["userID"]) // Optimize lookups by userID
+        Index(value = ["userID", "group_name"], unique = true)
     ]
 )
 data class Group(
-    @PrimaryKey(autoGenerate = true) val groupID: Int = 0,//
-    @ColumnInfo(name = "shared_groupID") val sharedGroupID: Int ,//id to be the same for all members of the group
-    @ColumnInfo(name = "userID") val userID: Int,
-    @ColumnInfo(name = "group_name") val groupName: String,
-    @ColumnInfo(name = "date_created") val dateCreated: Date
+    @ColumnInfo(name = "groupID")
+    val groupID: Int = 0,
 
+    @ColumnInfo(name = "userID")
+    val userID: Int,
+
+    @ColumnInfo(name = "group_name")
+    val groupName: String,
+
+    @ColumnInfo(name = "date_created")
+    val dateCreated: Date
 )
 
 @Entity(tableName = "Budget")
@@ -115,6 +123,9 @@ interface UserDao {
     @Query("SELECT userName FROM User WHERE userId != :userId")
     suspend fun getAllOtherUsers(userId: Int): List<String>
 
+    @Query("SELECT userName FROM User WHERE userId NOT IN (:userId, :groupUserIds)")
+    suspend fun getUsersNotInGroup(userId: Int, groupUserIds: List<Int>): List<String>
+
     @Query("SELECT * FROM User")
     suspend fun getAllUsers(): List<User>
 }
@@ -131,6 +142,12 @@ interface TransactionDao {
     @Delete
     suspend fun delete(transaction: Transaction)
 
+    @Query("SELECT MAX(TransactionID) FROM transactions")
+    suspend fun getMaxTransactionId(): Int?
+
+    @Query("SELECT * FROM transactions WHERE BudgetTag = :tag")
+    suspend fun getTransactionsByBudgetTag(tag: String): List<Transaction>
+
     @Query("SELECT * FROM transactions WHERE TransactionID = :id")
     suspend fun getTransactionById(id: Int): Transaction?
 
@@ -145,13 +162,24 @@ interface TransactionDao {
 interface GroupDao {
     @Insert
     suspend fun insertGroup(group: Group): Long
+
     @Query("SELECT * FROM groups WHERE userID = :userID")
     suspend fun getGroupsByUser(userID: Int): List<Group>
-    @Query("SELECT * FROM groups WHERE shared_groupID = :sharedGroupID")
-    suspend fun getGroupsBySharedID(sharedGroupID: Int): List<Group>
-    @Query("SELECT * FROM groups WHERE userID = :userID AND group_name = :groupName AND shared_groupID = :sharedGroupID")
-    fun getGroupByUserNameAndSharedID(userID: Int, groupName: String, sharedGroupID: Int): Group?
 
+    @Query("SELECT u.userName FROM groups g JOIN User u ON g.userID = u.userId WHERE g.groupID = :groupId")
+    suspend fun getGroupMembersByGroupId(groupId: Int): List<String>
+
+    @Query("SELECT DISTINCT group_name FROM groups WHERE userID = :userID")
+    suspend fun getGroupNamesByUser(userID: Int): List<String>
+
+    @Query("SELECT * FROM groups WHERE userID = :userID AND group_name = :groupName")
+    fun getGroupByUserNameAndGroupName(userID: Int, groupName: String): Group?
+
+    @Query("SELECT * FROM groups WHERE groupID = :groupId")
+    suspend fun getGroupsByGroupId(groupId: Int): List<Group>
+
+    @Query("SELECT MAX(groupID) FROM groups")
+    suspend fun getMaxGroupId(): Int?
 
     @Delete
     suspend fun deleteGroup(group: Group)
@@ -165,19 +193,6 @@ interface BudgetDao {
 
 // Type converters for complex types
 class Converters {
-    @TypeConverter
-    fun fromBudgetTagsList(budgetTags: List<String>?): String {
-        return budgetTags?.joinToString(separator = ",") ?: ""
-    }
-
-    @TypeConverter
-    fun toBudgetTagsList(budgetTagsString: String): List<String> {
-        return if (budgetTagsString.isEmpty()) {
-            emptyList()
-        } else {
-            budgetTagsString.split(",")
-        }
-    }
 
     @TypeConverter
     fun fromDate(date: Date?): Long? {
@@ -191,7 +206,7 @@ class Converters {
 }
 
 
-@Database(entities = [User::class, Transaction::class, Group::class, Budget::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, Transaction::class, Group::class, Budget::class], version = 2, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
@@ -208,7 +223,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "app_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // This will delete the old DB and recreate a new one
+                    .build()
                 INSTANCE = instance
                 instance
             }
