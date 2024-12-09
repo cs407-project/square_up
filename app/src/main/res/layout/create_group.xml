@@ -12,44 +12,18 @@
     android:paddingBottom="@dimen/fragment_vertical_margin"
     tools:context=".CreateGroup">
 
-    <!--    <TextView-->
-    <!--        android:id="@+id/username_label"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginBottom="8dp"-->
-    <!--        android:text="@string/enter_members_usernames"-->
-    <!--        android:textSize="14sp"-->
-    <!--        app:layout_constraintBottom_toBottomOf="@+id/enterMemberUsername"-->
-    <!--        app:layout_constraintEnd_toStartOf="@+id/enterMemberUsername"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="@+id/enterMemberUsername" />-->
-
-    <!--    <EditText-->
-    <!--        android:id="@+id/enterMemberUsername"-->
-    <!--        android:layout_width="156dp"-->
-    <!--        android:layout_height="41dp"-->
-    <!--        android:layout_marginStart="24dp"-->
-    <!--        android:layout_marginTop="84dp"-->
-    <!--        android:layout_marginEnd="24dp"-->
-    <!--        android:autofillHints="enter_members_usernames"-->
-    <!--        android:hint="@string/enter_members_usernames"-->
-    <!--        android:inputType="text"-->
-    <!--        android:selectAllOnFocus="true"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintHorizontal_bias="0.948"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
     <ImageView
         android:id="@+id/backButton"
-        android:layout_width="0dp"
+        android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="52dp"
         android:background="#0D1B2A"
         android:src="@drawable/ic_back_arrow"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/GroupName_label"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -57,33 +31,33 @@
         android:id="@+id/GroupName_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="93dp"
-        android:layout_marginBottom="69dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/enter_group_name"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/selectMembers"
         app:layout_constraintEnd_toStartOf="@+id/enterGroupName"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/enterGroupName" />
 
     <EditText
         android:id="@+id/enterGroupName"
-        android:layout_width="198dp"
-        android:layout_height="58dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="84dp"
-        android:layout_marginEnd="24dp"
+        android:layout_width="153dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="58dp"
         android:autofillHints="enter_group_name"
         android:hint="@string/enter_group_name"
         android:inputType="text"
         android:selectAllOnFocus="true"
         android:textColor="#FFFFFF"
+        app:layout_constraintBottom_toTopOf="@+id/selectMembers"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/GroupName_label"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/CreateGroupButton"
@@ -95,20 +69,22 @@
         android:text="@string/create_group"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectMembers" />
 
     <Button
         android:id="@+id/selectMembers"
-        android:layout_width="fill_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="496dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="479dp"
         android:backgroundTint="#354C61"
         android:text="select Group Members"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/GroupName_label"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/GroupName_label" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

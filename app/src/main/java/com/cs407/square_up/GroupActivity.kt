@@ -31,7 +31,7 @@ class GroupActivity : AppCompatActivity() {
         val GROUP_Name = intent.getStringExtra("GROUP_Name")
         val imageButton4 = findViewById<ImageButton>(com.cs407.square_up.R.id.imageButton4)
         groupContainer = findViewById<LinearLayout>(com.cs407.square_up.R.id.groupContainer)
-        loadGroupMembers(userId, groupId)
+//        loadGroupMembers(userId, groupId), having this uncomented makes group members apear twice
 
         imageButton4.setOnClickListener {
             val intent = Intent(this, AddGroupMember::class.java)
@@ -106,28 +106,69 @@ class GroupActivity : AppCompatActivity() {
                 }
                 groupContainer.addView(label)
 
-                val otherMembers = memberUsernames.filter { it != currentUser?.userName }
-
+                var otherMembers = memberUsernames.filter { it != currentUser?.userName }
+//                otherMembers=otherMembers.toSet().toList()//remove duplicates , atempt to fix pug i had where group members apear twice
                 if (otherMembers.isEmpty()) {
-                    val noMembersText = TextView(this@GroupActivity).apply {
-                        text = "No other members in this group."
-                        textSize = 34f
-                        textAlignment = View.TEXT_ALIGNMENT_CENTER
-                        setTextColor(Color.rgb(134, 36, 196))
-                    }
-                    groupContainer.addView(noMembersText)
+                    label.setText("No other members in this group.")
                 } else {
+
                     for (username in otherMembers) {
-                        val memberTextView = TextView(this@GroupActivity).apply {
-                            text = username
-                            textSize = 34f
-                            textAlignment = View.TEXT_ALIGNMENT_CENTER
-                            setTextColor(Color.rgb(134, 36, 196))
+                        // Calculate the amount owed between the current user and this member
+                        val otherMember = db.userDao().getUserByName(username)
+                        //I have a bug where the grouo member apears twice, this is to try to fix it
+                        if (otherMember != null) {
+                            val amountOwed =
+                                otherMember?.let { getAmountOwedByUserToAnother(userId, it.userId) }
+                                    ?: 0.0
+                            val roundedAmount =
+                                String.format("%.2f", amountOwed) // Round to 2 decimal places
+
+
+                            val amountText = when {
+                                amountOwed > 0 -> "Owes you: $${roundedAmount}"
+                                amountOwed < 0 -> "You owe: $${
+                                    String.format(
+                                        "%.2f",
+                                        -amountOwed
+                                    )
+                                }" // Correctly negating the numeric value
+                                else -> "No balance"
+                            }
+
+                            val memberTextView = TextView(this@GroupActivity).apply {
+                                text = "$username   $amountText"
+                                textSize = 34f
+                                textAlignment = View.TEXT_ALIGNMENT_CENTER
+                                setTextColor(
+                                    when {
+                                        amountOwed > 0 -> Color.GREEN // Green for owed to the user
+                                        amountOwed < 0 -> Color.RED // Red for user owes
+                                        else -> Color.GRAY // Gray for no balance
+                                    }
+                                )
+                            }
+                            groupContainer.addView(memberTextView)
                         }
-                        groupContainer.addView(memberTextView) // Add text to the container
                     }
                 }
             }
         }
+    }
+    private suspend fun getAmountOwedByUserToAnother(userId: Int, otherUserId: Int): Double {
+        // Replace this logic with a database query or calculation based on transactions
+        var transactions = AppDatabase.getDatabase(applicationContext).transactionDao().getTransactionsByUser(userId)
+//        transactions+=AppDatabase.getDatabase(applicationContext).transactionDao().getTransactionsByUser(otherUserId)
+        var amountOwedToUser = 0.0
+        for (transaction in transactions) {
+            // Add or subtract based on whether the user has paid
+            amountOwedToUser += if (!transaction.paid) {
+                transaction.amountOwed
+            } else {
+                0.0
+            }
+
+        }
+        return 0.0
+
     }
 }
