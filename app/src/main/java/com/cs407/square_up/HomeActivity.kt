@@ -132,13 +132,19 @@ class HomeActivity : AppCompatActivity() {
         var AmountOwedByUser = 0.0
         for (transaction in transactions) {
             // Add or subtract based on whether the user has paid
-            if (transaction.paid == false) {
-                if (transaction.initialUser==true){
-                    AmountOwedToUser += transaction.amountOwed
-                }else{
-                    AmountOwedByUser += transaction.amountOwed
+
+                if (transaction.initialUser == true) {
+                    val transactionID =transaction.transactionID
+                    val usersInTranscation=AppDatabase.getDatabase(applicationContext).transactionDao().getOwedTransactionsById(transactionID)
+                    for(owedTransaction in usersInTranscation){
+                                AmountOwedToUser += owedTransaction.amountOwed
+                    }
+                } else {
+                    if (transaction.paid == false) {
+                        AmountOwedByUser += transaction.amountOwed
+                    }
                 }
-            }
+
         }
         totalAmount=AmountOwedByUser-AmountOwedToUser
         return totalAmount
@@ -148,17 +154,21 @@ class HomeActivity : AppCompatActivity() {
     private fun updateTotalAmount(amount: Double) {
         val totalAmountValueTextView = findViewById<TextView>(R.id.total_amount_value)
         val totalAmountTextView = findViewById<TextView>(R.id.total_amount)
-        totalAmountValueTextView.text = "$" +amount.toString()
+//        totalAmountValueTextView.text = "$" +amount.toString()
+        totalAmountValueTextView.text =String.format("%.2f", amount)
         // Change color based on positive or negative amount
         if (amount > 0) {
             totalAmountValueTextView.setTextColor(Color.RED)
+            totalAmountTextView.setText("Total Amount you owe:")
+
         }
         else if (amount == 0.0) {
             totalAmountValueTextView.setTextColor(Color.GRAY)
         }
         else {
             totalAmountValueTextView.setTextColor(Color.GREEN)
-            totalAmountTextView.setText("Total Amount:")
+            totalAmountTextView.setText("Total Amount owed to you:")
+            totalAmountValueTextView.text =String.format("%.2f", -amount)
         }
     }
     private fun loadGroups(userId: Int) {

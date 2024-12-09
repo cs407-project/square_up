@@ -127,10 +127,7 @@ class GroupActivity : AppCompatActivity() {
                             val amountText = when {
                                 amountOwed > 0 -> "Owes you: $${roundedAmount}"
                                 amountOwed < 0 -> "You owe: $${
-                                    String.format(
-                                        "%.2f",
-                                        -amountOwed
-                                    )
+                                    String.format("%.2f", -amountOwed)
                                 }" // Correctly negating the numeric value
                                 else -> "No balance"
                             }
@@ -155,20 +152,29 @@ class GroupActivity : AppCompatActivity() {
         }
     }
     private suspend fun getAmountOwedByUserToAnother(userId: Int, otherUserId: Int): Double {
+        return getAmountOwedToUserfromOther(userId, otherUserId)-getAmountOwedToUserfromOther(otherUserId, userId)
+    }
+
+        private suspend fun getAmountOwedToUserfromOther(userId: Int, otherUserId: Int): Double {
         // Replace this logic with a database query or calculation based on transactions
         var transactions = AppDatabase.getDatabase(applicationContext).transactionDao().getTransactionsByUser(userId)
 //        transactions+=AppDatabase.getDatabase(applicationContext).transactionDao().getTransactionsByUser(otherUserId)
-        var amountOwedToUser = 0.0
+        var AmountOwedToUser = 0.0
+//        var AmountOwedToOtherUser = 0.0
         for (transaction in transactions) {
             // Add or subtract based on whether the user has paid
-            amountOwedToUser += if (!transaction.paid) {
-                transaction.amountOwed
-            } else {
-                0.0
+            if (transaction.initialUser == true) {
+                val transactionID =transaction.transactionID
+                val usersInTranscation=AppDatabase.getDatabase(applicationContext).transactionDao().getOwedTransactionsById(transactionID)
+                for(owedTransaction in usersInTranscation){
+                    if (owedTransaction.userWhoPaidID==otherUserId){
+                        AmountOwedToUser += owedTransaction.amountOwed
+                    }
+                }
             }
 
         }
-        return 0.0
+        return AmountOwedToUser
 
     }
 }

@@ -152,8 +152,9 @@ interface TransactionDao {
     suspend fun getTransactionsByBudgetTag(tag: String): List<Transaction>
 
     @Query("SELECT * FROM transactions WHERE TransactionID = :id")
-    suspend fun getTransactionById(id: Int): Transaction?
-
+    suspend fun getTransactionById(id: Int): List<Transaction>
+    @Query("SELECT * FROM transactions WHERE TransactionID = :id and paid =0 and initialUser =0")
+    suspend fun getOwedTransactionsById(id: Int): List<Transaction>
     @Query("SELECT * FROM transactions")
     suspend fun getAllTransactions(): List<Transaction>
 
