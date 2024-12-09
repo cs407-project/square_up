@@ -307,7 +307,8 @@ class AddTransactionActivity : AppCompatActivity() {
                         splitPercentage = splitPercentage,
                         paid = true,
                         budgetTag = userBudgetTag,
-                        amountOwed = amountOwed
+                        amountOwed = amountOwed,
+                        initialUser = true
                     )
                 )
 
@@ -332,7 +333,8 @@ class AddTransactionActivity : AppCompatActivity() {
                                     splitPercentage = otherUserPercentage.toDouble(),
                                     paid = false,
                                     budgetTag = userBudgetTag,
-                                    amountOwed = amountOwed
+                                    amountOwed = amountOwed,
+                                    initialUser = false
                                 )
                             )
                         }
