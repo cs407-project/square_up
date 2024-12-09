@@ -130,11 +130,12 @@ class HomeActivity : AppCompatActivity() {
         var totalAmount = 0.0
         for (transaction in transactions) {
             // Add or subtract based on whether the user has paid
-            totalAmount += if (transaction.paid) {
-                -transaction.transactionAmount // Paid, reduce amount
+            totalAmount += if (!transaction.paid) {
+                transaction.transactionAmount
             } else {
-                transaction.transactionAmount // Owed, add amount
+                0.0
             }
+            
         }
         return totalAmount
     }
