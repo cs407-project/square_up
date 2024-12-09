@@ -19,6 +19,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/squareUp"
         android:layout_width="wrap_content"
@@ -46,6 +47,17 @@
         app:layout_constraintStart_toStartOf="@+id/Date"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/youPaidInput"
+        android:layout_width="282dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:hint="Enter Payment Amount"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/youPaid"
+        app:layout_constraintTop_toTopOf="@+id/youPaid" />
+
     <TextView
         android:id="@+id/Date"
         android:layout_width="0dp"
@@ -58,6 +70,16 @@
         app:layout_constraintStart_toStartOf="@+id/addNotes"
         app:layout_constraintTop_toBottomOf="@+id/youPaid" />
 
+    <EditText
+        android:id="@+id/dateInput"
+        android:layout_width="287dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="8dp"
+        android:hint="Enter Date"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Date"
+        app:layout_constraintTop_toTopOf="@+id/Date" />
     <TextView
         android:id="@+id/addNotes"
         android:layout_width="85dp"
@@ -70,6 +92,17 @@
         app:layout_constraintBottom_toTopOf="@+id/recordPayment"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/addNotesInput"
+        android:layout_width="281dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:hint="Enter Notes"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/addNotes"
+        app:layout_constraintTop_toTopOf="@+id/addNotes" />
 
     <Button
         android:id="@+id/recordPayment"
