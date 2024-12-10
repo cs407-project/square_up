@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="104dp"
         android:backgroundTint="#354C61"
-        android:text="Add Group"
+        android:text="@string/add_group"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

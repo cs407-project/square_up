@@ -71,4 +71,5 @@
     <string name="email_label">Email:</string>
     <string name="confirm_password_semicolon">Confirm Password:</string>
     <string name="sign_in">Sign In</string>
+    <string name="add_group">Add Group</string>
 </resources>
