@@ -50,4 +50,25 @@
     <string name="create_transaction">Create Transaction</string>
     <string name="splitPercentage">Split percentage</string>
     <string name="budgetTag">Budget Tag:</string>
+    <string name="total_amount_owed_by_you_label">Total Amount Owed by You:</string>
+    <string name="total_amount_owed_to_you_label">Total Amount Owed to You:</string>
+    <string name="select_group_members">select Group Members</string>
+    <string name="select_person_s">Select Person(s)</string>
+    <string name="select_group">Select Group</string>
+    <string name="app_logo">App Logo</string>
+    <string name="change_password_label">Change password</string>
+    <string name="backButtonText">backButton</string>
+    <string name="select_group_members_label">select Group Members</string>
+    <string name="total_amount_owed_initial_label">Total Amount Owed:</string>
+    <string name="zero">0.00</string>
+    <string name="enter_notes">Enter Notes</string>
+    <string name="enter_date">Enter Date</string>
+    <string name="enter_payment_amount">Enter Payment Amount</string>
+    <string name="password_semicolon">Password:</string>
+    <string name="username_semicolon">Username:</string>
+    <string name="sign_up_label">Sign Up</string>
+    <string name="name_label">Name:</string>
+    <string name="email_label">Email:</string>
+    <string name="confirm_password_semicolon">Confirm Password:</string>
+    <string name="sign_in">Sign In</string>
 </resources>

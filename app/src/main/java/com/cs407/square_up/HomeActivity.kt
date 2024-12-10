@@ -8,7 +8,7 @@ import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.Button
-import android.widget.ImageButton;
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -26,7 +26,7 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.cs407.square_up.R.layout.home)
+        setContentView(R.layout.home)
 
 //        val group1Button = findViewById<Button>(com.cs407.square_up.R.id.group_1_button)
 //        val group2Button = findViewById<Button>(com.cs407.square_up.R.id.group_2_button)
@@ -34,13 +34,13 @@ class HomeActivity : AppCompatActivity() {
 //        var groupContainer= findViewById<LinearLayout>(com.cs407.square_up.R.id.group_container)
         val temp_finance_button = findViewById<ImageButton>(com.cs407.square_up.R.id.temp_finance_button)
         val menu_button = findViewById<ImageButton>(com.cs407.square_up.R.id.menu_button)
-        val addExpense = findViewById<ImageButton>(com.cs407.square_up.R.id.add_expense_button)
-        val squareUpButton = findViewById<ImageView>(com.cs407.square_up.R.id.temp_square_up_button)
-        val profileButton = findViewById<ImageButton>(com.cs407.square_up.R.id.profile_button)
-        val addGroupButton = findViewById<Button>(com.cs407.square_up.R.id.add_group_button)
+        val addExpense = findViewById<ImageButton>(R.id.add_expense_button)
+        val squareUpButton = findViewById<ImageView>(R.id.temp_square_up_button)
+        val profileButton = findViewById<ImageButton>(R.id.profile_button)
+        val addGroupButton = findViewById<Button>(R.id.add_group_button)
 
         val userId = intent.getIntExtra("USER_ID", -1) // Default to -1 if not found
-        groupContainer = findViewById(com.cs407.square_up.R.id.group_container) // Initialize the class-level groupContainer here
+        groupContainer = findViewById(R.id.group_container) // Initialize the class-level groupContainer here
         loadGroups(userId)
 
         lifecycleScope.launch(Dispatchers.Main) {
@@ -61,23 +61,23 @@ class HomeActivity : AppCompatActivity() {
 //        }
         menu_button.setOnClickListener { view ->
             val popupMenu = androidx.appcompat.widget.PopupMenu(this, view)
-            popupMenu.menuInflater.inflate(com.cs407.square_up.R.menu.menu_popup, popupMenu.menu)
+            popupMenu.menuInflater.inflate(R.menu.menu_popup, popupMenu.menu)
 
             popupMenu.setOnMenuItemClickListener { item ->
                 when (item.itemId) {
-                    com.cs407.square_up.R.id.menu_history -> {
+                    R.id.menu_history -> {
                         val intent = Intent(this, HistoryActivity::class.java)
                         intent.putExtra("USER_ID", userId)
                         startActivity(intent)
                         true
                     }
-                    com.cs407.square_up.R.id.menu_change_password -> {
+                    R.id.menu_change_password -> {
                         val intent = Intent(this, ChangePasswordActivity::class.java)
                         intent.putExtra("USER_ID", userId)
                         startActivity(intent)
                         true
                     }
-                    com.cs407.square_up.R.id.menu_sign_out -> {
+                    R.id.menu_sign_out -> {
                         Toast.makeText(this, "Signed out successfully!", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this, SignInActivity::class.java)
                         startActivity(intent)
@@ -128,7 +128,6 @@ class HomeActivity : AppCompatActivity() {
     private suspend fun getTotalAmountOwedByUser(userId: Int): Double {
         val transactionDao=AppDatabase.getDatabase(applicationContext).transactionDao()
         val transactions = transactionDao.getTransactionsByUser(userId)
-        var totalAmount = 0.0
         var AmountOwedToUser = 0.0
         var AmountOwedByUser = 0.0
         for (transaction in transactions) {
@@ -147,7 +146,7 @@ class HomeActivity : AppCompatActivity() {
                 }
 
         }
-        totalAmount=AmountOwedByUser-AmountOwedToUser
+        val totalAmount=AmountOwedByUser-AmountOwedToUser
         return totalAmount
     }
 
@@ -161,7 +160,7 @@ class HomeActivity : AppCompatActivity() {
         if (amount > 0) {
             totalAmountValueTextView.setTextColor(Color.RED)
             //I thought this line would be more clear, but it takes up to much space
-            totalAmountTextView.setText("Total Amount Owed by You:")
+            totalAmountTextView.text = getString(R.string.total_amount_owed_by_you_label)
 
         }
         else if (amount == 0.0) {
@@ -170,7 +169,7 @@ class HomeActivity : AppCompatActivity() {
         else {
             totalAmountValueTextView.setTextColor(Color.GREEN)
             //I thought this line would be more clear, but it takes up to much space
-            totalAmountTextView.setText("Total Amount Owed to You:")
+            totalAmountTextView.text = getString(R.string.total_amount_owed_to_you_label)
             totalAmountValueTextView.text =String.format("$%.2f", -amount)
         }
     }
