@@ -126,7 +126,8 @@ class HomeActivity : AppCompatActivity() {
 
     // Function to calculate total amount owed by the user
     private suspend fun getTotalAmountOwedByUser(userId: Int): Double {
-        val transactions = AppDatabase.getDatabase(applicationContext).transactionDao().getTransactionsByUser(userId)
+        val transactionDao=AppDatabase.getDatabase(applicationContext).transactionDao()
+        val transactions = transactionDao.getTransactionsByUser(userId)
         var totalAmount = 0.0
         var AmountOwedToUser = 0.0
         var AmountOwedByUser = 0.0
@@ -135,8 +136,8 @@ class HomeActivity : AppCompatActivity() {
 
                 if (transaction.initialUser == true) {
                     val transactionID =transaction.transactionID
-                    val usersInTranscation=AppDatabase.getDatabase(applicationContext).transactionDao().getOwedTransactionsById(transactionID)
-                    for(owedTransaction in usersInTranscation){
+                    val usersInTransaction=transactionDao.getOwedTransactionsById(transactionID)
+                    for(owedTransaction in usersInTransaction){
                                 AmountOwedToUser += owedTransaction.amountOwed
                     }
                 } else {
@@ -160,7 +161,7 @@ class HomeActivity : AppCompatActivity() {
         if (amount > 0) {
             totalAmountValueTextView.setTextColor(Color.RED)
             //I thought this line would be more clear, but it takes up to much space
-            totalAmountTextView.setText("Total Amount you owe:")
+            totalAmountTextView.setText("Total Amount owed by you:")
 
         }
         else if (amount == 0.0) {
