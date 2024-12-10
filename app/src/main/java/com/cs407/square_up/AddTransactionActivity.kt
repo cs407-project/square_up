@@ -51,23 +51,10 @@ import java.math.RoundingMode
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-
 class AddTransactionActivity : AppCompatActivity() {
     companion object {
         const val CAMERA_REQUEST_CODE = 1001
     }
-
-
-//    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//        if (result.resultCode == Activity.RESULT_OK) {
-//            val imageBitmap: Bitmap = result.data?.extras?.get("data") as Bitmap
-//            Log.d("CameraActivity", "Image bitmap: $imageBitmap")
-//            if (imageBitmap == null) {
-//                Log.e("CameraActivity", "Bitmap is null")
-//            }
-//        }
-//    }
-
 
     private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -100,33 +87,9 @@ class AddTransactionActivity : AppCompatActivity() {
             }
     }
 
-//    private fun handleRecognizedText(visionText: Text) {
-//        val stringBuilder = StringBuilder()
-//        for (block in visionText.textBlocks) {
-//            stringBuilder.append(block.text).append("\n")
-//        }
-//
-//        // Log or display the recognized text
-//        Log.d("CameraActivity", "Recognized Text: $stringBuilder")
-//
-//        // For example, display it in a TextView
-//        val textView: TextView = findViewById(R.id.enterDescription_label) // Ensure a TextView exists in your layout
-//        textView.text = stringBuilder.toString()
-//    }
-//
-//    private fun extractTotalFromText(text: String): String {
-//        // You can define a pattern to extract the total amount
-//        val regex = Regex("\\b\\d+(?:\\.\\d{1,2})?\\b") // Basic pattern for extracting numbers
-//        val match = regex.find(text)
-//        return match?.value ?: "Not found"
-//    }
-
     private fun handleRecognizedText(visionText: Text) {
         val stringBuilder = StringBuilder()
         var totalAmount = 0.0 // Variable to accumulate the total amount
-
-//        val textView: TextView = findViewById(R.id.enterDescription_label)
-//        textView.text = stringBuilder.toString()
 
         // Process each text block and separate description and amounts
         for (block in visionText.textBlocks) {
@@ -160,18 +123,15 @@ class AddTransactionActivity : AppCompatActivity() {
 
         // Provide a message to the user
         val message = "The fields have been populated. Please review and edit if necessary."
-        //Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         val autofillMessage = findViewById<TextView>(R.id.autofill_message)
         autofillMessage.setText(message)
     }
-
 
     // Function to extract numbers from the text
     private fun extractNumbersFromText(text: String): List<Double> {
         val regex = Regex("\\b\\d+(?:\\.\\d{1,2})?\\b") // Basic pattern for extracting numbers
         return regex.findAll(text).map { it.value.toDouble() }.toList()
     }
-
 
     private val selectedUsers = mutableListOf<String>() // List to store selected users
 
@@ -195,7 +155,7 @@ class AddTransactionActivity : AppCompatActivity() {
         val selectGroupSpinner = findViewById<Spinner>(R.id.selectGroup)
         val currentUserID = intent.getIntExtra("USER_ID", 1)
 
-        lifecycleScope.launch ( Dispatchers.IO ) {
+        lifecycleScope.launch(Dispatchers.IO) {
             val groupsDao = db.groupDao()
             val groupNames = groupsDao.getGroupNamesByUser(currentUserID)
 
@@ -223,7 +183,6 @@ class AddTransactionActivity : AppCompatActivity() {
                                     val groupId = groupsDao.getGroupIdByName(currentUserID, selectedGroup)
                                     if (groupId != null) {
                                         val memberNames = groupsDao.getGroupMembersByGroupId(groupId)
-
                                         withContext(Dispatchers.Main) {
                                             selectedUsers.clear() // Clear previous selections
                                             selectedUsers.addAll(memberNames)
@@ -242,8 +201,7 @@ class AddTransactionActivity : AppCompatActivity() {
                         }
                     }
                     Log.d("SpinnerSetup", "OnItemSelectedListener assigned to Spinner.")
-                }
-                else {
+                } else {
                     Log.e("SpinnerSetup", "No groups found for user ID: $currentUserID")
                     Toast.makeText(
                         this@AddTransactionActivity,
@@ -254,16 +212,13 @@ class AddTransactionActivity : AppCompatActivity() {
             }
         }
 
-
-
         val selectPersonButton = findViewById<Button>(R.id.selectPerson)
-
 
         selectPersonButton.setOnClickListener {
             lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.getDatabase(applicationContext)
                 val userDao = db.userDao()
-                val currentUserID =intent.getIntExtra("USER_ID", 1)
+                val currentUserID = intent.getIntExtra("USER_ID", 1)
                 val users = userDao.getAllOtherUsers(currentUserID) // Replace 1 with actual user ID
 
                 withContext(Dispatchers.Main) {
@@ -290,13 +245,13 @@ class AddTransactionActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-
             val currentUserID = intent.getIntExtra("USER_ID", 1)
             Log.d("UserID", "$currentUserID")
-            lifecycleScope.launch (Dispatchers.IO) {
+            lifecycleScope.launch(Dispatchers.IO) {
                 val db = AppDatabase.getDatabase(applicationContext)
                 val transactionDao = db.transactionDao()
                 val userDao = db.userDao()
+                val groupDao = db.groupDao()
 
                 val amountDouble = amount.toDouble()
                 val transactionDate = Date()
@@ -307,7 +262,7 @@ class AddTransactionActivity : AppCompatActivity() {
                 Log.d("TransactionInsert", "Attempting to insert transaction for initiator with ID: $nextId")
                 Log.d("TransactionInsert", "UserID = $currentUserID")
 
-                val amountOwed = BigDecimal(amountDouble).multiply(BigDecimal(splitPercentage)).setScale(2, RoundingMode.HALF_UP).toDouble()
+                val initiatorAmountOwed = BigDecimal(amountDouble).multiply(BigDecimal(splitPercentage)).setScale(2, RoundingMode.HALF_UP).toDouble()
                 transactionDao.insertTransaction(
                     Transaction(
                         transactionID = nextId,
@@ -318,22 +273,24 @@ class AddTransactionActivity : AppCompatActivity() {
                         splitPercentage = splitPercentage,
                         paid = true,
                         budgetTag = userBudgetTag,
-                        amountOwed = amountOwed,
+                        amountOwed = initiatorAmountOwed,
                         initialUser = true
                     )
                 )
 
+                if (selectedUsers.isNotEmpty()) {
+                    val remainingPercentage = BigDecimal.ONE.subtract(BigDecimal.valueOf(splitPercentage))
 
+                    // Use a higher precision for division to avoid rounding errors
+                    val otherUserPercentage = remainingPercentage.divide(BigDecimal(selectedUsers.size - 1), 15, RoundingMode.HALF_UP) // Increased precision to 15 decimal places
 
-                if(selectedUsers.isNotEmpty()) {
-                    val remainingPercentage = BigDecimal.valueOf(1.0).subtract(BigDecimal.valueOf(splitPercentage))
-                    val otherUserPercentage = remainingPercentage.divide(BigDecimal(selectedUsers.size), 5, RoundingMode.HALF_UP)
                     selectedUsers.forEach { userName ->
                         val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
                         if (userId != currentUserID) {
-                            val amountOwed =
-                                BigDecimal(amountDouble).multiply(BigDecimal(otherUserPercentage.toDouble()))
-                                    .setScale(2, RoundingMode.HALF_UP).toDouble()
+                            // Round to 2 decimal places for display in the database
+                            val percentageForUser = otherUserPercentage.setScale(2, RoundingMode.HALF_UP)
+                            val amountOwed = BigDecimal(amountDouble).multiply(percentageForUser).setScale(2, RoundingMode.HALF_UP).toDouble()
+
                             transactionDao.insertTransaction(
                                 Transaction(
                                     transactionID = nextId,
@@ -341,7 +298,7 @@ class AddTransactionActivity : AppCompatActivity() {
                                     transactionAmount = amountDouble,
                                     transactionDetails = description,
                                     transactionDate = transactionDate,
-                                    splitPercentage = otherUserPercentage.toDouble(),
+                                    splitPercentage = percentageForUser.toDouble(),
                                     paid = false,
                                     budgetTag = userBudgetTag,
                                     amountOwed = amountOwed,
@@ -356,8 +313,6 @@ class AddTransactionActivity : AppCompatActivity() {
                     finish()
                 }
             }
-
-
         }
 
         val customSplitButton = findViewById<Button>(R.id.customSplit)
@@ -421,7 +376,6 @@ class AddTransactionActivity : AppCompatActivity() {
         }
         builder.create().show()
     }
-
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
