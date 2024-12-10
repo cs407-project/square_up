@@ -214,15 +214,26 @@ class AddTransactionActivity : AppCompatActivity() {
                     selectGroupSpinner.setSelection(0)
 
                     selectGroupSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected( parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                             val selectedGroup = parent?.getItemAtPosition(position).toString()
                             Log.d("SpinnerSelection", "Group selected: $selectedGroup, Position: $position")
 
-                            if (selectedGroup == "Select a group") {
-                                Toast.makeText(this@AddTransactionActivity, "Please select a valid group", Toast.LENGTH_SHORT).show()
+                            if (selectedGroup != "Select a group") {
+                                lifecycleScope.launch(Dispatchers.IO) {
+                                    val groupId = groupsDao.getGroupIdByName(currentUserID, selectedGroup)
+                                    if (groupId != null) {
+                                        val memberNames = groupsDao.getGroupMembersByGroupId(groupId)
+
+                                        withContext(Dispatchers.Main) {
+                                            selectedUsers.clear() // Clear previous selections
+                                            selectedUsers.addAll(memberNames)
+                                            Toast.makeText(this@AddTransactionActivity, "Selected: $selectedGroup, Users: $selectedUsers", Toast.LENGTH_SHORT).show()
+                                        }
+                                    }
+                                }
                             } else {
-                                Toast.makeText(this@AddTransactionActivity, "Selected: $selectedGroup", Toast.LENGTH_SHORT).show()
-                                //(view as? TextView)?.text = selectedGroup
+                                selectedUsers.clear() // Clear selection if 'Select a group' is chosen
+                                Toast.makeText(this@AddTransactionActivity, "Please select a valid group", Toast.LENGTH_SHORT).show()
                             }
                         }
 
