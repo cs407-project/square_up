@@ -331,7 +331,7 @@ class AddTransactionActivity : AppCompatActivity() {
                 } else {
                     1.0 / (selectedUsers.size + 1)
                 }
-                findViewById<EditText>(R.id.editTextNumberDecimal).setText(splitPercentage.toString())
+                findViewById<EditText>(R.id.editTextNumberDecimal).setText("$splitPercentage")
             }
 
         }
