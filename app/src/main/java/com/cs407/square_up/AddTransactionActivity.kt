@@ -281,20 +281,14 @@ class AddTransactionActivity : AppCompatActivity() {
                 if (selectedUsers.isNotEmpty()) {
                     val remainingPercentage = BigDecimal.ONE.subtract(BigDecimal.valueOf(splitPercentage))
 
-                    val otherUserPercentage = remainingPercentage.divide(BigDecimal(selectedUsers.size), 10, RoundingMode.HALF_UP)
-
-                    val actualPercentages = mutableListOf<BigDecimal>()
+                    // Use a higher precision for division to avoid rounding errors
+                    val otherUserPercentage = remainingPercentage.divide(BigDecimal(selectedUsers.size - 1), 15, RoundingMode.HALF_UP) // Increased precision to 15 decimal places
 
                     selectedUsers.forEach { userName ->
                         val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
                         if (userId != currentUserID) {
-                            val percentageForUser = if (selectedUsers.indexOf(userName) == selectedUsers.size - 1) {
-                                remainingPercentage - actualPercentages.sumOf { it }
-                            } else {
-                                otherUserPercentage
-                            }
-                            actualPercentages.add(percentageForUser)
-
+                            // Round to 2 decimal places for display in the database
+                            val percentageForUser = otherUserPercentage.setScale(2, RoundingMode.HALF_UP)
                             val amountOwed = BigDecimal(amountDouble).multiply(percentageForUser).setScale(2, RoundingMode.HALF_UP).toDouble()
 
                             transactionDao.insertTransaction(
