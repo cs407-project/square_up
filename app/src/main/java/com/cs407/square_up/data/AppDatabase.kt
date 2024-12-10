@@ -160,6 +160,9 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId")
     suspend fun getTransactionsByUser(userId: Int): List<Transaction>
+
+    @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId and paid =0")
+    suspend fun getTrans(userId: Int): List<Transaction>
 }
 
 @Dao
@@ -192,11 +195,24 @@ interface GroupDao {
     suspend fun deleteGroup(group: Group)
 }
 
+data class TransactionItem(val transactionId: Int, val transactionAmount: Double)
+
 @Dao
 interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBudget(budget: Budget)
+
+    @Query("SELECT DISTINCT selectedBudget, currentAmount FROM Budget where userId = :userID")
+    suspend fun getBudgets(userID: Int): List<BudgetSummary>
+
+    @Query("SELECT DISTINCT selectedBudget FROM Budget where userId = :userID")
+    suspend fun getBudgetCat(userID: Int): List<Budget>
 }
+
+data class BudgetSummary(
+    val selectedBudget: String,
+    val currentAmount: Long
+)
 
 // Type converters for complex types
 class Converters {

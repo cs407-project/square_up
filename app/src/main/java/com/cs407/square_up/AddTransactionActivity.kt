@@ -26,53 +26,43 @@ import kotlinx.coroutines.withContext
 import java.util.Date
 import android.Manifest
 import android.app.Activity
-import android.content.ContentValues
-import android.content.Context
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.net.Uri
-import android.os.Environment
 import android.util.Log
 import android.view.View
-import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.TextView
 import com.google.mlkit.vision.text.TextRecognition
-import com.google.mlkit.vision.text.TextRecognizer
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 import java.math.BigDecimal
 import java.math.RoundingMode
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 class AddTransactionActivity : AppCompatActivity() {
     companion object {
         const val CAMERA_REQUEST_CODE = 1001
     }
 
-    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val imageBitmap = result.data?.extras?.get("data") as? Bitmap
-            if (imageBitmap != null) {
-                Log.d("CameraActivity", "Image bitmap captured successfully.")
-                processBitmapWithMLKit(imageBitmap) // Call ML Kit processing
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val imageBitmap = result.data?.extras?.get("data") as? Bitmap
+                if (imageBitmap != null) {
+                    Log.d("CameraActivity", "Image bitmap captured successfully.")
+                    processBitmapWithMLKit(imageBitmap) // Call ML Kit processing
+                } else {
+                    Log.e("CameraActivity", "Bitmap is null")
+                }
             } else {
-                Log.e("CameraActivity", "Bitmap is null")
+                Log.e("CameraActivity", "Failed to capture image.")
             }
-        } else {
-            Log.e("CameraActivity", "Failed to capture image.")
         }
-    }
 
     private fun processBitmapWithMLKit(bitmap: Bitmap) {
         // Convert the Bitmap to InputImage
-        val inputImage = InputImage.fromBitmap(bitmap, 0) // Replace 0 with correct rotation if needed
+        val inputImage =
+            InputImage.fromBitmap(bitmap, 0) // Replace 0 with correct rotation if needed
 
         // Initialize ML Kit's TextRecognizer
         val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
@@ -151,10 +141,12 @@ class AddTransactionActivity : AppCompatActivity() {
             insets
         }
 
+
         //Need to add a query "SELECT groupName from GROUPS WHERE userID = :userID"
         val selectGroupSpinner = findViewById<Spinner>(R.id.selectGroup)
         val currentUserID = intent.getIntExtra("USER_ID", 1)
 
+        populateBudgetTags(currentUserID)
         lifecycleScope.launch(Dispatchers.IO) {
             val groupsDao = db.groupDao()
             val groupNames = groupsDao.getGroupNamesByUser(currentUserID)
@@ -162,7 +154,10 @@ class AddTransactionActivity : AppCompatActivity() {
             withContext(Dispatchers.Main) {
                 if (groupNames.isNotEmpty()) {
                     val groupNamesWithPlaceholder = mutableListOf("Select a group") + groupNames
-                    Log.d("SpinnerSetup", "Group names with placeholder: $groupNamesWithPlaceholder")
+                    Log.d(
+                        "SpinnerSetup",
+                        "Group names with placeholder: $groupNamesWithPlaceholder"
+                    )
                     val adapter = ArrayAdapter(
                         this@AddTransactionActivity,
                         R.layout.spinner_item,
@@ -173,33 +168,56 @@ class AddTransactionActivity : AppCompatActivity() {
                     selectGroupSpinner.adapter = adapter
                     selectGroupSpinner.setSelection(0)
 
-                    selectGroupSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                            val selectedGroup = parent?.getItemAtPosition(position).toString()
-                            Log.d("SpinnerSelection", "Group selected: $selectedGroup, Position: $position")
+                    selectGroupSpinner.onItemSelectedListener =
+                        object : AdapterView.OnItemSelectedListener {
+                            override fun onItemSelected(
+                                parent: AdapterView<*>?,
+                                view: View?,
+                                position: Int,
+                                id: Long
+                            ) {
+                                val selectedGroup = parent?.getItemAtPosition(position).toString()
+                                Log.d(
+                                    "SpinnerSelection",
+                                    "Group selected: $selectedGroup, Position: $position"
+                                )
 
-                            if (selectedGroup != "Select a group") {
-                                lifecycleScope.launch(Dispatchers.IO) {
-                                    val groupId = groupsDao.getGroupIdByName(currentUserID, selectedGroup)
-                                    if (groupId != null) {
-                                        val memberNames = groupsDao.getGroupMembersByGroupId(groupId)
-                                        withContext(Dispatchers.Main) {
-                                            selectedUsers.clear() // Clear previous selections
-                                            selectedUsers.addAll(memberNames)
-                                            Toast.makeText(this@AddTransactionActivity, "Selected: $selectedGroup, Users: $selectedUsers", Toast.LENGTH_SHORT).show()
+                                if (selectedGroup != "Select a group") {
+                                    lifecycleScope.launch(Dispatchers.IO) {
+                                        val groupId =
+                                            groupsDao.getGroupIdByName(currentUserID, selectedGroup)
+                                        if (groupId != null) {
+                                            val memberNames =
+                                                groupsDao.getGroupMembersByGroupId(groupId)
+                                            withContext(Dispatchers.Main) {
+                                                selectedUsers.clear() // Clear previous selections
+                                                selectedUsers.addAll(memberNames)
+                                                Toast.makeText(
+                                                    this@AddTransactionActivity,
+                                                    "Selected: $selectedGroup, Users: $selectedUsers",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
                                         }
                                     }
+                                } else {
+                                    selectedUsers.clear() // Clear selection if 'Select a group' is chosen
+                                    Toast.makeText(
+                                        this@AddTransactionActivity,
+                                        "Please select a valid group",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-                            } else {
-                                selectedUsers.clear() // Clear selection if 'Select a group' is chosen
-                                Toast.makeText(this@AddTransactionActivity, "Please select a valid group", Toast.LENGTH_SHORT).show()
+                            }
+
+                            override fun onNothingSelected(parent: AdapterView<*>?) {
+                                Toast.makeText(
+                                    this@AddTransactionActivity,
+                                    "No selection made",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
                         }
-
-                        override fun onNothingSelected(parent: AdapterView<*>?) {
-                            Toast.makeText(this@AddTransactionActivity, "No selection made", Toast.LENGTH_SHORT).show()
-                        }
-                    }
                     Log.d("SpinnerSetup", "OnItemSelectedListener assigned to Spinner.")
                 } else {
                     Log.e("SpinnerSetup", "No groups found for user ID: $currentUserID")
@@ -231,9 +249,10 @@ class AddTransactionActivity : AppCompatActivity() {
         addTransactionButton.setOnClickListener {
             val description = findViewById<EditText>(R.id.enterDescription).text.toString()
             val amount = findViewById<EditText>(R.id.enterAmount).text.toString()
-            val splitPercentageText = findViewById<EditText>(R.id.editTextNumberDecimal).text.toString()
+            val splitPercentageText =
+                findViewById<EditText>(R.id.editTextNumberDecimal).text.toString()
             val selectGroup = findViewById<Spinner>(R.id.selectGroup)
-            val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
+            val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).toString()
 
             if (description.isEmpty() || amount.isEmpty() || splitPercentageText.isEmpty()) {
                 Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show()
@@ -259,10 +278,15 @@ class AddTransactionActivity : AppCompatActivity() {
                 val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
 
                 // Insert for the initiator
-                Log.d("TransactionInsert", "Attempting to insert transaction for initiator with ID: $nextId")
+                Log.d(
+                    "TransactionInsert",
+                    "Attempting to insert transaction for initiator with ID: $nextId"
+                )
                 Log.d("TransactionInsert", "UserID = $currentUserID")
 
-                val initiatorAmountOwed = BigDecimal(amountDouble).multiply(BigDecimal(splitPercentage)).setScale(2, RoundingMode.HALF_UP).toDouble()
+                val initiatorAmountOwed =
+                    BigDecimal(amountDouble).multiply(BigDecimal(splitPercentage))
+                        .setScale(2, RoundingMode.HALF_UP).toDouble()
                 transactionDao.insertTransaction(
                     Transaction(
                         transactionID = nextId,
@@ -279,17 +303,24 @@ class AddTransactionActivity : AppCompatActivity() {
                 )
 
                 if (selectedUsers.isNotEmpty()) {
-                    val remainingPercentage = BigDecimal.ONE.subtract(BigDecimal.valueOf(splitPercentage))
+                    val remainingPercentage =
+                        BigDecimal.ONE.subtract(BigDecimal.valueOf(splitPercentage))
 
                     // Use a higher precision for division to avoid rounding errors
-                    val otherUserPercentage = remainingPercentage.divide(BigDecimal(selectedUsers.size - 1), 15, RoundingMode.HALF_UP) // Increased precision to 15 decimal places
+                    val otherUserPercentage = remainingPercentage.divide(
+                        BigDecimal(selectedUsers.size - 1),
+                        15,
+                        RoundingMode.HALF_UP
+                    ) // Increased precision to 15 decimal places
 
                     selectedUsers.forEach { userName ->
                         val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
                         if (userId != currentUserID) {
                             // Round to 2 decimal places for display in the database
-                            val percentageForUser = otherUserPercentage.setScale(2, RoundingMode.HALF_UP)
-                            val amountOwed = BigDecimal(amountDouble).multiply(percentageForUser).setScale(2, RoundingMode.HALF_UP).toDouble()
+                            val percentageForUser =
+                                otherUserPercentage.setScale(2, RoundingMode.HALF_UP)
+                            val amountOwed = BigDecimal(amountDouble).multiply(percentageForUser)
+                                .setScale(2, RoundingMode.HALF_UP).toDouble()
 
                             transactionDao.insertTransaction(
                                 Transaction(
@@ -300,7 +331,7 @@ class AddTransactionActivity : AppCompatActivity() {
                                     transactionDate = transactionDate,
                                     splitPercentage = percentageForUser.toDouble(),
                                     paid = false,
-                                    budgetTag = userBudgetTag,
+                                    budgetTag = "None",
                                     amountOwed = amountOwed,
                                     initialUser = false
                                 )
@@ -309,7 +340,11 @@ class AddTransactionActivity : AppCompatActivity() {
                     }
                 }
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@AddTransactionActivity, "Transaction added successfully!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        this@AddTransactionActivity,
+                        "Transaction added successfully!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                     finish()
                 }
             }
@@ -325,7 +360,7 @@ class AddTransactionActivity : AppCompatActivity() {
             // Equal split logic
             lifecycleScope.launch(Dispatchers.Main) {
                 val currentUserID = intent.getIntExtra("USER_ID", 1)
-               val currentUser = db.userDao().getUserById(currentUserID)
+                val currentUser = db.userDao().getUserById(currentUserID)
                 val splitPercentage = if (selectedUsers.contains(currentUser?.userName)) {
                     1.0 / (selectedUsers.size)
                 } else {
@@ -338,9 +373,17 @@ class AddTransactionActivity : AppCompatActivity() {
 
         val useCameraButton = findViewById<Button>(R.id.useCamera)
         useCameraButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.CAMERA
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 // Request permission
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.CAMERA),
+                    CAMERA_REQUEST_CODE
+                )
             } else {
                 // Permission granted, launch the camera using cameraLauncher
                 val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -375,7 +418,11 @@ class AddTransactionActivity : AppCompatActivity() {
 
             if (selectedUsers.isEmpty()) {
                 // Show a toast if no users are selected
-                Toast.makeText(this, "No users selected. Please choose at least one.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "No users selected. Please choose at least one.",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 Toast.makeText(this, "Selected Users: $selectedUsers", Toast.LENGTH_SHORT).show()
             }
@@ -388,7 +435,11 @@ class AddTransactionActivity : AppCompatActivity() {
         builder.create().show()
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == CAMERA_REQUEST_CODE && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             // Permission granted, launch camera
@@ -399,4 +450,32 @@ class AddTransactionActivity : AppCompatActivity() {
             Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun populateBudgetTags(userId: Int) {
+        val budgets = findViewById<Spinner>(R.id.enterBudgetTag)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            val db2 = AppDatabase.getDatabase(applicationContext)
+            val budget = db2.budgetDao()
+            val tags = budget.getBudgets(userId)
+
+            withContext(Dispatchers.Main) {
+
+                val adapter = ArrayAdapter(
+                    this@AddTransactionActivity,
+                    android.R.layout.simple_spinner_item,
+                    tags
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                budgets.adapter = adapter
+            }
+        }
+
+}
+
+
+
+
+
 }

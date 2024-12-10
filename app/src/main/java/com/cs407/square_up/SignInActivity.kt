@@ -8,13 +8,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cs407.square_up.data.AppDatabase
-import com.cs407.square_up.data.Transaction
 import com.cs407.square_up.data.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
-import java.util.Date
 
 class SignInActivity : AppCompatActivity() {
 

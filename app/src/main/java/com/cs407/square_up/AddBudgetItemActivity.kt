@@ -1,24 +1,26 @@
 package com.cs407.square_up
 
-import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cs407.square_up.data.AppDatabase
 import com.cs407.square_up.data.Budget
+import com.cs407.square_up.data.TransactionItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddBudgetItemActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_budget_item)
-
+        val userId = intent.getIntExtra("USER_ID", 1)
         val backButton = findViewById<ImageView>(R.id.backButton)
         backButton.setOnClickListener {
             finish()
@@ -29,6 +31,9 @@ class AddBudgetItemActivity : AppCompatActivity() {
         val clearCategoryButton = findViewById<ImageView>(R.id.clearCategory)
         val categoryInput = findViewById<EditText>(R.id.categoryInput)
         val addButton = findViewById<Button>(R.id.addButton)
+        val addButton2 = findViewById<Button>(R.id.addButton2)
+        val budgetCat = findViewById<Spinner>(R.id.addBudg)
+        val trans = findViewById<Spinner>(R.id.addTrans)
 
         clearAmountButton.setOnClickListener {
             amountInput.text.clear()
@@ -48,6 +53,21 @@ class AddBudgetItemActivity : AppCompatActivity() {
 //
         }
 
+        populateBudgetTags(userId)
+
+        populateTransactions(userId)
+
+//        addButton2.setOnClickListener {
+//            val budg = budgetCat.toString()
+//            val transaction = trans
+//
+//            val currentAmount = amountInput.text.toString().toLong()
+//            lifecycleScope.launch(Dispatchers.IO) {
+//                addBudget(budgetID, userID, selectedBudget, currentAmount)
+//            }
+////
+//        }
+
 
     }
     //    val newBudget = Budget(
@@ -64,8 +84,57 @@ class AddBudgetItemActivity : AppCompatActivity() {
             selectedBudget = selectedBudget2,
             currentAmount = currentAmount2 // Example amount
         )
-        val db = AppDatabase.getDatabase(this)
+        val db = AppDatabase.getDatabase(applicationContext)
         val budgetDao = db.budgetDao()
         budgetDao.insertBudget(newBudget)
+    }
+
+    private fun populateBudgetTags(userId: Int) {
+        val budgets = findViewById<Spinner>(R.id.addBudg)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            val db2 = AppDatabase.getDatabase(applicationContext)
+            val budget = db2.budgetDao()
+            val tags = budget.getBudgets(userId)
+
+            withContext(Dispatchers.Main) {
+
+                val adapter = ArrayAdapter(
+                    this@AddBudgetItemActivity,
+                    android.R.layout.simple_spinner_item,
+                    tags
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                budgets.adapter = adapter
+            }
+        }
+
+    }
+
+    private fun populateTransactions(userId: Int) {
+        val transactions = findViewById<Spinner>(R.id.addTrans)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            val db2 = AppDatabase.getDatabase(applicationContext)
+            val budget = db2.transactionDao()
+            val trans2 = budget.getTrans(userId)
+
+            val transactionItems = trans2.map { transaction ->
+                TransactionItem(transactionId = transaction.transactionID, transactionAmount = transaction.transactionAmount)
+            }
+            withContext(Dispatchers.Main) {
+
+                val adapter = ArrayAdapter(
+                    this@AddBudgetItemActivity,
+                    android.R.layout.simple_spinner_item,
+                    transactionItems.map { it.transactionId }
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                transactions.adapter = adapter
+            }
+        }
+
     }
 }

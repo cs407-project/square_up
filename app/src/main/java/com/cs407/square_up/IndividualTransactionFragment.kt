@@ -1,6 +1,5 @@
 package com.cs407.square_up
 
-import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
