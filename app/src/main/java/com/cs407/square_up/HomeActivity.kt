@@ -156,12 +156,12 @@ class HomeActivity : AppCompatActivity() {
         val totalAmountValueTextView = findViewById<TextView>(R.id.total_amount_value)
         val totalAmountTextView = findViewById<TextView>(R.id.total_amount)
 //        totalAmountValueTextView.text = "$" +amount.toString()
-        totalAmountValueTextView.text =String.format("%.2f", amount)
+        totalAmountValueTextView.text =String.format("$%.2f", amount)
         // Change color based on positive or negative amount
         if (amount > 0) {
             totalAmountValueTextView.setTextColor(Color.RED)
             //I thought this line would be more clear, but it takes up to much space
-            totalAmountTextView.setText("Total Amount owed by you:")
+            totalAmountTextView.setText("Total Amount Owed by You:")
 
         }
         else if (amount == 0.0) {
@@ -170,8 +170,8 @@ class HomeActivity : AppCompatActivity() {
         else {
             totalAmountValueTextView.setTextColor(Color.GREEN)
             //I thought this line would be more clear, but it takes up to much space
-            totalAmountTextView.setText("Total Amount owed to you:")
-            totalAmountValueTextView.text =String.format("%.2f", -amount)
+            totalAmountTextView.setText("Total Amount Owed to You:")
+            totalAmountValueTextView.text =String.format("$%.2f", -amount)
         }
     }
     private fun loadGroups(userId: Int) {
