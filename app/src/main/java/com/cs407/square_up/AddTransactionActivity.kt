@@ -323,6 +323,17 @@ class AddTransactionActivity : AppCompatActivity() {
         val equalSplitButton = findViewById<Button>(R.id.equalSplit)
         equalSplitButton.setOnClickListener {
             // Equal split logic
+            lifecycleScope.launch(Dispatchers.Main) {
+                val currentUserID = intent.getIntExtra("USER_ID", 1)
+               val currentUser = db.userDao().getUserById(currentUserID)
+                val splitPercentage = if (selectedUsers.contains(currentUser?.userName)) {
+                    1.0 / (selectedUsers.size)
+                } else {
+                    1.0 / (selectedUsers.size + 1)
+                }
+                findViewById<EditText>(R.id.editTextNumberDecimal).setText(splitPercentage.toString())
+            }
+
         }
 
         val useCameraButton = findViewById<Button>(R.id.useCamera)
