@@ -52,7 +52,7 @@ data class Transaction(
     val splitPercentage: Double,
 
     @ColumnInfo(name = "Paid")
-    val paid: Boolean,
+    var paid: Boolean,
 
     @ColumnInfo(name = "BudgetTag")
     val budgetTag: String,
@@ -159,6 +159,9 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId")
     suspend fun getTransactionsByUser(userId: Int): List<Transaction>
+
+    @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId AND Paid = 0")
+    suspend fun getAllUnpaidTransactionsForUser(userId: Int): List<Transaction>
 }
 
 @Dao

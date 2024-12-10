@@ -9,9 +9,6 @@
     tools:context=".AddTransactionActivity">
 
     <!-- Back Button -->
-
-    <!-- Description -->
-
     <ImageView
         android:id="@+id/backButton"
         android:layout_width="wrap_content"
@@ -23,6 +20,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- Description -->
     <TextView
         android:id="@+id/addTransaction2"
         android:layout_width="wrap_content"
@@ -64,9 +62,6 @@
         app:layout_constraintTop_toBottomOf="@+id/addTransaction2" />
 
     <!-- Amount -->
-
-    <!-- Budget Tag -->
-
     <TextView
         android:id="@+id/enterAmount_label"
         android:layout_width="wrap_content"
@@ -93,6 +88,7 @@
         app:layout_constraintStart_toEndOf="@+id/enterAmount_label"
         app:layout_constraintTop_toBottomOf="@+id/enterDescription" />
 
+    <!-- Budget Tag -->
     <TextView
         android:id="@+id/budgetTag_label"
         android:layout_width="wrap_content"
@@ -104,8 +100,6 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterAmount" />
-
-    <!-- Split Percentage -->
 
     <EditText
         android:id="@+id/enterBudgetTag"
@@ -121,36 +115,7 @@
         app:layout_constraintStart_toEndOf="@+id/budgetTag_label"
         app:layout_constraintTop_toBottomOf="@+id/enterAmount" />
 
-    <TextView
-        android:id="@+id/splitPercentage_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:text="@string/splitPercentage"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/enterBudgetTag" />
-
     <!-- Autofill Message -->
-
-    <!-- Group Selection -->
-
-    <EditText
-        android:id="@+id/editTextNumberDecimal"
-        android:layout_width="217dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:hint="@string/splitPercentage"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/splitPercentage_label"
-        app:layout_constraintTop_toBottomOf="@+id/enterBudgetTag" />
-
     <TextView
         android:id="@+id/autofill_message"
         android:layout_width="0dp"
@@ -163,7 +128,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextNumberDecimal" />
+        app:layout_constraintTop_toBottomOf="@+id/enterBudgetTag" />
+
+    <!-- Group Selection -->
+    <TextView
+        android:id="@+id/selectGroupLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginTop="8dp"
+        android:text="Select Group"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.516"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/autofill_message" />
+
+    <Spinner
+        android:id="@+id/selectGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#354C61"
+        android:spinnerMode="dialog"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/selectGroupLabel" />
 
     <Button
         android:id="@+id/selectPerson"
@@ -180,6 +174,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectGroup" />
 
+    <!-- Buttons -->
     <Button
         android:id="@+id/customSplit"
         android:layout_width="0dp"
@@ -205,51 +200,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/customSplit"
         app:layout_constraintTop_toBottomOf="@+id/selectPerson" />
-
-    <Spinner
-        android:id="@+id/selectGroup"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#354C61"
-        android:spinnerMode="dialog"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectGroupLabel" />
-
-    <TextView
-        android:id="@+id/selectGroupLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_marginTop="8dp"
-        android:text="Select Group"
-        android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.516"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autofill_message" />
-
-    <Button
-        android:id="@+id/addTransaction3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:backgroundTint="#354C61"
-        android:text="@string/add_transaction"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/equalSplit" />
-
-    <!-- Buttons -->
 
     <Button
         android:id="@+id/useCamera"
