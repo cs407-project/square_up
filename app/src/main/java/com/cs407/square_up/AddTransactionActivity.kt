@@ -446,7 +446,7 @@ class AddTransactionActivity : AppCompatActivity() {
         }
 
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Select Users")
+        builder.setTitle("Select Users /nFor individual transaction: Click OK and then Equal split")
         builder.setMultiChoiceItems(availableUsers, selectedItems) { _, which, isChecked ->
             if (isChecked) {
                 tempSelectedUsers.add(availableUsers[which]) // Add user to temporary list if checked
@@ -454,7 +454,7 @@ class AddTransactionActivity : AppCompatActivity() {
                 tempSelectedUsers.remove(availableUsers[which]) // Remove user from temporary list if unchecked
             }
         }
-        builder.setMessage("For individual transaction: Click OK and then Equal split") // Add subtitle
+//        builder.setMessage("For individual transaction: Click OK and then Equal split") // Add subtitle
 
         builder.setPositiveButton("OK") { dialog, _ ->
             // Update the main selectedUsers list regardless of the number of selections
