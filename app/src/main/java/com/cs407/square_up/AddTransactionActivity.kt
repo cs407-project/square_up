@@ -39,7 +39,6 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.ListView
 import android.widget.TextView
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
@@ -437,8 +436,10 @@ class AddTransactionActivity : AppCompatActivity() {
     }
 
     private fun showMultiSelectDialog(users: List<String>) {
+        // Prepare a list of available users
         val availableUsers = users.toTypedArray()
 
+        // Create a temporary list to track selections during the dialog session
         val tempSelectedUsers = selectedUsers.toMutableList()
         val selectedItems = BooleanArray(availableUsers.size) { index ->
             selectedUsers.contains(availableUsers[index])
