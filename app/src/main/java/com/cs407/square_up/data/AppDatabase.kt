@@ -205,9 +205,9 @@ interface BudgetDao {
     @Query("SELECT DISTINCT selectedBudget, currentAmount FROM Budget where userId = :userID")
     suspend fun getBudgets(userID: Int): List<BudgetSummary>
 
-    @Query("SELECT DISTINCT selectedBudget FROM Budget where userId = :userID")
-    suspend fun getBudgetCat(userID: Int): List<Budget>
+
 }
+
 
 data class BudgetSummary(
     val selectedBudget: String,

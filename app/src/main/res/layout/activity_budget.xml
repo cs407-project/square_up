@@ -45,8 +45,7 @@
             android:layout_height="wrap_content"
             android:textColor="#000000"
             android:textSize="20sp"
-            android:text="75%" <!-- Placeholder for progress text -->
-            android:layout_centerInParent="true" />
+            android:text="75%" />
 
     <ImageView
         android:id="@+id/addButton"

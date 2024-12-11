@@ -331,7 +331,7 @@ class AddTransactionActivity : AppCompatActivity() {
                                     transactionDate = transactionDate,
                                     splitPercentage = percentageForUser.toDouble(),
                                     paid = false,
-                                    budgetTag = "None",
+                                    budgetTag = "",
                                     amountOwed = amountOwed,
                                     initialUser = false
                                 )
