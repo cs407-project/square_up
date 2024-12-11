@@ -77,12 +77,12 @@ class HomeActivity : AppCompatActivity() {
                         startActivity(intent)
                         true
                     }
-                    R.id.menu_sign_out -> {
-                        Toast.makeText(this, "Signed out successfully!", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, SignInActivity::class.java)
-                        startActivity(intent)
-                        true
-                    }
+//                    R.id.menu_sign_out -> {
+//                        Toast.makeText(this, "Signed out successfully!", Toast.LENGTH_SHORT).show()
+//                        val intent = Intent(this, SignInActivity::class.java)
+//                        startActivity(intent)
+//                        true
+//                    }
                     else -> false
                 }
             }

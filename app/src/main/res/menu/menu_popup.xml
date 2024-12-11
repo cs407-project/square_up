@@ -6,8 +6,8 @@
     <item
         android:id="@+id/menu_change_password"
         android:title="Change Password" />
-    <item
-        android:id="@+id/menu_sign_out"
-        android:title="Sign Out" />
+<!--    <item-->
+<!--        android:id="@+id/menu_sign_out"-->
+<!--        android:title="Sign Out" />-->
 
 </menu>

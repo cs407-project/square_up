@@ -114,7 +114,7 @@ class BudgetActivity : AppCompatActivity() {
                     // Pass the List<String> directly to the adapter
                     val adapter = ArrayAdapter(
                         this@BudgetActivity,
-                        android.R.layout.simple_spinner_item,
+                        R.layout.spinner_item,
                         tags.map { it.toString() } // Explicitly convert to strings
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -207,46 +207,35 @@ class BudgetActivity : AppCompatActivity() {
             val budgets = budgetDao.getAllBudgets(userID)
             Log.d("BudgetActivity", "Fetched budgets: $budgets")
 
-            // Find the container where the budget items will be added
-            val budgetGraph = findViewById<LinearLayout>(R.id.budgetGraphContainer)
+            withContext(Dispatchers.Main) {
+                val budgetGraph = findViewById<LinearLayout>(R.id.budgetGraphContainer)
+                budgetGraph.removeAllViews()
 
-            // Clear any existing views
-            budgetGraph.removeAllViews()
+                budgets.forEach { budget ->
+                    val itemView = layoutInflater.inflate(R.layout.pie, budgetGraph, false)
+                    val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
+                    val budgetName = itemView.findViewById<TextView>(R.id.budgetName)
+                    val budgetPercentage = itemView.findViewById<TextView>(R.id.budgetPercent)
 
-            // Loop through each budget and create the UI dynamically
-            budgets.forEach { budget ->
-                // Inflate the individual budget item layout
-                val itemView = layoutInflater.inflate(R.layout.pie, budgetGraph, false)
+                    val percentage = if (budget.currentAmount > 0) {
+                        (budget.total / budget.currentAmount * 100).toInt()
+                    } else {
+                        0
+                    }
 
-                // Find views in the inflated layout
-                val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
-                val budgetName = itemView.findViewById<TextView>(R.id.budgetName)
-                val budgetPercentage = itemView.findViewById<TextView>(R.id.budgetPercent)
+                    val dollar = budget.total
+                    val budget1 = budget.currentAmount
+                    var final = (budget1 - dollar).toDouble()
+                    if (final <= 0.0) {
+                        final = 0.0
+                    }
 
-                // Calculate the percentage of the budget used
-                val percentage = if (budget.currentAmount > 0) {
-                    (budget.total / budget.currentAmount * 100).toInt()
-                } else {
-                    0
+                    budgetName.text = budget.selectedBudget
+                    budgetPercentage.text = "$${String.format("%.2f", final)} left"
+                    progressBar.progress = percentage
+
+                    budgetGraph.addView(itemView)
                 }
-
-                val dollar = budget.total
-                val budget1 = budget.currentAmount
-                var final = (budget1 - dollar).toDouble()
-                if (final <= 0.0) {
-                    final = 0.0
-//                    Toast.makeText(this@BudgetActivity, "Your ${budget.selectedBudget} budget has reached 0!", Toast.LENGTH_SHORT).show()
-                }
-
-
-                // Set the values dynamically for each item
-                budgetName.text = budget.selectedBudget
-
-                budgetPercentage.text = "$${String.format("%.2f", final)} left"
-                progressBar.progress = percentage
-
-                // Add the item view to the container
-                budgetGraph.addView(itemView)
             }
         }
     }

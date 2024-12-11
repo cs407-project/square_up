@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.cs407.square_up.data.AppDatabase
@@ -35,9 +36,6 @@ class AddBudgetItemActivity : AppCompatActivity() {
         val categoryInput = findViewById<EditText>(R.id.categoryInput)
         val addButton = findViewById<Button>(R.id.addButton)
 
-
-
-
         clearAmountButton.setOnClickListener {
             amountInput.text.clear()
         }
@@ -46,36 +44,31 @@ class AddBudgetItemActivity : AppCompatActivity() {
         }
 
         addButton.setOnClickListener {
-            val budgetID = 0
-            val selectedBudget = categoryInput.text.toString()
-            val currentAmount = amountInput.text.toString().toDouble()
-            val total = 0.0
-            lifecycleScope.launch(Dispatchers.IO) {
-                addBudget(budgetID, userId, selectedBudget, currentAmount, total)
+            val selectedBudget = categoryInput.text.toString().trim()
+            val currentAmount = amountInput.text.toString().toDoubleOrNull() ?: 0.0
+
+            if (selectedBudget.isNotEmpty() && currentAmount > 0) {
+                lifecycleScope.launch(Dispatchers.IO) {
+                    addBudget(userId, selectedBudget, currentAmount)
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@AddBudgetItemActivity, "Budget '$selectedBudget' added!", Toast.LENGTH_SHORT).show()
+                        finish()
+                    }
+                }
+            } else {
+                Toast.makeText(this, "Please enter a valid category and amount", Toast.LENGTH_SHORT).show()
             }
-//
         }
-
-
-
-
     }
-    //    val newBudget = Budget(
-//        budgetID = 0, // Leave as 0; Room will auto-generate the ID
-//        userID = 123, // Example user ID
-//        selectedBudget = categoryInput.text.toString(),
-//        currentAmount = amountInput.text.toString().toLong() // Example amount
-//    )
-//
 
 
-    private suspend fun addBudget(budgetID2: Int, userID2: Int, selectedBudget2: String, currentAmount2: Double, total2: Double) {
+    private suspend fun addBudget(userID: Int, selectedBudget: String, currentAmount: Double) {
         val newBudget = Budget(
-            budgetID = budgetID2, // Leave as 0; Room will auto-generate the ID
-            userID = userID2, // Example user ID
-            selectedBudget = selectedBudget2,
-            currentAmount = currentAmount2, // Example amount
-            total = total2
+            budgetID = 0, // Room will auto-generate this
+            userID = userID,
+            selectedBudget = selectedBudget,
+            currentAmount = currentAmount,
+            total = 0.0 // Assuming total starts at 0 for a new budget
         )
         val db = AppDatabase.getDatabase(applicationContext)
         val budgetDao = db.budgetDao()
