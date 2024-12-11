@@ -78,6 +78,7 @@ class GroupTransactionFragment : Fragment() {
                 val owed = transaction.userWhoPaidID
                 val owedUserName = userDao.getUserById(owed)?.userName
                 val id = transaction.transactionID
+                val owe = transactionDao.getTransactionAmountByUser(id, currentUserId)
 //                val amount = if (transaction.amountOwed < 0) {
 //                    "-$${"%.2f".format(-transaction.amountOwed)}"
 //                } else {
@@ -85,7 +86,7 @@ class GroupTransactionFragment : Fragment() {
 //                }
                 //Pair("Group Transaction $date", amount)
                 //Triple(transaction.transactionDate, "Group Transaction $date", amount)
-                val string1 = "Transaction ID: $id \nDate: $date\nYou owe $owedUserName for $description of $amount.\n\n"
+                val string1 = "Transaction ID: $id \nDate: $date\nYou owe $owedUserName for $description of $owe.\n\n"
                 Triple(date, string1, amount)
             }
 
@@ -138,7 +139,8 @@ class GroupTransactionFragment : Fragment() {
                 val description = transaction.transactionDetails
                 val paidUser = transaction.userWhoPaidID
                 val paidUserName = userDao.getUserById(paidUser)?.userName
-                val string3 = "Transaction ID: ${transactionId}\nDate: ${date}\nYou paid ${paidUserName} back ${amount} for ${description}\n\n"
+                val owe = transactionDao.getTransactionAmountByUser(transactionId, currentUserId)
+                val string3 = "Transaction ID: ${transactionId}\nDate: ${date}\nYou paid ${paidUserName} back ${owe} for ${description}\n\n"
                 Triple(date, string3, amount)
             }
 

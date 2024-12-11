@@ -438,6 +438,7 @@ class AddTransactionActivity : AppCompatActivity() {
 
     private fun showMultiSelectDialog(users: List<String>) {
         val availableUsers = users.toTypedArray()
+
         val tempSelectedUsers = selectedUsers.toMutableList()
         val selectedItems = BooleanArray(availableUsers.size) { index ->
             selectedUsers.contains(availableUsers[index])
@@ -450,12 +451,10 @@ class AddTransactionActivity : AppCompatActivity() {
 
         val listView = dialogView.findViewById<ListView>(R.id.userListView)
 
-        // Custom adapter for checkbox list
         val adapter = ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, availableUsers)
         listView.choiceMode = ListView.CHOICE_MODE_MULTIPLE
         listView.adapter = adapter
 
-        // Set initial selection state
         for (i in availableUsers.indices) {
             listView.setItemChecked(i, selectedItems[i])
         }

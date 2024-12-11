@@ -166,6 +166,9 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId AND Paid = 0")
     suspend fun getAllUnpaidTransactionsForUser(userId: Int): List<Transaction>
 
+    @Query("SELECT AmountOwed FROM transactions WHERE UserWhoPaidID = :userId AND transactionID = :transactionId")
+    suspend fun getTransactionAmountByUser(transactionId: Int, userId: Int): Double?
+
 
 
 
