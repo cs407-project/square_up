@@ -36,7 +36,7 @@ class HomeActivity : AppCompatActivity() {
         val menu_button = findViewById<ImageButton>(com.cs407.square_up.R.id.menu_button)
         val addExpense = findViewById<ImageButton>(R.id.add_expense_button)
         val squareUpButton = findViewById<ImageView>(R.id.temp_square_up_button)
-        val profileButton = findViewById<ImageButton>(R.id.profile_button)
+        val logOutButton = findViewById<Button>(R.id.profile_button)
         val addGroupButton = findViewById<Button>(R.id.add_group_button)
 
         val userId = intent.getIntExtra("USER_ID", -1) // Default to -1 if not found
@@ -102,7 +102,7 @@ class HomeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        profileButton.setOnClickListener {
+        logOutButton.setOnClickListener {
             Toast.makeText(this, "Signed out successfully!", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, SignInActivity::class.java)
             startActivity(intent)

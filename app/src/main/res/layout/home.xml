@@ -76,58 +76,55 @@
 
     <TextView
         android:id="@+id/total_amount"
-        android:layout_width="190dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="29dp"
+        android:layout_width="250dp"
+        android:layout_height="80dp"
         android:fontFamily="sans-serif-black"
+        android:gravity="center"
         android:text="@string/total_amount_owed_initial_label"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
-        android:gravity="center"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_button"
         app:layout_constraintEnd_toStartOf="@+id/menu_button"
         app:layout_constraintStart_toEndOf="@+id/profile_button"
-        app:layout_constraintTop_toTopOf="@+id/menu_button" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.822" />
 
     <TextView
         android:id="@+id/total_amount_value"
-        android:layout_width="181dp"
-        android:layout_height="34dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="257dp"
+        android:layout_height="74dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="29dp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:text="@string/zero"
         android:textColor="#FF0000"
-        android:textSize="24sp"
+        android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="@+id/total_amount"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.194"
         app:layout_constraintStart_toStartOf="@+id/total_amount"
         app:layout_constraintTop_toBottomOf="@+id/total_amount" />
 
-    <ImageButton
+    <Button
         android:id="@+id/profile_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="54dp"
-        android:layout_marginBottom="37dp"
+        android:layout_marginTop="28dp"
         android:backgroundTint="#354C61"
-        app:layout_constraintBottom_toTopOf="@+id/group_container"
+        android:text="Logout"
+        android:textColor="#FFFFFF"
         app:layout_constraintEnd_toStartOf="@+id/total_amount"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.273"
-        app:srcCompat="@drawable/baseline_person_24" />
+        app:layout_constraintTop_toTopOf="@+id/menu_button" />
 
     <ImageButton
         android:id="@+id/menu_button"
-        android:backgroundTint="#354C61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="23dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="#354C61"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/total_amount"
         app:layout_constraintTop_toTopOf="parent"
