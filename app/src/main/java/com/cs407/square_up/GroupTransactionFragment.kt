@@ -70,7 +70,7 @@ class GroupTransactionFragment : Fragment() {
 
 
             // all of these are set to negative. user owes ppl
-            val groupTransactionList = groupFilteredTransactions.map { transaction ->
+            val groupTransactionList = groupTransactions.map { transaction ->
                 val dateFormatter = SimpleDateFormat("MM/dd HH:mm:ss"); // Format date as "MM/dd"
                 val date = dateFormatter.format(transaction.transactionDate)
                 val description = transaction.transactionDetails
@@ -105,7 +105,7 @@ class GroupTransactionFragment : Fragment() {
 //                }
                 //Pair("Group Transaction $date", amount)
                 //Triple(transaction.transactionDate, "Group Transaction $date", amount)
-                val string2 = "Transaction ID: $transactionId \nDate: $date\n $paidUserName owes you $$amount for $description.\n\n"
+                val string2 = "Transaction ID: $transactionId \nDate: $date\n $paidUserName owes you $amount for $description.\n\n"
                 Triple(date, string2, amount)
             }
 

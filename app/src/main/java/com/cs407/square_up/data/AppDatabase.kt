@@ -228,6 +228,14 @@ interface TransactionDao {
         WHERE t1.initialUser = 1
         AND t2.paid = 1
         AND t2.userWhoPaidID = :userId
+        AND t1.userWhoPaidID != t2.userWhoPaidID
+        AND EXISTS (
+      SELECT 1
+      FROM transactions t3
+      WHERE t3.TransactionID = t1.TransactionID
+      GROUP BY t3.TransactionID
+      HAVING COUNT(*) >= 1
+  )
    """)
 
     suspend fun youPaidBack(userId: Int): List<Transaction>
