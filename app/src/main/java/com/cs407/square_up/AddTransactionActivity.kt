@@ -62,13 +62,10 @@ class AddTransactionActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val imageBitmap = result.data?.extras?.get("data") as? Bitmap
             if (imageBitmap != null) {
-                Log.d("CameraActivity", "Image bitmap captured successfully.")
                 processBitmapWithMLKit(imageBitmap) // Call ML Kit processing
             } else {
-                Log.e("CameraActivity", "Bitmap is null")
             }
         } else {
-            Log.e("CameraActivity", "Failed to capture image.")
         }
     }
 
