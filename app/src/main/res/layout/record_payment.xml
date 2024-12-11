@@ -6,115 +6,57 @@
     android:layout_height="match_parent"
     android:background="#0D1B2A">
 
+    <!-- Back Button -->
     <ImageView
         android:id="@+id/backButton"
-        android:contentDescription="@string/backButtonText"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="24dp"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:background="#0D1B2A"
         android:src="@drawable/ic_back_arrow"
         android:textColor="#FFFFFF"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
+    <!-- Title -->
     <TextView
         android:id="@+id/squareUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="27dp"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="32dp"
         android:text="@string/square_up"
         android:textColor="#FFFFFF"
         android:textSize="25sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/youPaid"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/youPaid"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="149dp"
-        android:layout_marginEnd="3dp"
-        android:layout_marginBottom="17dp"
-        android:text="@string/you_paid"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/Date"
-        app:layout_constraintEnd_toEndOf="@+id/addNotes"
-        app:layout_constraintStart_toStartOf="@+id/Date"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/youPaidInput"
-        android:layout_width="282dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="8dp"
-        android:hint="@string/enter_payment_amount"
-        android:textColor="#FFFFFF"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/youPaid"
-        app:layout_constraintTop_toTopOf="@+id/youPaid" />
-
-    <TextView
-        android:id="@+id/Date"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="21dp"
-        android:text="@string/date"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/addNotes"
-        app:layout_constraintEnd_toEndOf="@+id/addNotes"
-        app:layout_constraintStart_toStartOf="@+id/addNotes"
-        app:layout_constraintTop_toBottomOf="@+id/youPaid" />
-
-    <EditText
-        android:id="@+id/dateInput"
-        android:layout_width="287dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="8dp"
-        android:hint="@string/enter_date"
-        android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/Date"
-        app:layout_constraintTop_toTopOf="@+id/Date" />
-    <TextView
-        android:id="@+id/addNotes"
-        android:layout_width="85dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="242dp"
-        android:layout_marginBottom="61dp"
-        android:text="@string/add_notes"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/recordPayment"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/unpaidTransactionsList" />
 
-    <EditText
-        android:id="@+id/addNotesInput"
-        android:layout_width="281dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="8dp"
-        android:hint="@string/enter_notes"
-        android:textColor="#FFFFFF"
+    <!-- RecyclerView for Unpaid Transactions -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/unpaidTransactionsList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/recordPayment"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addNotes"
-        app:layout_constraintTop_toTopOf="@+id/addNotes" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/squareUp" />
 
+    <!-- Record Payment Button -->
     <Button
         android:id="@+id/recordPayment"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="342dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#354C61"
         android:text="@string/record_payment"
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addNotes" />
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
