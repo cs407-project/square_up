@@ -31,9 +31,6 @@ class BudgetActivity : AppCompatActivity() {
         val addButton2 = findViewById<Button>(R.id.addButton2)
 
 
-        populateBudgetTags(currentUserId)
-        populateTransactions(currentUserId)
-
         addButton2.setOnClickListener {
             val budgetCat = findViewById<Spinner>(R.id.addBudg).selectedItem?.toString()
             val transString = findViewById<Spinner>(R.id.addTrans).selectedItem?.toString()
@@ -60,26 +57,6 @@ class BudgetActivity : AppCompatActivity() {
             }
         }
 
-//        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-//        val progressText = findViewById<TextView>(R.id.budgetName)
-
-
-        // Set initial progress
-        //make dao total / budget
-//        val progressValue = 60
-//        progressBar.progress = progressValue
-//        progressText.text = "$progressValue%"
-
-        // Example: Animate progress
-//        ObjectAnimator.ofInt(progressBar, "progress", 0, progressValue).apply {
-//            duration = 1000
-//            start()
-//        }
-//        val db = AppDatabase.getDatabase(this)
-//        val budgetDao = db.budgetDao()
-//        val budgetItems = budgetDao.getBudgets(userId)
-//        val budgetListLayout = findViewById<LinearLayout>(R.id.budgetListLayout)
-
         val backButton = findViewById<ImageView>(R.id.backButton)
         backButton.setOnClickListener {
             finish()
@@ -93,9 +70,16 @@ class BudgetActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        loadUserBudgets(currentUserId)
     }
 
+    override fun onResume() {
+        super.onResume()
+        val currentUserId = intent.getIntExtra("USER_ID", 1)
+        populateBudgetTags(currentUserId)
+        populateTransactions(currentUserId)
+        loadUserBudgets(currentUserId)
+
+    }
     private suspend fun updateTotalAndBudget(transactionId: Int, category: String, userId: Int) {
 
         val db2 = AppDatabase.getDatabase(applicationContext)
