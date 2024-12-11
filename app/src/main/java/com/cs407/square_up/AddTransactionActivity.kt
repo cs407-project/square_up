@@ -184,7 +184,14 @@ class AddTransactionActivity : AppCompatActivity() {
 
         val useCameraButton = findViewById<Button>(R.id.useCamera)
         useCameraButton.setOnClickListener {
-            // Camera permission handling code
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // Request permission
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
+            } else {
+                // Permission granted, launch the camera using cameraLauncher
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                cameraLauncher.launch(cameraIntent)
+            }
         }
     }
 
