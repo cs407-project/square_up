@@ -35,16 +35,25 @@ class BudgetActivity : AppCompatActivity() {
         populateTransactions(currentUserId)
 
         addButton2.setOnClickListener {
-            val budgetCat = findViewById<Spinner>(R.id.addBudg).selectedItem.toString()
-            val trans = findViewById<Spinner>(R.id.addTrans).selectedItem.toString().toInt()
-            if (budgetCat==null){
+            val budgetCat = findViewById<Spinner>(R.id.addBudg).selectedItem?.toString()
+            val transString = findViewById<Spinner>(R.id.addTrans).selectedItem?.toString()
+
+            if (budgetCat.isNullOrEmpty()) {
                 Toast.makeText(this, "No Budget selected", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            if (trans==null){
+
+            if (transString.isNullOrEmpty()) {
                 Toast.makeText(this, "No Transaction selected", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+            val trans = try {
+                transString.toInt()
+            } catch (e: NumberFormatException) {
+                Toast.makeText(this, "Invalid Transaction ID", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             lifecycleScope.launch(Dispatchers.IO) {
                 updateTotalAndBudget(trans, budgetCat, currentUserId)
 
