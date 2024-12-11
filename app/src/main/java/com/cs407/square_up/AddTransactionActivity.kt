@@ -62,13 +62,10 @@ class AddTransactionActivity : AppCompatActivity() {
         if (result.resultCode == Activity.RESULT_OK) {
             val imageBitmap = result.data?.extras?.get("data") as? Bitmap
             if (imageBitmap != null) {
-                Log.d("CameraActivity", "Image bitmap captured successfully.")
                 processBitmapWithMLKit(imageBitmap) // Call ML Kit processing
             } else {
-                Log.e("CameraActivity", "Bitmap is null")
             }
         } else {
-            Log.e("CameraActivity", "Failed to capture image.")
         }
     }
 
@@ -190,7 +187,14 @@ class AddTransactionActivity : AppCompatActivity() {
 
         val useCameraButton = findViewById<Button>(R.id.useCamera)
         useCameraButton.setOnClickListener {
-            // Camera permission handling code
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                // Request permission
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
+            } else {
+                // Permission granted, launch the camera using cameraLauncher
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                cameraLauncher.launch(cameraIntent)
+            }
         }
     }
 
