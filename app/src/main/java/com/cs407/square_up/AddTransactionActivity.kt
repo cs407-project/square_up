@@ -181,7 +181,14 @@ class AddTransactionActivity : AppCompatActivity() {
         }
 
         val equalSplitButton = findViewById<Button>(R.id.equalSplit)
+
         equalSplitButton.setOnClickListener {
+            val description = findViewById<EditText>(R.id.enterDescription).text.toString()
+            val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
+            if (description.isEmpty() || amountText.isEmpty() ) {
+                Toast.makeText(this, "Please fill out all fields ", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             performEqualSplit(db, currentUserID)
         }
 
@@ -440,6 +447,7 @@ class AddTransactionActivity : AppCompatActivity() {
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select Users")
+        builder.setMessage("For individual transaction: Click OK and then Equal split") // Add subtitle
         builder.setMultiChoiceItems(availableUsers, selectedItems) { _, which, isChecked ->
             if (isChecked) {
                 tempSelectedUsers.add(availableUsers[which]) // Add user to temporary list if checked
@@ -516,7 +524,7 @@ class AddTransactionActivity : AppCompatActivity() {
                     // Pass the List<String> directly to the adapter
                     val adapter = ArrayAdapter(
                         this@AddTransactionActivity,
-                        android.R.layout.simple_spinner_item,
+                        R.layout.spinner_item,
                         tags.map { it.toString() } // Explicitly convert to strings
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
