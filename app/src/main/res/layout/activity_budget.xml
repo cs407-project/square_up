@@ -5,7 +5,6 @@
     android:background="#0D1B2A"
     android:padding="16dp">
 
-    <!-- Back Button -->
     <ImageView
         android:id="@+id/backButton"
         android:textColor="#FFFFFF"
@@ -16,7 +15,6 @@
         android:layout_marginTop="16dp"
         android:src="@drawable/ic_back_arrow"/>
 
-    <!-- Title -->
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -28,112 +26,27 @@
         android:textColor="#FFFFFF"
         android:fontFamily="sans-serif-medium" />
 
-    <!-- Placeholder for Graphs -->
-    <GridLayout
-        android:layout_width="265dp"
-        android:layout_height="351dp"
-        android:layout_below="@id/title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
-        android:columnCount="2"
-        android:textColor="#FFFFFF"
-        android:rowCount="2">
+    <!-- Circular ProgressBar -->
+    <ProgressBar
+        android:id="@+id/stats_progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="75"
+        android:progressDrawable="@drawable/progress_pie"
+        android:layout_centerInParent="true" />
 
-        <!-- Food Graph Placeholder -->
-        <LinearLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:orientation="vertical">
+    <!-- TextView to Display Progress -->
+    <TextView
+        android:id="@+id/progress_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:text="75%" />
 
-            <View
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/circle_shape"
-                android:backgroundTint="#8A56AC" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/food_graph_name"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <!-- Repeat the above LinearLayout for other categories: Travel, Shopping, Other -->
-        <!-- Example for Travel -->
-        <LinearLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/circle_shape"
-                android:backgroundTint="#8A56AC" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/travel_graph_name"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/circle_shape"
-                android:backgroundTint="#8A56AC" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/shopping_graph_name"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@drawable/circle_shape"
-                android:backgroundTint="#8A56AC" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/other_graph_name"
-                android:textColor="#FFFFFF"
-                android:textSize="20sp" />
-        </LinearLayout>
-
-
-    </GridLayout>
-
-    <!-- Add Button at Bottom Center -->
     <ImageView
         android:id="@+id/addButton"
         android:backgroundTint="#354C61"
@@ -143,5 +56,57 @@
         android:layout_alignParentBottom="true"
         android:src="@drawable/ic_add"
         android:padding="8dp" />
+
+
+
+    <!--    <ScrollView-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_above="@id/addButton"-->
+    <!--        android:layout_marginBottom="16dp">-->
+
+    <!--        <LinearLayout-->
+    <!--            android:id="@+id/budgetListLayout"-->
+    <!--            android:orientation="vertical"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content" />-->
+
+    <!--    </ScrollView>-->
+
+    <!--    &lt;!&ndash; Back Button &ndash;&gt;-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/backButton"-->
+    <!--        android:textColor="#FFFFFF"-->
+    <!--        android:background="#0D1B2A"-->
+    <!--        android:layout_width="24dp"-->
+    <!--        android:layout_height="24dp"-->
+    <!--        android:layout_alignParentStart="true"-->
+    <!--        android:layout_marginTop="16dp"-->
+    <!--        android:src="@drawable/ic_back_arrow"/>-->
+
+    <!--    &lt;!&ndash; Title &ndash;&gt;-->
+    <!--    <TextView-->
+    <!--        android:id="@+id/title"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_marginTop="24dp"-->
+    <!--        android:text="@string/personal_budgeting_title"-->
+    <!--        android:textSize="24sp"-->
+    <!--        android:textColor="#FFFFFF"-->
+    <!--        android:fontFamily="sans-serif-medium" />-->
+
+    <!--    &lt;!&ndash; Placeholder for Graphs &ndash;&gt;-->
+
+    <!--    &lt;!&ndash; Add Button at Bottom Center &ndash;&gt;-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/addButton"-->
+    <!--        android:backgroundTint="#354C61"-->
+    <!--        android:layout_width="48dp"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        android:layout_centerHorizontal="true"-->
+    <!--        android:layout_alignParentBottom="true"-->
+    <!--        android:src="@drawable/ic_add"-->
+    <!--        android:padding="8dp" />-->
 
 </RelativeLayout>

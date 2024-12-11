@@ -97,7 +97,8 @@ data class Budget(
     @PrimaryKey(autoGenerate = true) val budgetID : Int,
     val userID : Int,
     val selectedBudget : String,
-    val currentAmount : Long
+    val currentAmount : Double,
+    val total : Double
 )
 
 
@@ -163,6 +164,7 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId AND Paid = 0")
     suspend fun getAllUnpaidTransactionsForUser(userId: Int): List<Transaction>
+
 
     // Query for individual transactions (with count = 1) and filtered by userId
     @Query("""
@@ -233,10 +235,16 @@ interface GroupDao {
     suspend fun deleteGroup(group: Group)
 }
 
+data class TransactionItem(val transactionId: Int, val transactionAmount: Double)
+
 @Dao
 interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBudget(budget: Budget)
+
+    @Query("SELECT DISTINCT selectedBudget FROM Budget where userId = :userID")
+    suspend fun getBudgets(userID: Int): List<String>
+
 }
 
 // Type converters for complex types
