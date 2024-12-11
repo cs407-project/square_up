@@ -214,17 +214,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="208dp"
-        android:layout_height="0dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="179dp"
-        android:text="For Individoul Transaction click equal split "
-        android:textAlignment="center"
-        android:textColor="#FAF8F8"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autofill_message" />
+<!--    <TextView-->
+<!--        android:id="@+id/textView"-->
+<!--        android:layout_width="208dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_marginEnd="5dp"-->
+<!--        android:layout_marginBottom="179dp"-->
+<!--        android:text="For Individoul Transaction click equal split "-->
+<!--        android:textAlignment="center"-->
+<!--        android:textColor="#FAF8F8"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/autofill_message" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

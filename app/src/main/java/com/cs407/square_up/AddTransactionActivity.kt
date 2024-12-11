@@ -447,6 +447,7 @@ class AddTransactionActivity : AppCompatActivity() {
 
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Select Users")
+        builder.setMessage("For individual transaction: Click OK and then Equal split") // Add subtitle
         builder.setMultiChoiceItems(availableUsers, selectedItems) { _, which, isChecked ->
             if (isChecked) {
                 tempSelectedUsers.add(availableUsers[which]) // Add user to temporary list if checked
