@@ -45,33 +45,6 @@
         android:text="@string/add"
         android:textColor="@color/white" />
 
-
-    <!--    &lt;!&ndash; Circular ProgressBar &ndash;&gt;-->
-<!--    <ProgressBar-->
-<!--        android:id="@+id/stats_progressbar"-->
-<!--        style="?android:attr/progressBarStyleHorizontal"-->
-<!--        android:layout_width="300dp"-->
-<!--        android:layout_height="300dp"-->
-<!--        android:indeterminate="false"-->
-<!--        android:max="100"-->
-<!--        android:progress="75"-->
-<!--        android:progressDrawable="@drawable/progress_pie"-->
-<!--        android:layout_centerInParent="true" />-->
-
-<!--    &lt;!&ndash; TextView to Display Progress &ndash;&gt;-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/progress_text"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignStart="@+id/stats_progressbar"-->
-<!--        android:layout_alignTop="@+id/stats_progressbar"-->
-<!--        android:layout_marginStart="131dp"-->
-<!--        android:layout_marginTop="136dp"-->
-<!--        android:text="75%"-->
-<!--        android:textColor="#FFFFFF"-->
-<!--        android:textSize="20sp" />-->
-
     <Spinner
         android:id="@+id/addBudg"
         android:layout_width="wrap_content"
@@ -136,6 +109,17 @@
             android:padding="16dp" />
     </ScrollView>
 
+    <TextView
+        android:id="@+id/addNewBudget"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/addButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="Add New Budget Category"
+        android:textSize="16sp"
+        android:textColor="#FFFEFE" />
+
     <ImageView
         android:id="@+id/addButton"
         android:backgroundTint="#354C61"
@@ -145,57 +129,5 @@
         android:layout_alignParentBottom="true"
         android:src="@drawable/ic_add"
         android:padding="8dp" />
-
-
-
-    <!--    <ScrollView-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_above="@id/addButton"-->
-    <!--        android:layout_marginBottom="16dp">-->
-
-    <!--        <LinearLayout-->
-    <!--            android:id="@+id/budgetListLayout"-->
-    <!--            android:orientation="vertical"-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="wrap_content" />-->
-
-    <!--    </ScrollView>-->
-
-    <!--    &lt;!&ndash; Back Button &ndash;&gt;-->
-    <!--    <ImageView-->
-    <!--        android:id="@+id/backButton"-->
-    <!--        android:textColor="#FFFFFF"-->
-    <!--        android:background="#0D1B2A"-->
-    <!--        android:layout_width="24dp"-->
-    <!--        android:layout_height="24dp"-->
-    <!--        android:layout_alignParentStart="true"-->
-    <!--        android:layout_marginTop="16dp"-->
-    <!--        android:src="@drawable/ic_back_arrow"/>-->
-
-    <!--    &lt;!&ndash; Title &ndash;&gt;-->
-    <!--    <TextView-->
-    <!--        android:id="@+id/title"-->
-    <!--        android:layout_width="wrap_content"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_centerHorizontal="true"-->
-    <!--        android:layout_marginTop="24dp"-->
-    <!--        android:text="@string/personal_budgeting_title"-->
-    <!--        android:textSize="24sp"-->
-    <!--        android:textColor="#FFFFFF"-->
-    <!--        android:fontFamily="sans-serif-medium" />-->
-
-    <!--    &lt;!&ndash; Placeholder for Graphs &ndash;&gt;-->
-
-    <!--    &lt;!&ndash; Add Button at Bottom Center &ndash;&gt;-->
-    <!--    <ImageView-->
-    <!--        android:id="@+id/addButton"-->
-    <!--        android:backgroundTint="#354C61"-->
-    <!--        android:layout_width="48dp"-->
-    <!--        android:layout_height="48dp"-->
-    <!--        android:layout_centerHorizontal="true"-->
-    <!--        android:layout_alignParentBottom="true"-->
-    <!--        android:src="@drawable/ic_add"-->
-    <!--        android:padding="8dp" />-->
 
 </RelativeLayout>
