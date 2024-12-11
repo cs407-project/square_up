@@ -144,6 +144,7 @@ class AddTransactionActivity : AppCompatActivity() {
             finish()
         }
 
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.addTransaction)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -154,6 +155,8 @@ class AddTransactionActivity : AppCompatActivity() {
         val selectGroupSpinner = findViewById<Spinner>(R.id.selectGroup)
         val currentUserID = intent.getIntExtra("USER_ID", 1)
         setupGroupSpinner(db, currentUserID, selectGroupSpinner)
+
+        populateBudgetTags(currentUserID)
 
         val selectPersonButton = findViewById<Button>(R.id.selectPerson)
         selectPersonButton.setOnClickListener {
@@ -245,7 +248,7 @@ class AddTransactionActivity : AppCompatActivity() {
         val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
         val amount = amountText.toDouble()
         val description = findViewById<EditText>(R.id.enterDescription).text.toString()
-        val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
+        val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).selectedItem.toString()
         val transactionDate = Date()
         val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
 
@@ -264,6 +267,12 @@ class AddTransactionActivity : AppCompatActivity() {
         if (totalPercentage.compareTo(BigDecimal.ONE) == 0) {
             userSplits.forEach { (userId, percentage) ->
                 val amountOwed = BigDecimal.valueOf(amount).multiply(percentage).setScale(5, RoundingMode.HALF_UP)
+                var check = ""
+                if (currentUserID == userId) {
+                    check = userBudgetTag
+                } else {
+                    check = ""
+                }
                 transactionDao.insertTransaction(
                     Transaction(
                         transactionID = nextId,
@@ -273,7 +282,7 @@ class AddTransactionActivity : AppCompatActivity() {
                         transactionDate = transactionDate,
                         splitPercentage = percentage.toDouble(),
                         paid = userId == currentUserID,
-                        budgetTag = userBudgetTag,
+                        budgetTag = check,
                         amountOwed = amountOwed.setScale(2, RoundingMode.HALF_UP).toDouble(),
                         initialUser = userId == currentUserID
                     )
@@ -335,7 +344,7 @@ class AddTransactionActivity : AppCompatActivity() {
     private fun addTransaction(db: AppDatabase, currentUserID: Int) {
         val description = findViewById<EditText>(R.id.enterDescription).text.toString()
         val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
-        val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
+        val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).toString()
 
         if (description.isEmpty() || amountText.isEmpty() || selectedUsers.isEmpty()) {
             Toast.makeText(this, "Please fill out all fields and select users", Toast.LENGTH_SHORT).show()
@@ -363,7 +372,7 @@ class AddTransactionActivity : AppCompatActivity() {
             val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
             val amount = amountText.toDouble()
             val description = findViewById<EditText>(R.id.enterDescription).text.toString()
-            val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
+            val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).selectedItem.toString()
             val transactionDate = Date()
             val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
 
@@ -383,7 +392,12 @@ class AddTransactionActivity : AppCompatActivity() {
                 // Use setScale to ensure only 2 decimal places for the percentage in the database
                 val percentageForUser = splitPercentage.setScale(5, RoundingMode.HALF_UP)
                 val amountOwed = BigDecimal(amount).multiply(percentageForUser).setScale(5, RoundingMode.HALF_UP)
-
+                var check = ""
+                if (currentUserID == userId) {
+                    check = userBudgetTag
+                } else {
+                    check = ""
+                }
                 transactionDao.insertTransaction(
                     Transaction(
                         transactionID = nextId,
@@ -393,7 +407,7 @@ class AddTransactionActivity : AppCompatActivity() {
                         transactionDate = transactionDate,
                         splitPercentage = percentageForUser.toDouble(),
                         paid = userId == currentUserID,
-                        budgetTag = userBudgetTag,
+                        budgetTag = check,
                         amountOwed = amountOwed.setScale(2, RoundingMode.HALF_UP).toDouble(),
                         initialUser = userId == currentUserID
                     )
@@ -457,4 +471,77 @@ class AddTransactionActivity : AppCompatActivity() {
             Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
         }
     }
+
+//    private fun populateBudgetTags(userId: Int) {
+//        val budgets = findViewById<Spinner>(R.id.enterBudgetTag)
+//
+//        lifecycleScope.launch(Dispatchers.IO) {
+//
+//            val db2 = AppDatabase.getDatabase(applicationContext)
+//            val budget = db2.budgetDao()
+//            val tags = budget.getBudgets(userId)
+//
+//            withContext(Dispatchers.Main) {
+//
+//                val adapter = ArrayAdapter(
+//                    this@AddTransactionActivity,
+//                    android.R.layout.simple_spinner_item,
+//                    tags
+//                )
+//                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//                budgets.adapter = adapter
+//            }
+//        }
+//
+//    }
+
+    private fun populateBudgetTags(userId: Int) {
+        val budgets = findViewById<Spinner>(R.id.enterBudgetTag)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val db2 = AppDatabase.getDatabase(applicationContext)
+            val budgetDao = db2.budgetDao()
+            val tags = budgetDao.getBudgets(userId) // Should return List<String>
+
+            withContext(Dispatchers.Main) {
+                Log.d("BudgetTags", "Fetched Tags: $tags")
+                if (tags.isNotEmpty()) {
+                    // Pass the List<String> directly to the adapter
+                    val adapter = ArrayAdapter(
+                        this@AddTransactionActivity,
+                        android.R.layout.simple_spinner_item,
+                        tags.map { it.toString() } // Explicitly convert to strings
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    budgets.adapter = adapter
+                } else {
+                    val adapter = ArrayAdapter(
+                        this@AddTransactionActivity,
+                        android.R.layout.simple_spinner_item,
+                        listOf("")
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    budgets.adapter = adapter
+                }
+                budgets.setSelection(0)
+                // Add onItemSelectedListener
+                budgets.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        val selectedItem = parent?.getItemAtPosition(position).toString()
+                        Log.d("SpinnerSelection", "Selected item: $selectedItem")
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        Log.d("SpinnerSelection", "Nothing selected")
+                    }
+                }
+            }
+        }
+    }
+
 }

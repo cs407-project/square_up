@@ -97,7 +97,8 @@ data class Budget(
     @PrimaryKey(autoGenerate = true) val budgetID : Int,
     val userID : Int,
     val selectedBudget : String,
-    val currentAmount : Long
+    val currentAmount : Double,
+    val total : Double
 )
 
 
@@ -131,6 +132,7 @@ interface UserDao {
 
     @Query("SELECT * FROM User")
     suspend fun getAllUsers(): List<User>
+
 }
 
 // DAO for Transaction
@@ -163,6 +165,9 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId AND Paid = 0")
     suspend fun getAllUnpaidTransactionsForUser(userId: Int): List<Transaction>
+
+
+
 
     // Query for individual transactions (with count = 1) and filtered by userId
     @Query("""
@@ -201,7 +206,23 @@ interface TransactionDao {
    AND t2.userWhoPaidID = :userId
 """)
     suspend fun getTransactionsPaidBackToUser(userId: Int): List<Transaction>
+
+    @Query("SELECT budgetTag FROM TRANSACTIONS")
+    suspend fun getallBudg(): List<String>
+
+    @Query("SELECT transactionID FROM transactions WHERE userWhoPaidID = :userId AND Paid = 0")
+    suspend fun getTrans(userId: Int): List<Int>
+
+    @Query("SELECT amountOwed FROM transactions WHERE transactionID = :transactionId AND Paid = 0")
+    suspend fun getTotal(transactionId: Int): List<Double>
+
+    @Query("UPDATE transactions SET budgetTag = :newBudgetTag WHERE userWhoPaidID = :userId")
+    suspend fun updateTransactionBudgetTag(userId: Int, newBudgetTag: String)
+
+
 }
+
+
 
 @Dao
 interface GroupDao {
@@ -233,10 +254,22 @@ interface GroupDao {
     suspend fun deleteGroup(group: Group)
 }
 
+data class TransactionItem(val transactionId: Int, val transactionAmount: Double)
+
 @Dao
 interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBudget(budget: Budget)
+
+    @Query("SELECT DISTINCT selectedBudget FROM Budget where userId = :userID")
+    suspend fun getBudgets(userID: Int): List<String>
+
+    @Query("UPDATE Budget SET total = :newTotal WHERE selectedBudget = :budgetCategory")
+    suspend fun updateTotal(budgetCategory: String, newTotal: Double)
+
+    @Query("SELECT total FROM Budget WHERE userID = :userId2 AND selectedBudget = :category")
+    suspend fun getCurrentTotal(userId2: Int, category: String): List<Double>
+
 }
 
 // Type converters for complex types
