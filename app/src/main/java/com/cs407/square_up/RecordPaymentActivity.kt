@@ -38,6 +38,7 @@ class RecordPaymentActivity : AppCompatActivity() {
 
         val recordPaymentButton = findViewById<Button>(R.id.recordPayment)
         recordPaymentButton.setOnClickListener {
+            Toast.makeText(this, "Click on Record to Pay", Toast.LENGTH_LONG).show()
             loadUnpaidTransactions()
         }
 
@@ -112,8 +113,8 @@ class UnpaidTransactionsAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val transaction = transactions[position]
-        holder.description.text = transaction.transactionDetails
-        holder.amount.text = "${transaction.amountOwed}"
+        holder.description.text = "You Owe: $${transaction.amountOwed} for ${transaction.transactionDetails}"
+        holder.amount.text = "Transaction ID: ${transaction.transactionID}"
         holder.itemView.setOnClickListener { onItemClick(transaction) }
     }
 
