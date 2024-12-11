@@ -82,7 +82,6 @@ class RecordPaymentActivity : AppCompatActivity() {
                 Log.d("RecordPaymentActivity", "Transaction paid status before update: ${transaction.paid}")
                 transactionDao.update(transaction)
                 val updatedTransaction = transactionDao.getTransactionById(transaction.transactionID)
-                Log.d("RecordPaymentActivity", "Transaction paid status after update: ${updatedTransaction?.paid}")
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@RecordPaymentActivity, "Payment Recorded", Toast.LENGTH_SHORT).show()
                     adapter.removeItem(transaction)
