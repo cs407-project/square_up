@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="16dp"
+    android:background="#0D1B2A">
+
+    <!-- Circular Progress Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="289dp"
+        android:layout_height="142dp"
+        android:indeterminate="false"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/progress_pie" />
+
+    <!-- Budget Name -->
+    <TextView
+        android:id="@+id/budgetName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text=""
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        android:fontFamily="sans-serif-medium" />
+
+    <!-- Budget Percentage -->
+    <TextView
+        android:id="@+id/budgetPercent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="sans-serif"
+        android:text=""
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+</LinearLayout>

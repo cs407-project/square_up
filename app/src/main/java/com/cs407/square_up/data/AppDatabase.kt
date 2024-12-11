@@ -270,6 +270,9 @@ interface BudgetDao {
     @Query("SELECT total FROM Budget WHERE userID = :userId2 AND selectedBudget = :category")
     suspend fun getCurrentTotal(userId2: Int, category: String): List<Double>
 
+    @Query("SELECT * FROM Budget WHERE userId = :userID")
+    suspend fun getAllBudgets(userID: Int): List<Budget>
+
 }
 
 // Type converters for complex types

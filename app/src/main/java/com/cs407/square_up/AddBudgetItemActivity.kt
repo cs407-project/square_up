@@ -34,7 +34,7 @@ class AddBudgetItemActivity : AppCompatActivity() {
         val clearCategoryButton = findViewById<ImageView>(R.id.clearCategory)
         val categoryInput = findViewById<EditText>(R.id.categoryInput)
         val addButton = findViewById<Button>(R.id.addButton)
-        val addButton2 = findViewById<Button>(R.id.addButton2)
+
 
 
 
@@ -56,17 +56,7 @@ class AddBudgetItemActivity : AppCompatActivity() {
 //
         }
 
-        populateBudgetTags(userId)
-        populateTransactions(userId)
 
-        addButton2.setOnClickListener {
-            val budgetCat = findViewById<Spinner>(R.id.addBudg).selectedItem.toString()
-            val trans = findViewById<Spinner>(R.id.addTrans).selectedItem.toString().toInt()
-            lifecycleScope.launch(Dispatchers.IO) {
-                updateTotalAndBudget(trans, budgetCat, userId)
-
-            }
-        }
 
 
     }
@@ -78,18 +68,7 @@ class AddBudgetItemActivity : AppCompatActivity() {
 //    )
 //
 
-    private suspend fun updateTotalAndBudget(transactionId: Int, category: String, userId: Int) {
 
-        val db2 = AppDatabase.getDatabase(applicationContext)
-        val transDao = db2.transactionDao()
-        val db = AppDatabase.getDatabase(applicationContext)
-        val budgetDao = db.budgetDao()
-        val amountOwed = transDao.getTotal(transactionId)[0]
-        val current = budgetDao.getCurrentTotal(userId, category)[0]
-        val total = amountOwed + current
-        transDao.updateTransactionBudgetTag(userId, category)
-        budgetDao.updateTotal(category, total)
-    }
     private suspend fun addBudget(budgetID2: Int, userID2: Int, selectedBudget2: String, currentAmount2: Double, total2: Double) {
         val newBudget = Budget(
             budgetID = budgetID2, // Leave as 0; Room will auto-generate the ID
@@ -126,103 +105,6 @@ class AddBudgetItemActivity : AppCompatActivity() {
 //
 //    }
 
-    private fun populateBudgetTags(userId: Int) {
-        val budgets = findViewById<Spinner>(R.id.addBudg)
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val db2 = AppDatabase.getDatabase(applicationContext)
-            val budgetDao = db2.budgetDao()
-            val tags = budgetDao.getBudgets(userId) // Should return List<String>
-
-            withContext(Dispatchers.Main) {
-                Log.d("BudgetTags", "Fetched Tags: $tags")
-                if (tags.isNotEmpty()) {
-                    // Pass the List<String> directly to the adapter
-                    val adapter = ArrayAdapter(
-                        this@AddBudgetItemActivity,
-                        android.R.layout.simple_spinner_item,
-                        tags.map { it.toString() } // Explicitly convert to strings
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    budgets.adapter = adapter
-                } else {
-                    val adapter = ArrayAdapter(
-                        this@AddBudgetItemActivity,
-                        android.R.layout.simple_spinner_item,
-                        listOf("No Budget Tags Available")
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    budgets.adapter = adapter
-                }
-                budgets.setSelection(0)
-                // Add onItemSelectedListener
-                budgets.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        val selectedItem = parent?.getItemAtPosition(position).toString()
-                        Log.d("SpinnerSelection", "Selected item: $selectedItem")
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        Log.d("SpinnerSelection", "Nothing selected")
-                    }
-                }
-            }
-        }
-    }
-
-    private fun populateTransactions(userId: Int) {
-        val transactions = findViewById<Spinner>(R.id.addTrans)
-
-        lifecycleScope.launch(Dispatchers.IO) {
-            val db2 = AppDatabase.getDatabase(applicationContext)
-            val transDao = db2.transactionDao()
-            val tags = transDao.getTrans(userId) // Should return List<Int>
-
-            withContext(Dispatchers.Main) {
-                Log.d("TransTags", "Fetched Tags: $tags")
-                if (tags.isNotEmpty()) {
-                    // Pass the List<String> directly to the adapter
-                    val adapter = ArrayAdapter(
-                        this@AddBudgetItemActivity,
-                        android.R.layout.simple_spinner_item,
-                        tags.map { it.toInt() } // Explicitly convert to strings
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    transactions.adapter = adapter
-                } else {
-                    val adapter = ArrayAdapter(
-                        this@AddBudgetItemActivity,
-                        android.R.layout.simple_spinner_item,
-                        listOf("No Transaction Tags Available")
-                    )
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    transactions.adapter = adapter
-                }
-                transactions.setSelection(0)
-                // Add onItemSelectedListener
-                transactions.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>?,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        val selectedItem = parent?.getItemAtPosition(position).toString()
-                        Log.d("SpinnerSelection", "Selected item: $selectedItem")
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                        Log.d("SpinnerSelection", "Nothing selected")
-                    }
-                }
-            }
-        }
-    }
 
 
 

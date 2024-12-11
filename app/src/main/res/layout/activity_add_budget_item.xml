@@ -46,7 +46,7 @@
             android:background="@android:color/transparent"
             android:hint="@string/amount_input"
             android:inputType="numberDecimal"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
         <ImageView
@@ -75,7 +75,7 @@
             android:background="@android:color/transparent"
             android:hint="@string/budget_category_input"
             android:inputType="text"
-            android:textColor="#FFFFFF"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
         <ImageView
@@ -101,70 +101,6 @@
         android:text="@string/Create"
         android:textColor="#FFFFFF" />
 
-    <Button
-        android:id="@+id/addButton2"
-        android:layout_width="112dp"
-        android:layout_height="48dp"
-        android:layout_below="@+id/addTrans"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="152dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="131dp"
-        android:backgroundTint="#354C61"
-        android:paddingLeft="32dp"
-        android:paddingTop="8dp"
-        android:paddingRight="32dp"
-        android:paddingBottom="8dp"
-        android:text="@string/add"
-        android:textColor="#FFFFFF" />
 
-    <Spinner
-        android:id="@+id/addBudg"
-        android:layout_width="344dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/BudgetCat"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="147dp" />
-
-    <Spinner
-        android:id="@+id/addTrans"
-        android:layout_width="308dp"
-        android:layout_height="35dp"
-        android:layout_below="@+id/AddtoTrans"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="39dp"
-        android:layout_marginTop="58dp"
-        android:layout_marginEnd="48dp" />
-
-    <TextView
-        android:id="@+id/BudgetCat"
-        android:layout_width="155dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/addButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="132dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="140dp"
-        android:text="@string/budget_category_input"
-        android:textColor="#FFFEFE" />
-
-    <TextView
-        android:id="@+id/AddtoTrans"
-        android:layout_width="118dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/BudgetCat"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="129dp"
-        android:layout_marginTop="97dp"
-        android:layout_marginEnd="148dp"
-        android:text="@string/add_transaction"
-        android:textColor="#FFFEFE" />
 
 </RelativeLayout>
