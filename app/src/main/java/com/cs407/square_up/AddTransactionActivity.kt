@@ -516,7 +516,7 @@ class AddTransactionActivity : AppCompatActivity() {
                     // Pass the List<String> directly to the adapter
                     val adapter = ArrayAdapter(
                         this@AddTransactionActivity,
-                        android.R.layout.simple_spinner_item,
+                        R.layout.spinner_item,
                         tags.map { it.toString() } // Explicitly convert to strings
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
