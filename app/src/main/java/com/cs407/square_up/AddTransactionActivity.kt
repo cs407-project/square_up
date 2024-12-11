@@ -251,7 +251,7 @@ class AddTransactionActivity : AppCompatActivity() {
         val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
         val amount = amountText.toDouble()
         val description = findViewById<EditText>(R.id.enterDescription).text.toString()
-        val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
+        val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).toString()
         val transactionDate = Date()
         val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
 
@@ -347,7 +347,7 @@ class AddTransactionActivity : AppCompatActivity() {
     private fun addTransaction(db: AppDatabase, currentUserID: Int) {
         val description = findViewById<EditText>(R.id.enterDescription).text.toString()
         val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
-        val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
+        val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).toString()
 
         if (description.isEmpty() || amountText.isEmpty() || selectedUsers.isEmpty()) {
             Toast.makeText(this, "Please fill out all fields and select users", Toast.LENGTH_SHORT).show()
@@ -375,7 +375,7 @@ class AddTransactionActivity : AppCompatActivity() {
             val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
             val amount = amountText.toDouble()
             val description = findViewById<EditText>(R.id.enterDescription).text.toString()
-            val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
+            val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).toString()
             val transactionDate = Date()
             val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
 
