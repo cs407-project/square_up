@@ -33,10 +33,12 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
@@ -151,47 +153,173 @@ class AddTransactionActivity : AppCompatActivity() {
             insets
         }
 
-        //Need to add a query "SELECT groupName from GROUPS WHERE userID = :userID"
+        // Setup for group spinner
         val selectGroupSpinner = findViewById<Spinner>(R.id.selectGroup)
         val currentUserID = intent.getIntExtra("USER_ID", 1)
+        setupGroupSpinner(db, currentUserID, selectGroupSpinner)
 
+        val selectPersonButton = findViewById<Button>(R.id.selectPerson)
+        selectPersonButton.setOnClickListener {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val db = AppDatabase.getDatabase(applicationContext)
+                val userDao = db.userDao()
+                val users = userDao.getAllOtherUsers(currentUserID)
+                withContext(Dispatchers.Main) {
+                    showMultiSelectDialog(users)
+                }
+            }
+        }
+
+//        val addTransactionButton = findViewById<Button>(R.id.addTransaction3)
+//        addTransactionButton.setOnClickListener {
+//            addTransaction(db, currentUserID)
+//        }
+
+        val customSplitButton = findViewById<Button>(R.id.customSplit)
+        customSplitButton.setOnClickListener {
+            showCustomSplitDialog(db, currentUserID)
+        }
+
+        val equalSplitButton = findViewById<Button>(R.id.equalSplit)
+        equalSplitButton.setOnClickListener {
+            performEqualSplit(db, currentUserID)
+        }
+
+        val useCameraButton = findViewById<Button>(R.id.useCamera)
+        useCameraButton.setOnClickListener {
+            // Camera permission handling code
+        }
+    }
+
+    private fun showCustomSplitDialog(db: AppDatabase, currentUserID: Int) {
+        if(selectedUsers.isEmpty()) {
+            Toast.makeText(this, "No users selected for custom split.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val layoutInflater = LayoutInflater.from(this)
+        val customView = layoutInflater.inflate(R.layout.custom_split_dialog, null)
+        val userPercentages = mutableListOf<Pair<String, EditText>>()
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            val userDao = db.userDao()
+            val allUsers = mutableListOf<String>().apply {
+                // Add the logged-in user first
+                val currentUser = userDao.getUserById(currentUserID)?.userName
+                if (currentUser != null) {
+                    add(currentUser)
+                }
+                // Then add the rest of the group members
+                addAll(selectedUsers.filter { it != currentUser })
+            }
+
+            withContext(Dispatchers.Main) {
+                allUsers.forEach { userName ->
+                    val userLayout = layoutInflater.inflate(R.layout.user_percentage_item, null, false)
+                    userLayout.findViewById<TextView>(R.id.userNameTextView)?.text = userName
+                    val percentageEditText = userLayout.findViewById<EditText>(R.id.percentageEditText)
+                    customView.findViewById<LinearLayout>(R.id.usersLayout)?.addView(userLayout)
+                    if (percentageEditText != null) {
+                        userPercentages.add(Pair(userName, percentageEditText))
+                    }
+                }
+
+                if(userPercentages.isEmpty()) {
+                    Toast.makeText(this@AddTransactionActivity, "Error setting up user percentage inputs.", Toast.LENGTH_SHORT).show()
+                    return@withContext
+                }
+
+                AlertDialog.Builder(this@AddTransactionActivity)
+                    .setTitle("Custom Split")
+                    .setView(customView)
+                    .setPositiveButton("Apply") { _, _ ->
+                        lifecycleScope.launch(Dispatchers.IO) {
+                            handleCustomSplit(db, currentUserID, userPercentages)
+                        }
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            }
+        }
+    }
+    private suspend fun handleCustomSplit(db: AppDatabase, currentUserID: Int, userPercentages: List<Pair<String, EditText>>) {
+        val transactionDao = db.transactionDao()
+        val userDao = db.userDao()
+        val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
+        val amount = amountText.toDouble()
+        val description = findViewById<EditText>(R.id.enterDescription).text.toString()
+        val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
+        val transactionDate = Date()
+        val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
+
+        var totalPercentage = BigDecimal.ZERO
+        val userSplits = mutableListOf<Pair<Int, BigDecimal>>()
+
+        userPercentages.forEach { (userName, editText) ->
+            val percentage = editText.text.toString().toDoubleOrNull() ?: 0.0
+            val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
+            if (percentage > 0 && percentage <= 1) {
+                totalPercentage = totalPercentage.add(BigDecimal.valueOf(percentage))
+                userSplits.add(Pair(userId, BigDecimal.valueOf(percentage)))
+            }
+        }
+
+        if (totalPercentage.compareTo(BigDecimal.ONE) == 0) {
+            userSplits.forEach { (userId, percentage) ->
+                val amountOwed = BigDecimal.valueOf(amount).multiply(percentage).setScale(5, RoundingMode.HALF_UP)
+                transactionDao.insertTransaction(
+                    Transaction(
+                        transactionID = nextId,
+                        userWhoPaidID = userId,
+                        transactionAmount = amount,
+                        transactionDetails = description,
+                        transactionDate = transactionDate,
+                        splitPercentage = percentage.toDouble(),
+                        paid = userId == currentUserID,
+                        budgetTag = userBudgetTag,
+                        amountOwed = amountOwed.setScale(2, RoundingMode.HALF_UP).toDouble(),
+                        initialUser = userId == currentUserID
+                    )
+                )
+            }
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@AddTransactionActivity, "Custom split transaction added successfully!", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        } else {
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@AddTransactionActivity, "Total percentage must equal 100%", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+    private fun setupGroupSpinner(db: AppDatabase, currentUserID: Int, spinner: Spinner) {
         lifecycleScope.launch(Dispatchers.IO) {
             val groupsDao = db.groupDao()
             val groupNames = groupsDao.getGroupNamesByUser(currentUserID)
-
             withContext(Dispatchers.Main) {
                 if (groupNames.isNotEmpty()) {
                     val groupNamesWithPlaceholder = mutableListOf("Select a group") + groupNames
-                    Log.d("SpinnerSetup", "Group names with placeholder: $groupNamesWithPlaceholder")
-                    val adapter = ArrayAdapter(
-                        this@AddTransactionActivity,
-                        R.layout.spinner_item,
-                        groupNamesWithPlaceholder
-                    )
+                    val adapter = ArrayAdapter(this@AddTransactionActivity, R.layout.spinner_item, groupNamesWithPlaceholder)
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-
-                    selectGroupSpinner.adapter = adapter
-                    selectGroupSpinner.setSelection(0)
-
-                    selectGroupSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    spinner.adapter = adapter
+                    spinner.setSelection(0)
+                    spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                             val selectedGroup = parent?.getItemAtPosition(position).toString()
-                            Log.d("SpinnerSelection", "Group selected: $selectedGroup, Position: $position")
-
                             if (selectedGroup != "Select a group") {
                                 lifecycleScope.launch(Dispatchers.IO) {
                                     val groupId = groupsDao.getGroupIdByName(currentUserID, selectedGroup)
                                     if (groupId != null) {
                                         val memberNames = groupsDao.getGroupMembersByGroupId(groupId)
                                         withContext(Dispatchers.Main) {
-                                            selectedUsers.clear() // Clear previous selections
+                                            selectedUsers.clear()
                                             selectedUsers.addAll(memberNames)
                                             Toast.makeText(this@AddTransactionActivity, "Selected: $selectedGroup, Users: $selectedUsers", Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                 }
                             } else {
-                                selectedUsers.clear() // Clear selection if 'Select a group' is chosen
+                                selectedUsers.clear()
                                 Toast.makeText(this@AddTransactionActivity, "Please select a valid group", Toast.LENGTH_SHORT).show()
                             }
                         }
@@ -200,151 +328,84 @@ class AddTransactionActivity : AppCompatActivity() {
                             Toast.makeText(this@AddTransactionActivity, "No selection made", Toast.LENGTH_SHORT).show()
                         }
                     }
-                    Log.d("SpinnerSetup", "OnItemSelectedListener assigned to Spinner.")
                 } else {
                     Log.e("SpinnerSetup", "No groups found for user ID: $currentUserID")
-                    Toast.makeText(
-                        this@AddTransactionActivity,
-                        "No groups found for this user.",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this@AddTransactionActivity, "No groups found for this user.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+    private fun addTransaction(db: AppDatabase, currentUserID: Int) {
+        val description = findViewById<EditText>(R.id.enterDescription).text.toString()
+        val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
+        val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
 
-        val selectPersonButton = findViewById<Button>(R.id.selectPerson)
-
-        selectPersonButton.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val db = AppDatabase.getDatabase(applicationContext)
-                val userDao = db.userDao()
-                val currentUserID = intent.getIntExtra("USER_ID", 1)
-                val users = userDao.getAllOtherUsers(currentUserID) // Replace 1 with actual user ID
-
-                withContext(Dispatchers.Main) {
-                    showMultiSelectDialog(users)
-                }
-            }
+        if (description.isEmpty() || amountText.isEmpty() || selectedUsers.isEmpty()) {
+            Toast.makeText(this, "Please fill out all fields and select users", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        val addTransactionButton = findViewById<Button>(R.id.addTransaction3)
-        addTransactionButton.setOnClickListener {
+        val amount = amountText.toDouble()
+        lifecycleScope.launch(Dispatchers.IO) {
+            val transactionDao = db.transactionDao()
+            val userDao = db.userDao()
+            val transactionDate = Date()
+            val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
+
+            // Here would be where you would implement the split logic based on the button clicked
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@AddTransactionActivity, "Transaction added successfully!", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+    }
+    private fun performEqualSplit(db: AppDatabase, currentUserID: Int) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            val transactionDao = db.transactionDao()
+            val userDao = db.userDao()
+            val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
+            val amount = amountText.toDouble()
             val description = findViewById<EditText>(R.id.enterDescription).text.toString()
-            val amount = findViewById<EditText>(R.id.enterAmount).text.toString()
-            val splitPercentageText = findViewById<EditText>(R.id.editTextNumberDecimal).text.toString()
-            val selectGroup = findViewById<Spinner>(R.id.selectGroup)
             val userBudgetTag = findViewById<EditText>(R.id.enterBudgetTag).text.toString()
+            val transactionDate = Date()
+            val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
 
-            if (description.isEmpty() || amount.isEmpty() || splitPercentageText.isEmpty()) {
-                Toast.makeText(this, "Please fill out all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+            val allUsers = mutableListOf<String>().apply {
+                val currentUser = userDao.getUserById(currentUserID)?.userName
+                if (currentUser != null && !selectedUsers.contains(currentUser)) {
+                    add(currentUser)
+                }
+                addAll(selectedUsers)
             }
-            val splitPercentage = splitPercentageText.toDoubleOrNull()
-            if (splitPercentage == null || splitPercentage <= 0 || splitPercentage > 1) {
-                Toast.makeText(this, "Invalid split percentage", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
 
-            val currentUserID = intent.getIntExtra("USER_ID", 1)
-            Log.d("UserID", "$currentUserID")
-            lifecycleScope.launch(Dispatchers.IO) {
-                val db = AppDatabase.getDatabase(applicationContext)
-                val transactionDao = db.transactionDao()
-                val userDao = db.userDao()
-                val groupDao = db.groupDao()
+            // Calculate split percentage with higher precision
+            val splitPercentage = BigDecimal.ONE.divide(BigDecimal(allUsers.size), 20, RoundingMode.HALF_UP)
 
-                val amountDouble = amount.toDouble()
-                val transactionDate = Date()
+            allUsers.forEach { userName ->
+                val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
+                // Use setScale to ensure only 2 decimal places for the percentage in the database
+                val percentageForUser = splitPercentage.setScale(5, RoundingMode.HALF_UP)
+                val amountOwed = BigDecimal(amount).multiply(percentageForUser).setScale(5, RoundingMode.HALF_UP)
 
-                val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
-
-                // Insert for the initiator
-                Log.d("TransactionInsert", "Attempting to insert transaction for initiator with ID: $nextId")
-                Log.d("TransactionInsert", "UserID = $currentUserID")
-
-                val initiatorAmountOwed = BigDecimal(amountDouble).multiply(BigDecimal(splitPercentage)).setScale(2, RoundingMode.HALF_UP).toDouble()
                 transactionDao.insertTransaction(
                     Transaction(
                         transactionID = nextId,
-                        userWhoPaidID = currentUserID,
-                        transactionAmount = amountDouble,
+                        userWhoPaidID = userId,
+                        transactionAmount = amount,
                         transactionDetails = description,
                         transactionDate = transactionDate,
-                        splitPercentage = splitPercentage,
-                        paid = true,
+                        splitPercentage = percentageForUser.toDouble(),
+                        paid = userId == currentUserID,
                         budgetTag = userBudgetTag,
-                        amountOwed = initiatorAmountOwed,
-                        initialUser = true
+                        amountOwed = amountOwed.setScale(2, RoundingMode.HALF_UP).toDouble(),
+                        initialUser = userId == currentUserID
                     )
                 )
-
-                if (selectedUsers.isNotEmpty()) {
-                    val remainingPercentage = BigDecimal.ONE.subtract(BigDecimal.valueOf(splitPercentage))
-
-                    // Use a higher precision for division to avoid rounding errors
-                    val otherUserPercentage = remainingPercentage.divide(BigDecimal(selectedUsers.size - 1), 15, RoundingMode.HALF_UP) // Increased precision to 15 decimal places
-
-                    selectedUsers.forEach { userName ->
-                        val userId = userDao.getUserByName(userName)?.userId ?: return@forEach
-                        if (userId != currentUserID) {
-                            // Round to 2 decimal places for display in the database
-                            val percentageForUser = otherUserPercentage.setScale(2, RoundingMode.HALF_UP)
-                            val amountOwed = BigDecimal(amountDouble).multiply(percentageForUser).setScale(2, RoundingMode.HALF_UP).toDouble()
-
-                            transactionDao.insertTransaction(
-                                Transaction(
-                                    transactionID = nextId,
-                                    userWhoPaidID = userId,
-                                    transactionAmount = amountDouble,
-                                    transactionDetails = description,
-                                    transactionDate = transactionDate,
-                                    splitPercentage = percentageForUser.toDouble(),
-                                    paid = false,
-                                    budgetTag = userBudgetTag,
-                                    amountOwed = amountOwed,
-                                    initialUser = false
-                                )
-                            )
-                        }
-                    }
-                }
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@AddTransactionActivity, "Transaction added successfully!", Toast.LENGTH_SHORT).show()
-                    finish()
-                }
-            }
-        }
-
-        val customSplitButton = findViewById<Button>(R.id.customSplit)
-        customSplitButton.setOnClickListener {
-            // Custom split logic
-        }
-
-        val equalSplitButton = findViewById<Button>(R.id.equalSplit)
-        equalSplitButton.setOnClickListener {
-            // Equal split logic
-            lifecycleScope.launch(Dispatchers.Main) {
-                val currentUserID = intent.getIntExtra("USER_ID", 1)
-               val currentUser = db.userDao().getUserById(currentUserID)
-                val splitPercentage = if (selectedUsers.contains(currentUser?.userName)) {
-                    1.0 / (selectedUsers.size)
-                } else {
-                    1.0 / (selectedUsers.size + 1)
-                }
-                findViewById<EditText>(R.id.editTextNumberDecimal).setText("$splitPercentage")
             }
 
-        }
-
-        val useCameraButton = findViewById<Button>(R.id.useCamera)
-        useCameraButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                // Request permission
-                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), CAMERA_REQUEST_CODE)
-            } else {
-                // Permission granted, launch the camera using cameraLauncher
-                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                cameraLauncher.launch(cameraIntent)
+            withContext(Dispatchers.Main) {
+                Toast.makeText(this@AddTransactionActivity, "Equal split transaction added successfully!", Toast.LENGTH_SHORT).show()
+                finish()
             }
         }
     }
