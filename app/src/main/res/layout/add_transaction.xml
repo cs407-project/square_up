@@ -74,12 +74,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterDescription" />
 
+    <!-- Budget Tag -->
+
+    <!--    <EditText-->
+<!--        android:id="@+id/enterBudgetTag"-->
+<!--        android:layout_width="222dp"-->
+<!--        android:layout_height="61dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:inputType="text"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="1.0"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/budgetTag_label"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/enterAmount" />-->
+
     <EditText
         android:id="@+id/enterAmount"
         android:layout_width="227dp"
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/enter_amount"
         android:textColor="#FFFFFF"
@@ -88,34 +104,30 @@
         app:layout_constraintStart_toEndOf="@+id/enterAmount_label"
         app:layout_constraintTop_toBottomOf="@+id/enterDescription" />
 
-    <!-- Budget Tag -->
     <TextView
         android:id="@+id/budgetTag_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="28dp"
         android:text="@string/budgetTag"
         android:textColor="#FFFFFF"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/enterAmount" />
 
-    <EditText
+    <!-- Autofill Message -->
+
+    <Spinner
         android:id="@+id/enterBudgetTag"
         android:layout_width="222dp"
         android:layout_height="61dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="244dp"
         android:layout_marginEnd="16dp"
-        android:inputType="text"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/budgetTag_label"
-        app:layout_constraintTop_toBottomOf="@+id/enterAmount" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Autofill Message -->
     <TextView
         android:id="@+id/autofill_message"
         android:layout_width="0dp"
@@ -159,6 +171,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectGroupLabel" />
 
+    <!-- Buttons -->
+
     <Button
         android:id="@+id/selectPerson"
         android:layout_width="0dp"
@@ -170,17 +184,16 @@
         android:text="Select Person(s)"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/selectGroup" />
 
-    <!-- Buttons -->
     <Button
         android:id="@+id/customSplit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="52dp"
         android:backgroundTint="#354C61"
         android:text="@string/custom_split"
         android:textColor="#FFFFFF"
@@ -192,7 +205,7 @@
         android:id="@+id/equalSplit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="#354C61"
         android:text="@string/equal_split"

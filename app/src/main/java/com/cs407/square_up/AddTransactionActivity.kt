@@ -147,6 +147,7 @@ class AddTransactionActivity : AppCompatActivity() {
             finish()
         }
 
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.addTransaction)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -157,6 +158,8 @@ class AddTransactionActivity : AppCompatActivity() {
         val selectGroupSpinner = findViewById<Spinner>(R.id.selectGroup)
         val currentUserID = intent.getIntExtra("USER_ID", 1)
         setupGroupSpinner(db, currentUserID, selectGroupSpinner)
+
+        populateBudgetTags(currentUserID)
 
         val selectPersonButton = findViewById<Button>(R.id.selectPerson)
         selectPersonButton.setOnClickListener {
@@ -267,6 +270,12 @@ class AddTransactionActivity : AppCompatActivity() {
         if (totalPercentage.compareTo(BigDecimal.ONE) == 0) {
             userSplits.forEach { (userId, percentage) ->
                 val amountOwed = BigDecimal.valueOf(amount).multiply(percentage).setScale(5, RoundingMode.HALF_UP)
+                var check = ""
+                if (currentUserID == userId) {
+                    check = userBudgetTag
+                } else {
+                    check = ""
+                }
                 transactionDao.insertTransaction(
                     Transaction(
                         transactionID = nextId,
@@ -276,7 +285,7 @@ class AddTransactionActivity : AppCompatActivity() {
                         transactionDate = transactionDate,
                         splitPercentage = percentage.toDouble(),
                         paid = userId == currentUserID,
-                        budgetTag = userBudgetTag,
+                        budgetTag = check,
                         amountOwed = amountOwed.setScale(2, RoundingMode.HALF_UP).toDouble(),
                         initialUser = userId == currentUserID
                     )
@@ -386,7 +395,12 @@ class AddTransactionActivity : AppCompatActivity() {
                 // Use setScale to ensure only 2 decimal places for the percentage in the database
                 val percentageForUser = splitPercentage.setScale(5, RoundingMode.HALF_UP)
                 val amountOwed = BigDecimal(amount).multiply(percentageForUser).setScale(5, RoundingMode.HALF_UP)
-
+                var check = ""
+                if (currentUserID == userId) {
+                    check = userBudgetTag
+                } else {
+                    check = ""
+                }
                 transactionDao.insertTransaction(
                     Transaction(
                         transactionID = nextId,
@@ -396,7 +410,7 @@ class AddTransactionActivity : AppCompatActivity() {
                         transactionDate = transactionDate,
                         splitPercentage = percentageForUser.toDouble(),
                         paid = userId == currentUserID,
-                        budgetTag = userBudgetTag,
+                        budgetTag = check,
                         amountOwed = amountOwed.setScale(2, RoundingMode.HALF_UP).toDouble(),
                         initialUser = userId == currentUserID
                     )
@@ -459,5 +473,28 @@ class AddTransactionActivity : AppCompatActivity() {
             // Permission denied, show a message or handle appropriately
             Toast.makeText(this, "Camera permission is required", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun populateBudgetTags(userId: Int) {
+        val budgets = findViewById<Spinner>(R.id.enterBudgetTag)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+
+            val db2 = AppDatabase.getDatabase(applicationContext)
+            val budget = db2.budgetDao()
+            val tags = budget.getBudgets(userId)
+
+            withContext(Dispatchers.Main) {
+
+                val adapter = ArrayAdapter(
+                    this@AddTransactionActivity,
+                    android.R.layout.simple_spinner_item,
+                    tags
+                )
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                budgets.adapter = adapter
+            }
+        }
+
     }
 }
