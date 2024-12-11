@@ -59,19 +59,20 @@ class AddBudgetItemActivity : AppCompatActivity() {
 
         populateTransactions(userId)
 
-//        addButton2.setOnClickListener {
-//            val budg = budgetCat.toString()
-//            val transaction = trans
-//            val total =
-//            val currentAmount = amountInput.text.toString().toDouble()
-//            lifecycleScope.launch(Dispatchers.IO) {
+        addButton2.setOnClickListener {
+            val budg = budgetCat.toString()
+            val transaction = trans
+            val total = 50.0
+            val currentAmount = amountInput.text.toString().toDouble()
+            lifecycleScope.launch(Dispatchers.IO) {
+
+
+            }
+            val db = AppDatabase.getDatabase(applicationContext)
+            val transactionDao = db.transactionDao()
 //
-//            }
-//            val db = AppDatabase.getDatabase(applicationContext)
-//            val transactionDao = db.transactionDao()
-//            transactionDao.
-////
-//        }
+//
+        }
 
 
     }

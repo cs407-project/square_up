@@ -162,7 +162,7 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId")
     suspend fun getTransactionsByUser(userId: Int): List<Transaction>
 
-    @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId and paid =0")
+    @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId and paid =0 and BudgetTag = ''")
     suspend fun getTrans(userId: Int): List<Transaction>
 }
 
@@ -203,8 +203,8 @@ interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBudget(budget: Budget)
 
-    @Query("SELECT DISTINCT selectedBudget, currentAmount FROM Budget where userId = :userID")
-    suspend fun getBudgets(userID: Int): List<BudgetSummary>
+    @Query("SELECT DISTINCT selectedBudget FROM Budget where userId = :userID")
+    suspend fun getBudgets(userID: Int): List<String>
 
 
 }
