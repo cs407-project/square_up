@@ -163,6 +163,44 @@ interface TransactionDao {
 
     @Query("SELECT * FROM transactions WHERE UserWhoPaidID = :userId AND Paid = 0")
     suspend fun getAllUnpaidTransactionsForUser(userId: Int): List<Transaction>
+
+    // Query for individual transactions (with count = 1) and filtered by userId
+    @Query("""
+       SELECT * FROM transactions
+       WHERE userWhoPaidID = :userId
+       AND TransactionID IN (
+           SELECT TransactionID FROM transactions
+           GROUP BY TransactionID
+           HAVING COUNT(*) = 1
+       )
+   """)
+    suspend fun getIndividualTransactions(userId: Int): List<Transaction>
+
+
+    // Query for group transactions (with count > 1) and filtered by userId
+    @Query("""
+       SELECT * FROM transactions
+       WHERE userWhoPaidID = :userId
+       AND TransactionID IN (
+           SELECT TransactionID FROM transactions
+           GROUP BY TransactionID
+           HAVING COUNT(*) > 1
+       )
+   """)
+    suspend fun getGroupTransactions(userId: Int): List<Transaction>
+
+
+    // returns a list of all transaction paid to current user
+    @Query("""
+   SELECT t2.*
+   FROM transactions t1
+   JOIN transactions t2 ON t1.TransactionID = t2.TransactionID
+   WHERE t1.paid = 1
+   AND t1.initialUser = 0
+   AND t2.initialUser = 1
+   AND t2.userWhoPaidID = :userId
+""")
+    suspend fun getTransactionsPaidBackToUser(userId: Int): List<Transaction>
 }
 
 @Dao
