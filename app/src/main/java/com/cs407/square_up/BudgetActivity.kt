@@ -37,6 +37,14 @@ class BudgetActivity : AppCompatActivity() {
         addButton2.setOnClickListener {
             val budgetCat = findViewById<Spinner>(R.id.addBudg).selectedItem.toString()
             val trans = findViewById<Spinner>(R.id.addTrans).selectedItem.toString().toInt()
+            if (budgetCat==null){
+                Toast.makeText(this, "No Budget selected", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (trans==null){
+                Toast.makeText(this, "No Transaction selected", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             lifecycleScope.launch(Dispatchers.IO) {
                 updateTotalAndBudget(trans, budgetCat, currentUserId)
 
