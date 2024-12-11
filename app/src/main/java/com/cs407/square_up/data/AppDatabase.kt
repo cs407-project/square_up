@@ -184,10 +184,13 @@ interface TransactionDao {
 
     // Query for group transactions (with count > 1) and filtered by userId
     @Query("""
-       SELECT * FROM transactions
-       WHERE userWhoPaidID = :userId
-       AND initialUser = 0
-       AND TransactionID IN (
+       SELECT t1.*
+       FROM transactions t1
+       JOIN transactions t2 ON t1.TransactionID = t2.TransactionID
+       WHERE t2.userWhoPaidID = :userId
+       AND t2.initialUser = 0
+       AND t1.initialUser = 1
+       AND t2.TransactionID IN (
            SELECT TransactionID FROM transactions
            GROUP BY TransactionID
            HAVING COUNT(*) > 1
