@@ -181,7 +181,14 @@ class AddTransactionActivity : AppCompatActivity() {
         }
 
         val equalSplitButton = findViewById<Button>(R.id.equalSplit)
+
         equalSplitButton.setOnClickListener {
+            val description = findViewById<EditText>(R.id.enterDescription).text.toString()
+            val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
+            if (description.isEmpty() || amountText.isEmpty() || selectedUsers.isEmpty()) {
+                Toast.makeText(this, "Please fill out all fields ", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             performEqualSplit(db, currentUserID)
         }
 
