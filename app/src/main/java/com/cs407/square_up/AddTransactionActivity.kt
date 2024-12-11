@@ -39,6 +39,7 @@ import android.widget.Adapter
 import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ListView
 import android.widget.TextView
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.TextRecognizer
@@ -436,43 +437,56 @@ class AddTransactionActivity : AppCompatActivity() {
     }
 
     private fun showMultiSelectDialog(users: List<String>) {
-        // Prepare a list of available users
         val availableUsers = users.toTypedArray()
-
-        // Create a temporary list to track selections during the dialog session
         val tempSelectedUsers = selectedUsers.toMutableList()
         val selectedItems = BooleanArray(availableUsers.size) { index ->
             selectedUsers.contains(availableUsers[index])
         }
 
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Select Users")
-        builder.setMessage("For individual transaction: Click OK and then Equal split") // Add subtitle
-        builder.setMultiChoiceItems(availableUsers, selectedItems) { _, which, isChecked ->
-            if (isChecked) {
-                tempSelectedUsers.add(availableUsers[which]) // Add user to temporary list if checked
-            } else {
-                tempSelectedUsers.remove(availableUsers[which]) // Remove user from temporary list if unchecked
-            }
-        }
-        builder.setPositiveButton("OK") { dialog, _ ->
-            // Update the main selectedUsers list regardless of the number of selections
-            selectedUsers.clear()
-            selectedUsers.addAll(tempSelectedUsers)
+        val dialogView = layoutInflater.inflate(R.layout.custom_multiselect_dialog, null)
 
-            if (selectedUsers.isEmpty()) {
-                // Show a toast if no users are selected
-                Toast.makeText(this, "No users selected. Please choose at least one.", Toast.LENGTH_SHORT).show()
+        // Set the subtitle text
+        dialogView.findViewById<TextView>(R.id.subtitleTextView).text = "For individual transaction: Click OK and then Equal split"
+
+        val listView = dialogView.findViewById<ListView>(R.id.userListView)
+
+        // Custom adapter for checkbox list
+        val adapter = ArrayAdapter<String>(this, android.R.layout.select_dialog_multichoice, availableUsers)
+        listView.choiceMode = ListView.CHOICE_MODE_MULTIPLE
+        listView.adapter = adapter
+
+        // Set initial selection state
+        for (i in availableUsers.indices) {
+            listView.setItemChecked(i, selectedItems[i])
+        }
+
+        // Handle user selection
+        listView.setOnItemClickListener { _, _, position, _ ->
+            val user = availableUsers[position]
+            if (listView.isItemChecked(position)) {
+                tempSelectedUsers.add(user)
             } else {
-                Toast.makeText(this, "Selected Users: $selectedUsers", Toast.LENGTH_SHORT).show()
+                tempSelectedUsers.remove(user)
             }
-            dialog.dismiss()
         }
-        builder.setNegativeButton("Cancel") { dialog, _ ->
-            // Discard any changes made during this session
-            dialog.dismiss()
-        }
-        builder.create().show()
+
+        AlertDialog.Builder(this)
+            .setTitle("Select Users")
+            .setView(dialogView)
+            .setPositiveButton("OK") { dialog, _ ->
+                selectedUsers.clear()
+                selectedUsers.addAll(tempSelectedUsers)
+                if (selectedUsers.isEmpty()) {
+                    Toast.makeText(this, "No users selected. Please choose at least one.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Selected Users: $selectedUsers", Toast.LENGTH_SHORT).show()
+                }
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
