@@ -97,7 +97,8 @@ data class Budget(
     @PrimaryKey(autoGenerate = true) val budgetID : Int,
     val userID : Int,
     val selectedBudget : String,
-    val currentAmount : Long
+    val currentAmount : Double,
+    val total : Double
 )
 
 

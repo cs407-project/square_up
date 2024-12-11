@@ -34,6 +34,7 @@ class AddBudgetItemActivity : AppCompatActivity() {
         val addButton2 = findViewById<Button>(R.id.addButton2)
         val budgetCat = findViewById<Spinner>(R.id.addBudg)
         val trans = findViewById<Spinner>(R.id.addTrans)
+        val total = 0
 
         clearAmountButton.setOnClickListener {
             amountInput.text.clear()
@@ -46,9 +47,10 @@ class AddBudgetItemActivity : AppCompatActivity() {
             val budgetID = 0
             val userID = 1
             val selectedBudget = categoryInput.text.toString()
-            val currentAmount = amountInput.text.toString().toLong()
+            val currentAmount = amountInput.text.toString().toDouble()
+            val total = 0.0
             lifecycleScope.launch(Dispatchers.IO) {
-                addBudget(budgetID, userID, selectedBudget, currentAmount)
+                addBudget(budgetID, userID, selectedBudget, currentAmount, total)
             }
 //
         }
@@ -60,11 +62,14 @@ class AddBudgetItemActivity : AppCompatActivity() {
 //        addButton2.setOnClickListener {
 //            val budg = budgetCat.toString()
 //            val transaction = trans
-//
-//            val currentAmount = amountInput.text.toString().toLong()
+//            val total =
+//            val currentAmount = amountInput.text.toString().toDouble()
 //            lifecycleScope.launch(Dispatchers.IO) {
-//                addBudget(budgetID, userID, selectedBudget, currentAmount)
+//
 //            }
+//            val db = AppDatabase.getDatabase(applicationContext)
+//            val transactionDao = db.transactionDao()
+//            transactionDao.
 ////
 //        }
 
@@ -77,12 +82,13 @@ class AddBudgetItemActivity : AppCompatActivity() {
 //        currentAmount = amountInput.text.toString().toLong() // Example amount
 //    )
 //
-    private suspend fun addBudget(budgetID2: Int, userID2: Int, selectedBudget2: String, currentAmount2: Long) {
+    private suspend fun addBudget(budgetID2: Int, userID2: Int, selectedBudget2: String, currentAmount2: Double, total2: Double) {
         val newBudget = Budget(
             budgetID = budgetID2, // Leave as 0; Room will auto-generate the ID
             userID = userID2, // Example user ID
             selectedBudget = selectedBudget2,
-            currentAmount = currentAmount2 // Example amount
+            currentAmount = currentAmount2, // Example amount
+            total = total2
         )
         val db = AppDatabase.getDatabase(applicationContext)
         val budgetDao = db.budgetDao()
