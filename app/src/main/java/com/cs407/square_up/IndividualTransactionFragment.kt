@@ -47,12 +47,15 @@ class IndividualTransactionFragment : Fragment() {
             val transactions = transactionData.map { transaction ->
                 val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
                 val date = dateFormatter.format(transaction.transactionDate)
+                val description = transaction.transactionDetails
+                val id = transaction.transactionID
                 val amount = if (transaction.amountOwed < 0) {
                     "-$${"%.2f".format(-transaction.amountOwed)}"
                 } else {
                     "$${"%.2f".format(transaction.amountOwed)}"
                 }
-                Pair("Transaction $date", amount)
+                "Transaction ID: $id $date\nYou made a transaction for $description of $amount.\n\n"
+                //"$date: You made a transaction for $description of $amount. Transaction ID: $id."
             }
 
 
@@ -60,14 +63,10 @@ class IndividualTransactionFragment : Fragment() {
             withContext(Dispatchers.Main) {
                 for (transaction in transactions) {
                     val transactionView = TextView(requireContext())
-                    transactionView.text = "${transaction.first}: ${transaction.second}"
+                    transactionView.text = "${transaction}"
                     transactionView.textSize = 16f
                     transactionView.setPadding(0, 16, 0, 16) // Space between transactions
-                    if (transaction.second.startsWith("-")) {
-                        transactionView.setTextColor(Color.RED)
-                    } else {
-                        transactionView.setTextColor(Color.parseColor("#4CAF50"))
-                    }
+                    transactionView.setTextColor(Color.RED)
                     transactionContainer.addView(transactionView)
                 }
             }

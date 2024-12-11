@@ -100,8 +100,6 @@ data class Budget(
     val currentAmount : Long
 )
 
-
-
 // Define the UserDao inline
 @Dao
 interface UserDao {
@@ -131,6 +129,9 @@ interface UserDao {
 
     @Query("SELECT * FROM User")
     suspend fun getAllUsers(): List<User>
+
+//    @Query("SELECT userName FROM User WHERE userId = :id")
+//    suspend fun getUserNameById(id: Int): User?
 }
 
 // DAO for Transaction
@@ -181,6 +182,7 @@ interface TransactionDao {
     @Query("""
        SELECT * FROM transactions
        WHERE userWhoPaidID = :userId
+       AND initialUser = 0
        AND TransactionID IN (
            SELECT TransactionID FROM transactions
            GROUP BY TransactionID
@@ -192,15 +194,39 @@ interface TransactionDao {
 
     // returns a list of all transaction paid to current user
     @Query("""
-   SELECT t2.*
+   SELECT t1.*
    FROM transactions t1
    JOIN transactions t2 ON t1.TransactionID = t2.TransactionID
-   WHERE t1.paid = 1
+   WHERE t1.paid = 1 and t2.paid = 1
    AND t1.initialUser = 0
    AND t2.initialUser = 1
    AND t2.userWhoPaidID = :userId
 """)
     suspend fun getTransactionsPaidBackToUser(userId: Int): List<Transaction>
+
+    // Query for group transactions (with count > 1) and filtered by userId
+    @Query("""
+       SELECT t1.*
+        FROM transactions t1
+        JOIN transactions t2 ON t1.TransactionID = t2.TransactionID
+        WHERE t1.paid = 0
+        AND t1.initialUser = 0
+        AND t2.initialUser = 1
+        AND t2.userWhoPaidID = :userId
+   """)
+
+    suspend fun getUserGroupTransactions(userId: Int): List<Transaction>
+
+    @Query("""
+       SELECT t1.*
+        FROM transactions t1
+        JOIN transactions t2 ON t1.TransactionID = t2.TransactionID
+        WHERE t1.initialUser = 1
+        AND t2.paid = 1
+        AND t2.userWhoPaidID = :userId
+   """)
+
+    suspend fun youPaidBack(userId: Int): List<Transaction>
 }
 
 @Dao
