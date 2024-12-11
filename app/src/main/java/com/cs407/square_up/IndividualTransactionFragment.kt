@@ -45,7 +45,7 @@ class IndividualTransactionFragment : Fragment() {
             val transactionData = transactionDao.getIndividualTransactions(currentUserId)
             // Convert transactions to List<Pair<String, String>> for display
             val transactions = transactionData.map { transaction ->
-                val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
+                val dateFormatter = SimpleDateFormat("MM/dd HH:mm:ss"); // Format date as "MM/dd"
                 val date = dateFormatter.format(transaction.transactionDate)
                 val description = transaction.transactionDetails
                 val id = transaction.transactionID
@@ -54,7 +54,7 @@ class IndividualTransactionFragment : Fragment() {
                 } else {
                     "$${"%.2f".format(transaction.amountOwed)}"
                 }
-                "Transaction ID: $id $date\nYou made a transaction for $description of $amount.\n\n"
+                "Transaction ID: $id\n Date: $date\nYou made a transaction for $description of $amount.\n\n"
                 //"$date: You made a transaction for $description of $amount. Transaction ID: $id."
             }
 

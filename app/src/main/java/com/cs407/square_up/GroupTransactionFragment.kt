@@ -71,7 +71,7 @@ class GroupTransactionFragment : Fragment() {
 
             // all of these are set to negative. user owes ppl
             val groupTransactionList = groupFilteredTransactions.map { transaction ->
-                val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
+                val dateFormatter = SimpleDateFormat("MM/dd HH:mm:ss"); // Format date as "MM/dd"
                 val date = dateFormatter.format(transaction.transactionDate)
                 val description = transaction.transactionDetails
                 val amount = "-$${"%.2f".format(-transaction.amountOwed)}"
@@ -85,13 +85,13 @@ class GroupTransactionFragment : Fragment() {
 //                }
                 //Pair("Group Transaction $date", amount)
                 //Triple(transaction.transactionDate, "Group Transaction $date", amount)
-                val string1 = "Transaction ID: $id Date: $date\nYou owe $owedUserName for $description of $amount.\n\n"
+                val string1 = "Transaction ID: $id \nDate: $date\nYou owe $owedUserName for $description of $amount.\n\n"
                 Triple(date, string1, amount)
             }
 
             // set to negative but user paid
             val userGroupTransactionList = userGroupTransactions.map { transaction ->
-                val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
+                val dateFormatter = SimpleDateFormat("MM/dd HH:mm:ss");// Format date as "MM/dd"
                 val date = dateFormatter.format(transaction.transactionDate)
                 val amount = "-$${"%.2f".format(-transaction.amountOwed)}"
                 val transactionId = transaction.transactionID
@@ -105,14 +105,14 @@ class GroupTransactionFragment : Fragment() {
 //                }
                 //Pair("Group Transaction $date", amount)
                 //Triple(transaction.transactionDate, "Group Transaction $date", amount)
-                val string2 = "Transaction ID: $transactionId Date: $date\n $paidUserName owes you $$amount for $description.\n\n"
+                val string2 = "Transaction ID: $transactionId \nDate: $date\n $paidUserName owes you $$amount for $description.\n\n"
                 Triple(date, string2, amount)
             }
 
 
             // all of these are set to positive (someone paying them back)
             val paidBackTransactionList = paidBackTransactions.map { transaction ->
-                val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
+                val dateFormatter = SimpleDateFormat("MM/dd HH:mm:ss");// Format date as "MM/dd"
                 val date = dateFormatter.format(transaction.transactionDate)
                 val amount = "$${"%.2f".format(transaction.amountOwed)}"
                 val transactionId = transaction.transactionID
@@ -126,19 +126,19 @@ class GroupTransactionFragment : Fragment() {
 //                }
                 //Pair("Group Transaction $date", amount)
                // Triple(transaction.transactionDate, "Group Transaction $date", amount)
-                val string3 = "Transaction ID: $transactionId Date: $date \n$paidUserName paid you back $amount for $description\n\n"
+                val string3 = "Transaction ID: $transactionId \nDate: $date \n$paidUserName paid you back $amount for $description\n\n"
                 Triple(date, string3, amount)
             }
 
             val youPaidBackList = youPaidBack.map { transaction ->
-                val dateFormatter = SimpleDateFormat("MM/dd") // Format date as "MM/dd"
+                val dateFormatter = SimpleDateFormat("MM/dd HH:mm:ss"); // Format date as "MM/dd"
                 val date = dateFormatter.format(transaction.transactionDate)
                 val amount = "$${"%.2f".format(-transaction.amountOwed)}"
                 val transactionId = transaction.transactionID
                 val description = transaction.transactionDetails
                 val paidUser = transaction.userWhoPaidID
                 val paidUserName = userDao.getUserById(paidUser)?.userName
-                val string3 = "${transactionId} Date: ${date} You paid ${paidUserName} back ${amount} for ${description}\n\n"
+                val string3 = "Transaction ID: ${transactionId}\nDate: ${date}\nYou paid ${paidUserName} back ${amount} for ${description}\n\n"
                 Triple(date, string3, amount)
             }
 
