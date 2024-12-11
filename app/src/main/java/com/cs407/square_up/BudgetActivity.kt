@@ -131,7 +131,7 @@ class BudgetActivity : AppCompatActivity() {
                 } else {
                     val adapter = ArrayAdapter(
                         this@BudgetActivity,
-                        android.R.layout.simple_spinner_item,
+                        R.layout.spinner_item,
                         listOf("")
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -172,7 +172,7 @@ class BudgetActivity : AppCompatActivity() {
                     // Pass the List<String> directly to the adapter
                     val adapter = ArrayAdapter(
                         this@BudgetActivity,
-                        android.R.layout.simple_spinner_item,
+                        R.layout.spinner_item,
                         tags.map { it.toInt() } // Explicitly convert to strings
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -180,7 +180,7 @@ class BudgetActivity : AppCompatActivity() {
                 } else {
                     val adapter = ArrayAdapter(
                         this@BudgetActivity,
-                        android.R.layout.simple_spinner_item,
+                        R.layout.spinner_item,
                         listOf("")
                     )
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
