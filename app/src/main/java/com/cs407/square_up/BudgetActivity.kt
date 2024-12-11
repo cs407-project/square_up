@@ -19,7 +19,7 @@ class BudgetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val userId = intent.getIntExtra("USER_ID", 1)
+        val currentUserId = intent.getIntExtra("USER_ID", 1)
         setContentView(R.layout.activity_budget)
 
         val progressBar = findViewById<ProgressBar>(R.id.stats_progressbar)
@@ -50,6 +50,7 @@ class BudgetActivity : AppCompatActivity() {
         val addButton = findViewById<ImageView>(R.id.addButton)
         addButton.setOnClickListener {
             val intent = Intent(this, AddBudgetItemActivity::class.java)
+            intent.putExtra("USER_ID", currentUserId)
             startActivity(intent)
         }
     }

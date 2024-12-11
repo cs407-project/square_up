@@ -251,7 +251,7 @@ class AddTransactionActivity : AppCompatActivity() {
         val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
         val amount = amountText.toDouble()
         val description = findViewById<EditText>(R.id.enterDescription).text.toString()
-        val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).toString()
+        val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).selectedItem.toString()
         val transactionDate = Date()
         val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
 
@@ -375,7 +375,7 @@ class AddTransactionActivity : AppCompatActivity() {
             val amountText = findViewById<EditText>(R.id.enterAmount).text.toString()
             val amount = amountText.toDouble()
             val description = findViewById<EditText>(R.id.enterDescription).text.toString()
-            val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).toString()
+            val userBudgetTag = findViewById<Spinner>(R.id.enterBudgetTag).selectedItem.toString()
             val transactionDate = Date()
             val nextId = (transactionDao.getMaxTransactionId() ?: 0) + 1
 
@@ -475,26 +475,76 @@ class AddTransactionActivity : AppCompatActivity() {
         }
     }
 
+//    private fun populateBudgetTags(userId: Int) {
+//        val budgets = findViewById<Spinner>(R.id.enterBudgetTag)
+//
+//        lifecycleScope.launch(Dispatchers.IO) {
+//
+//            val db2 = AppDatabase.getDatabase(applicationContext)
+//            val budget = db2.budgetDao()
+//            val tags = budget.getBudgets(userId)
+//
+//            withContext(Dispatchers.Main) {
+//
+//                val adapter = ArrayAdapter(
+//                    this@AddTransactionActivity,
+//                    android.R.layout.simple_spinner_item,
+//                    tags
+//                )
+//                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//                budgets.adapter = adapter
+//            }
+//        }
+//
+//    }
+
     private fun populateBudgetTags(userId: Int) {
         val budgets = findViewById<Spinner>(R.id.enterBudgetTag)
 
         lifecycleScope.launch(Dispatchers.IO) {
-
             val db2 = AppDatabase.getDatabase(applicationContext)
-            val budget = db2.budgetDao()
-            val tags = budget.getBudgets(userId)
+            val budgetDao = db2.budgetDao()
+            val tags = budgetDao.getBudgets(userId) // Should return List<String>
 
             withContext(Dispatchers.Main) {
+                Log.d("BudgetTags", "Fetched Tags: $tags")
+                if (tags.isNotEmpty()) {
+                    // Pass the List<String> directly to the adapter
+                    val adapter = ArrayAdapter(
+                        this@AddTransactionActivity,
+                        android.R.layout.simple_spinner_item,
+                        tags.map { it.toString() } // Explicitly convert to strings
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    budgets.adapter = adapter
+                } else {
+                    val adapter = ArrayAdapter(
+                        this@AddTransactionActivity,
+                        android.R.layout.simple_spinner_item,
+                        listOf("")
+                    )
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    budgets.adapter = adapter
+                }
+                budgets.setSelection(0)
+                // Add onItemSelectedListener
+                budgets.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>?,
+                        view: View?,
+                        position: Int,
+                        id: Long
+                    ) {
+                        val selectedItem = parent?.getItemAtPosition(position).toString()
+                        Log.d("SpinnerSelection", "Selected item: $selectedItem")
+                    }
 
-                val adapter = ArrayAdapter(
-                    this@AddTransactionActivity,
-                    android.R.layout.simple_spinner_item,
-                    tags
-                )
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                budgets.adapter = adapter
+                    override fun onNothingSelected(parent: AdapterView<*>?) {
+                        Log.d("SpinnerSelection", "Nothing selected")
+                    }
+                }
             }
         }
-
     }
+
 }
